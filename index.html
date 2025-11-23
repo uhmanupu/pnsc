@@ -1,1269 +1,1199 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <!-- Configuração PWA/Mobile para Ecrã Inteiro -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- NOME PRINCIPAL DO SITE/APP -->
-    <title>aparoquia</title>
-    <!-- Cor da Barra de Status (Padrão Dark Mode) - Alterada dinamicamente pelo JS -->
-    <meta name="theme-color" content="#fffdf0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <!-- NOME CORRIGIDO PARA A INSTALAÇÃO NA TELA INICIAL (iOS e Android) -->
-    <meta name="apple-mobile-web-app-title" content="aparoquia">
-    <meta name="mobile-web-web-app-status-bar-style" content="black-translucent">
-    
-    <!-- Ícone para compatibilidade (Favicon/Apple) - Reforço -->
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/12114/12114233.png">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/12114/12114233.png">
-
-    <!-- Manifesto (PWA) embutido, linkando para o manifesto.json -->
-    <link rel="manifest" href="./manifest.json">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Fonte Clássica -->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* DEFINIÇÕES DE CORES NOVAS */
-        :root {
-            --bg-light-yellow: #fffdf0; /* Amarelo muito claro (Amber 50 custom) */
-            --text-dark-blue: #1e3a8a; /* Azul Marinho Escuro (Blue 900) */
-            --card-light-cream: #fffff5; /* Branco Creme */
-            --border-light-yellow: #fde68a; /* Borda Amarela Suave (Yellow 200) */
-            --text-dark-slate: #374151; /* Para texto secundário/botões (Slate 700) */
-        }
-        
-        /* TEMA BASE (AGORA É O "LIGHT MODE VISUAL" - Amarelo/Azul) */
-        body { 
-            font-family: 'Merriweather', serif;
-            background-color: var(--bg-light-yellow); 
-            color: var(--text-dark-blue); 
-            transition: background-color 0.3s, color 0.3s; 
-        }
-        .card { 
-            background-color: var(--card-light-cream); 
-            border: 1px solid var(--border-light-yellow); 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
-            transition: background-color 0.3s, border-color 0.3s; 
-        }
-        .header-bg { 
-            background-color: var(--card-light-cream); 
-            border-color: var(--border-light-yellow);
-        }
-        
-        /* TEMA CLARO (.light-mode) (AGORA É O "DARK MODE VISUAL" - Azul/Amarelo) */
-        body.light-mode { /* Fundo escuro */
-            background-color: #0f172a; /* darkNavy */
-            color: #e2e8f0; /* primaryText (Light Slate) */
-        }
-        .light-mode .card {
-            background-color: #1e293b; /* cardDark */
-            border: 1px solid #334155; /* cardBorder */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2); 
-        }
-        .light-mode .header-bg {
-            background-color: #1e293b; /* cardDark */
-            border-color: #334155;
-        }
-        
-        /* ELEMENTOS GERAIS */
-        .tab-button { 
-            transition: all 0.3s ease; 
-            border-bottom: 3px solid transparent; 
-            padding-bottom: 8px; 
-            color: var(--text-dark-slate); /* slate-700 */
-        }
-        .tab-button.active { 
-            border-color: #f59e0b; /* amberGold */
-            font-weight: 700; 
-            color: #f59e0b;
-        }
-        /* Cor dos botões de aba no modo escuro (.light-mode) */
-        .light-mode .tab-button {
-             color: #94a3b8; /* secondaryText */
-        }
-
-        /* NOVIDADES BADGE - Invertido */
-        .news-badge {
-            background-color: #ef4444; 
-            border: 1px solid var(--card-light-cream); 
-        }
-        .light-mode .news-badge {
-             border: 1px solid #1e293b; 
-        }
-
-        /* Estilo para a Barra de Dias (Picker) - Invertido */
-        .date-picker-scroll { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
-        .date-picker-scroll::-webkit-scrollbar { display: none; }
-        .date-button { 
-            padding: 8px 16px; 
-            margin-right: 8px; 
-            border-radius: 9999px; 
-            font-weight: 700; 
-            border: 2px solid transparent; 
-            background-color: #fcd34d; /* Amarelo 300 - para destaque */
-            color: var(--text-dark-blue); 
-        }
-        .date-button.active { 
-            background-color: #d97706; /* Darker Amber/Orange */
-            color: #ffffff; /* White text */
-        }
-        .light-mode .date-button { /* DARK VISUAL */
-            background-color: #334155; /* cardBorder */
-            color: #cbd5e1;
-        }
-        .light-mode .date-button.active { /* DARK VISUAL */
-            background-color: #f59e0b; /* amberGold */
-            color: #1e293b; /* cardDark */
-        }
-
-        /* MENU HAMBÚRGUER CORREÇÃO FINAL: - Invertido */
-        #mobile-menu-overlay {
-            position: fixed; 
-            top: 64px; 
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 64px); 
-            background-color: rgba(255, 255, 255, 0.95); /* Light translucent */
-            z-index: 55; 
-            transition: transform 0.3s ease-in-out;
-            transform: translateX(100%); 
-            overflow-y: auto; 
-            padding: 16px; 
-        }
-        #mobile-menu-overlay.open {
-            transform: translateX(0); 
-        }
-        .light-mode #mobile-menu-overlay { /* NOVO DARK VISUAL */
-            background-color: rgba(15, 23, 42, 0.95); 
-        }
-        
-        .menu-item {
-            color: var(--text-dark-blue); /* NOVO LIGHT VISUAL - Azul Escuro */
-            width: 100%; 
-            padding: 12px;
-            text-align: left;
-        }
-        .light-mode .menu-item { /* NOVO DARK VISUAL */
-            color: #fef3c7; 
-        }
-        /* Hover item menu no light visual */
-        .menu-item:hover {
-             background-color: #fefce8;
-             color: #f59e0b;
-        }
-
-        /* Estilo para Conteúdo Estático (Hino/Oração/Contatos) - Invertido */
-        .hino-content-bg {
-            background-color: #fefce8; /* Yellow 100 */
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .light-mode .hino-content-bg { /* NOVO DARK VISUAL */
-            background-color: #1f2937; 
-            color: #e2e8f0; 
-        }
-
-        /* Estilo do Alerta Especial - CORREÇÃO DE CONTRASTE NO DARK MODE */
-        /* Light Mode Visual: Fundo claro (red-200), Texto escuro (red-900) */
-        .bg-red-800\/20 {
-             background-color: #fecaca; /* bg-red-200 */
-             border-color: #ef4444; 
-        }
-        .text-red-100 {
-            color: #7f1d1d; /* text-red-900 */
-        }
-        /* Dark Mode Visual: Fundo escuro (red-800/20) com MAIS VISIBILIDADE, Texto CLARO (red-100/white) */
-        .light-mode .bg-red-800\/20 { 
-            /* Aumentado o alpha de 0.2 para 0.4 para um vermelho mais forte */
-            background-color: rgba(154, 52, 52, 0.4); 
-            border-color: #ef4444; 
-        }
-        .light-mode .text-red-100 { 
-            color: #fef2f2; /* Brancoo para contraste! */
-        }
-        
-        /* CORREÇÃO DO LAYOUT DO CABEÇALHO PARA FICAR IGUAL AO LOGO */
-        .header-title-main {
-             font-family: Arial, sans-serif; /* Usar uma fonte simples e bold, como no logo */
-             font-weight: 900;
-        }
-        .header-subtitle {
-             font-weight: 700;
-             margin-top: 4px; /* Mais espaçamento como no logo */
-        }
-        /* FIM DA CORREÇÃO DO CABEÇALHO */
-        
-        /* CORREÇÃO DO TEXTO DO JUBILEU NO DARK MODE (Melhor contraste) */
-        .jubileu-content-text {
-            /* Texto mais claro no Dark Mode Visual */
-            color: #cbd5e1; /* slate-300 */
-        }
-
-        /* Estilos de layout móvel (manter) */
-        @media (max-width: 640px) { 
-            #desktop-tab-bar { 
-                display: none; 
-            }
-        }
-        @media (min-width: 641px) { 
-            #mobile-menu-button { 
-                display: none; 
-            }
-        }
-        
-    </style>
-
-    <script>
-        // *** DADOS CONSOLIDADOS DE NOVEMBRO (AGENDA COMPLETA) ***
-        const AGENDA_DATA = [
-            // ... (A sua agenda completa permanece inalterada) ...
-            { "date": "01/Nov (Sábado)", "time": "09:00", "title": "Casamento", "location": "Igreja Matriz" },
-            { "date": "01/Nov (Sábado)", "time": "10:00", "title": "Benção", "location": "Bairro Marques" },
-            { "date": "01/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja Matriz" },
-            { "date": "01/Nov (Sábado)", "time": "14:00", "title": "Catequese", "location": "Igreja Matriz" },
-            { "date": "01/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "01/Nov (Sábado)", "time": "18:00", "title": "Vigília", "location": "Igreja Matriz" },
-            { "date": "01/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            
-            { "date": "02/Nov (Domingo)", "time": "05:00", "title": "Santa Missa no Cemitério", "location": "Cemitério" },
-            { "date": "02/Nov (Domingo)", "time": "08:00", "title": "Santa Missa Setor 6", "location": "Bairro São José da Mantiqueira" },
-            { "date": "02/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "02/Nov (Domingo)", "time": "11:00", "title": "Santa Missa Setor 1", "location": "Bairro Mendes" },
-            { "date": "02/Nov (Domingo)", "time": "17:00", "title": "Santa Missa Setor 3", "location": "Bairro Corrêias" },
-            { "date": "02/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            
-            { "date": "03/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
-            { "date": "03/Nov (Segunda-feira)", "time": "14:00", "title": "Visita às Obras", "location": "Visita às Obras" },
-            { "date": "03/Nov (Segunda-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Nossa Senhora Aparecida" },
-            
-            { "date": "04/Nov (Terça-feira)", "time": "--", "title": "Folga", "location": "Folga" },
-            { "date": "04/Nov (Terça-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "04/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Morangal" },
-
-            { "date": "05/Nov (Quarta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "05/Nov (Quarta-feira)", "time": "16:00", "title": "Visita aos Enfermos", "location": "Visita aos Enfermos" },
-            { "date": "05/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Serra Verde" },
-
-            { "date": "06/Nov (Quinta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "06/Nov (Quinta-feira)", "time": "09:00", "title": "Visita às Obras", "location": "Visita às Obras" },
-            { "date": "06/Nov (Quinta-feira)", "time": "14:00", "title": "Visita aos Enfermos", "location": "Visita aos Enfermos" },
-            { "date": "06/Nov (Quinta-feira)", "time": "17:00", "title": "Confissão", "location": "Igreja Matriz" },
-            { "date": "06/Nov (Quinta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
-            { "date": "06/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "06/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa Setor 2", "location": "Bairro Porto" },
-            { "date": "06/Nov (Quinta-feira)", "time": "20:00", "title": "Reunião Irmandade do Santíssimo", "location": "Reunião" },
-
-            { "date": "07/Nov (Sexta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "07/Nov (Sexta-feira)", "time": "09:00", "title": "Santa Missa", "location": "Abrigo São Camilo" },
-            { "date": "07/Nov (Sexta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "07/Nov (Sexta-feira)", "time": "15:00", "title": "Buscar Seminarista", "location": "Buscar Seminarista" },
-            { "date": "07/Nov (Sexta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
-            { "date": "07/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "07/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 4", "location": "Bairro Moreiras" },
-
-            { "date": "08/Nov (Sábado)", "time": "09:00", "title": "Casamento", "location": "Igreja São José" },
-            { "date": "08/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja Matriz" },
-            { "date": "08/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "08/Nov (Sábado)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Marques" },
-            { "date": "08/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-
-            { "date": "09/Nov (Domingo)", "time": "07:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "09/Nov (Domingo)", "time": "08:00", "title": "Santa Missa Setor 3", "location": "Bairro Mogiano" },
-            { "date": "09/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "09/Nov (Domingo)", "time": "10:00", "title": "Batizado", "location": "Igreja Matriz" },
-            { "date": "09/Nov (Domingo)", "time": "18:00", "title": "Santa Missa Setor 1", "location": "Bairro Retirinho" },
-            { "date": "09/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-
-            { "date": "10/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
-            { "date": "10/Nov (Segunda-feira)", "time": "09:00", "title": "Visita às Obras", "location": "Visita às Obras" },
-            { "date": "10/Nov (Segunda-feira)", "time": "16:00", "title": "Atendimento Confissão Primeira Eucaristia", "location": "Bairro Vargem Alegre" },
-            { "date": "10/Nov (Segunda-feira)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Pouso Frio" },
-
-            { "date": "11/Nov (Terça-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "11/Nov (Terça-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "11/Nov (Terça-feira)", "time": "16:00", "title": "Atendimento Confissão Primeira Eucaristia", "location": "Bairro Serra Verde" },
-            { "date": "11/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 2", "location": "Bairro Ribeirão" },
-            { "date": "11/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Roseirinha" },
-
-            { "date": "12/Nov (Quarta-feira)", "time": "09:00", "title": "Santa Missa", "location": "Abrigo São Camilo" },
-            { "date": "12/Nov (Quarta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "12/Nov (Quarta-feira)", "time": "16:00", "title": "Atendimento Confissão Primeira Eucaristia", "location": "Bairro Marques" },
-            { "date": "12/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 6", "location": "Bairro Serra dos Fernandes" },
-            { "date": "12/Nov (Quarta-feira)", "time": "19:00", "title": "Formação MESC", "location": "Formação MESC" },
-
-            { "date": "13/Nov (Quinta-feira)", "time": "09:00", "title": "Visita às Obras", "location": "Visita às Obras" },
-            { "date": "13/Nov (Quinta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "13/Nov (Quinta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "13/Nov (Quinta-feira)", "time": "17:00", "title": "Confissão", "location": "Igreja Matriz" },
-            { "date": "13/Nov (Quinta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
-            { "date": "13/Nov (Quinta-feira)", "time": "18:00", "title": "Confissão Primeira Eucaristia", "location": "Bairro Palmeiras" },
-            { "date": "13/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa Setor 1", "location": "Bairro Palmeiras" },
-            { "date": "13/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-
-            { "date": "14/Nov (Sexta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "14/Nov (Sexta-feira)", "time": "09:00", "title": "Confissão Primeira Eucaristia", "location": "Cidade" },
-            { "date": "14/Nov (Sexta-feira)", "time": "15:00", "title": "Confissões Primeira Eucaristia", "location": "Bairro Moreiras" },
-            { "date": "14/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 4", "location": "Bairro Mato Dentro" },
-            { "date": "14/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Vargem Alegre" },
-
-            { "date": "15/Nov (Sábado)", "time": "08:00", "title": "Abertura Ano Jubilar", "location": "Dia da Forania - Pouso Alto" },
-            { "date": "15/Nov (Sábado)", "time": "09:00", "title": "Casamento", "location": "Igreja Matriz" },
-            { "date": "15/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja São José" },
-            { "date": "15/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "15/Nov (Sábado)", "time": "19:00", "title": "Santa Missa Setor 6", "location": "Bairro São José da Mantiqueira" },
-            { "date": "15/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-
-            { "date": "16/Nov (Domingo)", "time": "07:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "16/Nov (Domingo)", "time": "08:00", "title": "Santa Missa Setor 5", "location": "Bairro Roseira" },
-            { "date": "16/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "16/Nov (Domingo)", "time": "10:30", "title": "Santa Missa Setor 7", "location": "Bairro Retiro dos Marins" },
-            { "date": "16/Nov (Domingo)", "time": "18:00", "title": "Santa Missa Setor 4", "location": "Bairro Moreiras" },
-            { "date": "16/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-
-            { "date": "17/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
-            { "date": "17/Nov (Segunda-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "17/Nov (Segunda-feira)", "time": "14:00", "title": "Confissão Primeira Eucaristia", "location": "Cidade" },
-            { "date": "17/Nov (Segunda-feira)", "time": "19:00", "title": "Santa Missa Setor 9", "location": "Sertãozinho" },
-
-            { "date": "18/Nov (Terça-feira)", "time": "09:00", "title": "Santa Missa", "location": "Abrigo São Camilo" },
-            { "date": "18/Nov (Terça-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "18/Nov (Terça-feira)", "time": "14:00", "title": "Visita às Obras", "location": "Visita às Obras" },
-            { "date": "18/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Felipes" },
-
-            { "date": "19/Nov (Quarta-feira)", "time": "--", "title": "Folga", "location": "Folga" },
-            { "date": "19/Nov (Quarta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "19/Nov (Quarta-feira)", "time": "14:00", "title": "Visita aos Enfermos", "location": "Visita aos Enfermos" },
-            { "date": "19/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Marques" },
-
-            { "date": "20/Nov (Quinta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "20/Nov (Quinta-feira)", "time": "17:00", "title": "Confissões", "location": "Igreja Matriz" },
-            { "date": "20/Nov (Quinta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
-            { "date": "20/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "20/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Gonçalves" },
-
-            { "date": "21/Nov (Sexta-feira)", "time": "09:00", "title": "Visita aos Enfermos", "location": "Visita aos Enfermos" },
-            { "date": "21/Nov (Sexta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "21/Nov (Sexta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "21/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 6", "location": "Bairro Torres" },
-            { "date": "21/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 8", "location": "Bairro Caetê" },
-
-            { "date": "22/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja Matriz" },
-            { "date": "22/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Bairro Retirinho" },
-            { "date": "22/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "22/Nov (Sábado)", "time": "18:00", "title": "Santa Missa", "location": "Hotel" },
-            { "date": "22/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-
-            { "date": "23/Nov (Domingo)", "time": "07:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "23/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "23/Nov (Domingo)", "time": "09:00", "title": "Santa Missa Setor 3", "location": "Bairro Mendanha" },
-            { "date": "23/Nov (Domingo)", "time": "15:00", "title": "Primeira Eucaristia", "location": "Igreja Matriz" },
-            { "date": "23/Nov (Domingo)", "time": "18:00", "title": "Santa Missa Setor 1", "location": "Bairro Retirinho" },
-            { "date": "23/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            
-            { "date": "24/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
-            { "date": "24/Nov (Segunda-feira)", "time": "18:00", "title": "Santa Missa", "location": "Igreja Sagrado Coração" }, 
-            { "date": "24/Nov (Segunda-feira)", "time": "19:00", "title": "Formação MESC", "location": "Formação MESC" },
-
-            { "date": "25/Nov (Terça-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "25/Nov (Terça-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "25/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 4", "location": "Bairro Pereiras" },
-            { "date": "25/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Rio Acima II" },
-            { "date": "25/Nov (Terça-feira)", "time": "20:00", "title": "Reunião Setor 7", "location": "Reunião Setor 7" },
-            
-            { "date": "26/Nov (Quarta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "26/Nov (Quarta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "26/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 1", "location": "Bairro Mendes" },
-            { "date": "26/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 4", "location": "Bairro Água Limpa" },
-
-            { "date": "27/Nov (Quinta-feira)", "time": "05:00", "title": "Santa Missa Pedra Santa", "location": "Pedra Santa" },
-            { "date": "27/Nov (Quinta-feira)", "time": "09:00", "title": "Abrigo São Camilo", "location": "Abrigo São Camilo" },
-            { "date": "27/Nov (Quinta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "27/Nov (Quinta-feira)", "time": "17:00", "title": "Confissão", "location": "Igreja Matriz" },
-            { "date": "27/Nov (Quinta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
-            { "date": "27/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "27/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa Setor 1", "location": "Bairro Muquém" },
-
-            { "date": "28/Nov (Sexta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "28/Nov (Sexta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
-            { "date": "28/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Vargem Alegre" },
-            { "date": "28/Nov (Sexta-feira)", "time": "19:00", "title": "Primeiro dia da Novena", "location": "Novena" },
-            
-            { "date": "29/Nov (Sábado)", "time": "10:00", "title": "Santa Missa Setor 1", "location": "Bairro Virgem do Socorro" },
-            { "date": "29/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja Matriz" },
-            { "date": "29/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "29/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "29/Nov (Sábado)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Roseirinha" },
-            { "date": "29/Nov (Sábado)", "time": "19:00", "title": "Segundo dia da Novena", "location": "Novena" },
-
-            { "date": "30/Nov (Domingo)", "time": "07:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "30/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "30/Nov (Domingo)", "time": "09:00", "title": "Santa Missa Setor 3", "location": "Bairro Mendanha" },
-            { "date": "30/Nov (Domingo)", "time": "11:00", "title": "Santa Missa Setor 1", "location": "Bairro Palmeiras" },
-            { "date": "30/Nov (Domingo)", "time": "18:00", "title": "Santa Missa Setor 5", "location": "Bairro Roseira" },
-            { "date": "30/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
-            { "date": "30/Nov (Domingo)", "time": "19:00", "title": "Terceiro dia da Novena", "location": "Novena" }
-        ];
-        
-        // --- DADOS DA ABA NOTÍCIAS (NOVOS) ---
-        const NEWS_VERSION = '1';
-        const NEWS_DATA = [
-            {
-                date: "27/Nov a 08/Dez",
-                title: "Grande Novena e Festa da Padroeira (Nossa Senhora da Conceição)",
-                events: [
-                    {
-                        time: "27/Nov, 04:30h",
-                        description: "Procissão da Matriz até a Pedra Santa e Santa Missa em Louvor a Nossa Senhora das Graças.",
-                        isHighlight: true
-                    },
-                    {
-                        time: "28/Nov a 07/Dez",
-                        description: "Novena da Padroeira: Missa diária às 19:00h na Igreja Matriz.",
-                        isHighlight: true
-                    },
-                    {
-                        time: "08/Dez",
-                        description: "FESTA DA PADROEIRA - Santa Missa Solene e Celebrações Especiais.",
-                        isHighlight: true
-                    }
-                ]
-            }
-        ];
-
-        // --- Variáveis de Estado ---
-        let uniqueDates = [];
-        let currentTab = 'agenda'; 
-        let currentSelectedDate = ''; 
-        let isMenuOpen = false; 
-        let isHinoOpen = false;
-        let isOracaoOpen = false;
-
-        // --- LÓGICA DO PWA INSTALL PROMPT (REMOVIDA) ---
-        
-        // --- FIM LÓGICA DO PWA INSTALL PROMPT ---
-
-
-        // --- LÓGICA GERAL (Restante do App) ---
-        let touchstartX = 0;
-        let touchstartY = 0;
-        const SWIPE_THRESHOLD = 80;  
-        const PULL_THRESHOLD = 80;   
-
-        function navigateDate(direction) {
-            const currentIndex = uniqueDates.indexOf(currentSelectedDate);
-            const newIndex = currentIndex + direction;
-
-            if (newIndex >= 0 && newIndex < uniqueDates.length) {
-                selectDate(uniqueDates[newIndex]);
-            } else {
-                if (window.navigator && window.navigator.vibrate) {
-                    window.navigator.vibrate(50); 
-                }
-            }
-        }
-
-        function handleTouchStart(e) {
-            touchstartX = e.touches[0].clientX;
-            touchstartY = e.touches[0].clientY;
-        }
-
-        function handleTouchEnd(e) {
-            const touchendX = e.changedTouches[0].clientX;
-            const touchendY = e.changedTouches[0].clientY;
-            const diffX = touchendX - touchstartX;
-            const diffY = touchendY - touchstartY;
-
-            if (document.documentElement.scrollTop === 0 && diffY > PULL_THRESHOLD && Math.abs(diffY) > Math.abs(diffX)) {
-                if (window.navigator && window.navigator.vibrate) {
-                    window.navigator.vibrate(100); 
-                }
-                location.reload(true); 
-                return;
-            }
-
-            if (currentTab === 'agenda' && Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(diffX) > Math.abs(diffY)) {
-                if (diffX < 0) {
-                    navigateDate(-1); 
-                } else {
-                    navigateDate(1); 
-                }
-            }
-        }
-
-        document.addEventListener('touchstart', handleTouchStart, { passive: true });
-        document.addEventListener('touchend', handleTouchEnd, { passive: true });
-
-        let currentTheme = localStorage.getItem('theme') || 'dark'; 
-
-        // LÓGICA DE TEMA AGORA INVERTIDA
-        function applyTheme(theme) {
-            const body = document.body;
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            const metaTheme = document.querySelector('meta[name="theme-color"]');
-            
-            // SE TEMA É 'DARK' (VARIÁVEL) -> APLICAR VISUAL CLARO (Amarelo/Azul)
-            if (theme === 'dark') {
-                body.classList.remove('light-mode'); 
-                if (themeToggleBtn) {
-                    // Mostrar Lua (Sugere ir para o modo ESCURO)
-                    themeToggleBtn.innerHTML = '<i data-lucide="moon" class="w-6 h-6 text-amber-500"></i>'; 
-                }
-                if (metaTheme) {
-                     // Obtém o valor da variável CSS --bg-light-yellow
-                     const lightBg = getComputedStyle(document.documentElement).getPropertyValue('--bg-light-yellow').trim();
-                     metaTheme.setAttribute('content', lightBg); 
-                }
-            } else { // SE TEMA É 'LIGHT' (VARIÁVEL) -> APLICAR VISUAL ESCURO (Azul/Amarelo)
-                body.classList.add('light-mode'); 
-                if (themeToggleBtn) {
-                    // Mostrar Sol (Sugere ir para o modo CLARO)
-                    themeToggleBtn.innerHTML = '<i data-lucide="sun" class="w-6 h-6 text-amber-400"></i>'; 
-                }
-                if (metaTheme) {
-                     metaTheme.setAttribute('content', '#1e293b'); // Barra de Status Escura
-                }
-            }
-            lucide.createIcons();
-            currentTheme = theme;
-        }
-
-        function toggleTheme() {
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            applyTheme(newTheme);
-        }
-        
-        function getUniqueDates() {
-             const dates = AGENDA_DATA.map(item => item.date.trim());
-             uniqueDates = [...new Set(dates)];
-             
-             if (uniqueDates.length > 0) {
-                 const today = new Date();
-                 const todayDay = today.getDate().toString().padStart(2, '0');
-                 
-                 let closestDate = uniqueDates[0];
-                 for (const fullDate of uniqueDates) {
-                     if (fullDate.startsWith(todayDay + '/Nov')) {
-                         closestDate = fullDate;
-                         break;
-                     }
-                 }
-                 
-                 if (currentSelectedDate === '') {
-                     currentSelectedDate = closestDate; 
-                 }
-             }
-        }
-        
-        function renderDatePicker() {
-            getUniqueDates();
-            const container = document.getElementById('date-picker-container');
-            if (!container) return; 
-            
-            container.innerHTML = '';
-            
-            uniqueDates.forEach(fullDate => {
-                const datePart = fullDate.split('/')[0];
-                const button = document.createElement('button');
-                button.className = 'date-button';
-                button.textContent = datePart;
-                button.setAttribute('data-full-date', fullDate);
-                
-                if (fullDate === currentSelectedDate) {
-                    button.classList.add('active');
-                }
-                
-                button.onclick = () => selectDate(fullDate);
-                container.appendChild(button);
-            });
-            const activeBtn = container.querySelector('.date-button.active');
-            if (activeBtn) {
-                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }
-        
-        function selectDate(fullDate) {
-            currentSelectedDate = fullDate;
-            renderAgenda(); 
-            renderDatePicker(); 
-        }
-
-        // --- Lógica de Alerta de Santa Missa (INTELIGENTE) ---
-        function getNextDay(currentDateStr) {
-            const parts = currentDateStr.split('/Nov');
-            const dayPart = parseInt(parts[0], 10);
-            
-            const nextDay = dayPart + 1;
-            if (nextDay > 30) return null; // Fim do mês de Novembro
-
-            const nextDayPadded = nextDay.toString().padStart(2, '0');
-            const fullNextDate = AGENDA_DATA.find(e => e.date.startsWith(nextDayPadded + '/Nov'));
-            
-            if (fullNextDate) {
-                return fullNextDate.date;
-            }
-            return null;
-        }
-
-        function getSpecialAlert(selectedDate) {
-            const nextDateStr = getNextDay(selectedDate);
-            if (!nextDateStr) return '';
-
-            // 1. Filtra eventos para o dia seguinte que sejam Novena/Festa/Missa em Capela/Bairro
-            const tomorrowEvents = AGENDA_DATA.filter(event => 
-                event.date.trim() === nextDateStr && 
-                (event.title.includes("Novena") || event.title.includes("Festa") || 
-                 (event.title.includes("Missa") && 
-                  // Incluir: Bairro/Setor/Capela/Cemitério/Hotel, mas não a Matriz
-                  !event.location.includes("Igreja Matriz") && 
-                  // REGRA: Excluir Abrigo São Camilo
-                  !event.location.includes("Abrigo São Camilo") 
-                 )
-                )
-            );
-
-            if (tomorrowEvents.length > 0) {
-                const event = tomorrowEvents[0];
-                const dayOnly = nextDateStr.split('(')[0].trim();
-                const dayOfWeek = nextDateStr.split('(')[1].replace(')', '');
-                
-                let title = event.title;
-                let location = event.location;
-                let eventType = title; 
-
-                // Humaniza a localização
-                if (location.includes("Igreja")) location = location.replace('Igreja ', '');
-                if (location.includes("Bairro")) location = location.replace('Bairro ', '');
-                
-                // CORREÇÃO: Usar sempre Santa Missa (e remover o termo "Especial")
-                if (title.includes("dia da Novena")) {
-                    eventType = ` ${title} `;
-                } else if (title.includes("Missa")) {
-                    // Apenas "Santa Missa" no alerta, sem "Especial"
-                    eventType = ` Santa Missa `; 
-                } else {
-                    eventType = ` ${title} `; // Mantém o título original se não for Missa/Novena
-                }
-                
-                // Texto do Alerta
-                const alertText = `Lembrete! ${dayOfWeek}, ${dayOnly} tem ${eventType} às ${event.time} (${location}).`;
-
-                // Classes invertidas: Base usa o visual claro (bg-red-200, text-red-900)
-                // O light-mode (Dark Visual) usa texto CLARO e fundo ESCURO.
-                const alertBgClass = currentTheme === 'dark' ? 'bg-red-200 light-mode:bg-red-800/20' : 'bg-red-800/20 light-mode:bg-red-200';
-                const alertTextClass = currentTheme === 'dark' ? 'text-red-900 light-mode:text-red-100' : 'text-red-100 light-mode:text-red-900';
-                const alertBorderClass = 'border-red-500';
-
-                return `<div id="special-alert" class="card rounded-lg shadow-md p-3 mb-4 border-l-4 ${alertBgClass} ${alertBorderClass} text-sm flex items-center gap-3">
-                    <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600 flex-shrink-0"></i>
-                    <p class="font-bold ${alertTextClass}">
-                        ${alertText}
-                    </p>
-                </div>`;
-            }
-            return '';
-        }
-        // --- FIM: Lógica de Alerta de Santa Missa (INTELIGENTE) ---
-
-
-        function renderAgenda() {
-            const container = document.getElementById('agenda-content');
-            if (!container) return;
-            container.innerHTML = '';
-            
-            // --- Alerta de Santa Missa no Dia Seguinte (INCLUÍDO) ---
-            const specialAlertHTML = getSpecialAlert(currentSelectedDate);
-            if (specialAlertHTML) {
-                container.innerHTML += specialAlertHTML; 
-            }
-            // --- FIM ALERTA ---
-
-            const filteredData = AGENDA_DATA.filter(event => event.date.trim() === currentSelectedDate);
-
-            if (filteredData.length === 0) {
-                if (!specialAlertHTML) {
-                    // Texto no Light Mode agora usa a variável escura para contraste.
-                    container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-[var(--text-dark-blue)] light-mode:text-gray-300">
-                        <p>Nenhum evento agendado para esta data.</p>
-                    </div>`;
-                }
-                return;
-            }
-
-            const headerDiv = document.createElement('div');
-            headerDiv.className = 'mb-4 text-center';
-            const dayOfWeek = currentSelectedDate.split('(')[1].replace(')', '');
-            const dateOnly = currentSelectedDate.split(' ')[0];
-            
-            // TÍTULOS E DATAS AGORA COM NOVAS CORES (Azul no Light, Âmbar no Dark)
-            const headerClasses = currentTheme === 'light' 
-                ? 'text-xl font-bold text-amber-100' // Dark Visual: light amber
-                : 'text-xl font-bold text-blue-700'; // Light Visual: dark blue
-            const dateClasses = currentTheme === 'light' 
-                ? 'text-3xl font-extrabold text-amber-200' // Dark Visual: lighter amber
-                : 'text-3xl font-extrabold text-[var(--text-dark-blue)]'; // Light Visual: deep blue var
-
-            headerDiv.innerHTML = `
-                <p class="${headerClasses}">${dayOfWeek}</p>
-                <p class="${dateClasses}">${dateOnly}</p>
-            `;
-            container.appendChild(headerDiv);
-
-            const listCard = document.createElement('div');
-            listCard.className = 'card rounded-xl shadow-lg p-4 space-y-2';
-
-            filteredData.forEach(event => {
-                const eventDiv = document.createElement('div');
-                // BORDER: Invertido
-                eventDiv.className = 'flex justify-between items-center py-3 border-b border-yellow-200 last:border-b-0 light-mode:border-gray-700';
-                
-                const isMatriz = event.location.includes("Igreja Matriz");
-                const isEucaristia = event.title.includes("Eucaristia") || event.title.includes("Batizado") || event.title.includes("Casamento");
-
-                // TITULO: CORRIGIDO!
-                // Matriz: Amarelo Claro (Yellow 200) para se destacar.
-                // Outros (Capela/Setor/etc): Amarelo Muito Claro (Amber 100).
-                const titleColor = isMatriz 
-                    ? 'text-amber-700 light-mode:text-yellow-200' // Light: Dark Amber | Dark: Light Yellow (Máximo contraste)
-                    : 'text-[var(--text-dark-blue)] light-mode:text-amber-100'; // Light: Dark Blue | Dark: Very Light Amber
-
-                // HORA: Amarelo/Âmbar no Dark Mode
-                const timeColor = 'text-amber-800 light-mode:text-amber-500';
-                
-                // LOCALIZAÇÃO: CORRIGIDO! Cinza Claro (Gray 400) no Dark Mode para contraste legível.
-                const locationColor = 'text-[var(--text-dark-slate)] light-mode:text-gray-400';
-
-                eventDiv.innerHTML = `
-                    <div class="flex-1">
-                        <p class="font-bold text-base ${titleColor}">${event.title}</p>
-                        <p class="text-xs ${locationColor}">${event.location}</p>
-                    </div>
-                    <span class="font-bold text-lg ${timeColor} mr-4">${event.time}</span>
-                `;
-                listCard.appendChild(eventDiv);
-            });
-
-            container.appendChild(listCard);
-            lucide.createIcons();
-        }
-
-        function renderNews() {
-            const container = document.getElementById('noticias-content');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const header = document.createElement('div');
-            header.className = 'news-header text-center mb-6';
-            
-            // Invertido: Base é light visual (Amarelo/Azul), light-mode é dark visual (Azul/Amarelo)
-            const headerColor = currentTheme === 'light' ? 'text-amber-100' : 'text-[var(--text-dark-blue)]';
-            const iconColor = currentTheme === 'light' ? 'text-amber-400' : 'text-amber-700';
-
-            header.innerHTML = `
-                <i data-lucide="megaphone" class="w-8 h-8 mx-auto ${iconColor} mb-2"></i>
-                <h2 class="text-3xl font-bold ${headerColor}">Novidades da Paróquia</h2>
-                <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
-                <p class="text-sm text-[var(--text-dark-slate)] light-mode:text-gray-300">Eventos de destaque e comunicados urgentes.</p>
-            `;
-            container.appendChild(header);
-
-            NEWS_DATA.forEach(news => {
-                const newsCard = document.createElement('div');
-                newsCard.className = 'card rounded-xl shadow-lg p-5 space-y-4';
-
-                const titleDiv = document.createElement('div');
-                // BORDER: Invertido
-                titleDiv.className = 'flex items-center gap-3 border-b border-yellow-300 pb-3 mb-3 light-mode:border-gray-700';
-                
-                // TITULO: Invertido
-                const titleTextColor = currentTheme === 'light' ? 'text-amber-400' : 'text-amber-700';
-
-                titleDiv.innerHTML = `
-                    <i data-lucide="bell" class="w-6 h-6 text-red-500"></i>
-                    <div>
-                        <p class="font-bold text-xl ${titleTextColor}">${news.title}</p>
-                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
-                        <p class="text-sm text-[var(--text-dark-slate)] light-mode:text-gray-300">Período: ${news.date}</p>
-                    </div>
-                `;
-                newsCard.appendChild(titleDiv);
-
-                const eventsList = document.createElement('div');
-                eventsList.className = 'space-y-3';
-
-                news.events.forEach(event => {
-                    const eventItem = document.createElement('div');
-                    // Background e Border Invertidos (Amarelo claro vs Dark)
-                    eventItem.className = 'news-item bg-amber-100 light-mode:bg-amber-500/10 border-l-4 border-amber-700 light-mode:border-amber-500 p-3 rounded-md';
-                    
-                    // Texto Invertido
-                    const descColor = currentTheme === 'light' ? 'text-amber-100' : 'text-[var(--text-dark-blue)]';
-                    const timeColor = currentTheme === 'light' ? 'text-amber-500' : 'text-amber-800';
-
-                    eventItem.innerHTML = `
-                        <p class="font-bold text-base ${descColor}">${event.description}</p>
-                        <p class="text-sm font-extrabold ${timeColor}">${event.time}</p>
-                    `;
-                    eventsList.appendChild(eventItem);
-                });
-
-                newsCard.appendChild(eventsList);
-                container.appendChild(newsCard);
-            });
-            
-            localStorage.setItem('last_news_version', NEWS_VERSION);
-            checkNewsBadge();
-            lucide.createIcons();
-        }
-
-        // NOVO COMANDO: Mudar de aba e fechar o menu, com delay para evitar conflito de toque.
-        function switchTabAndClose(tabName) {
-             // Fecha o menu imediatamente (inicia a transição)
-            if (isMenuOpen) {
-                toggleMobileMenu();
-            }
-             // Aplica um atraso para dar tempo ao menu de deslizar, eliminando o bug de toque
-            setTimeout(() => {
-                switchTab(tabName);
-            }, 300); 
-        }
-
-        function switchTab(tabName) {
-            currentTab = tabName;
-            
-            document.getElementById('agenda-section').classList.add('hidden');
-            document.getElementById('noticias-section').classList.add('hidden'); 
-            document.getElementById('jubileu-section').classList.add('hidden'); 
-            document.getElementById('info-section').classList.add('hidden');
-            document.getElementById('contatos-section').classList.add('hidden');
-            document.getElementById(`${tabName}-section`).classList.remove('hidden');
-
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            const activeBtn = document.getElementById(`${tabName}-btn`);
-            if (activeBtn) {
-                 activeBtn.classList.add('active');
-            }
-
-            if (tabName === 'agenda') {
-                renderDatePicker(); 
-                renderAgenda(); 
-            } else if (tabName === 'noticias') {
-                renderNews();
-            }
-            lucide.createIcons();
-        }
-        
-        function toggleMobileMenu() {
-            isMenuOpen = !isMenuOpen;
-            const menuOverlay = document.getElementById('mobile-menu-overlay');
-            const menuIconContainer = document.getElementById('mobile-menu-button');
-
-            if (isMenuOpen) {
-                menuOverlay.classList.add('open');
-                document.body.style.overflow = 'hidden'; 
-                // Ícone mantém a cor do modo visual.
-                menuIconContainer.innerHTML = currentTheme === 'dark' 
-                    ? `<i data-lucide="x" class="w-6 h-6 text-amber-700"></i>` // Light visual: Dark text color (amber 700 is dark enough)
-                    : `<i data-lucide="x" class="w-6 h-6 text-amber-400"></i>`; // Dark visual: Light text color
-            } else {
-                document.body.style.overflow = 'auto'; 
-                menuIconContainer.innerHTML = currentTheme === 'dark' 
-                    ? `<i data-lucide="menu" class="w-6 h-6 text-amber-700"></i>`
-                    : `<i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>`; 
-                menuOverlay.classList.remove('open');
-            }
-            lucide.createIcons();
-        }
-        
-        function toggleContent(type) {
-            const hinoContent = document.getElementById('content-hino');
-            const oracaoContent = document.getElementById('content-oracao');
-            const hinoBtn = document.getElementById('toggle-hino');
-            const oracaoBtn = document.getElementById('toggle-oracao');
-            
-
-            if (type === 'hino') {
-                isHinoOpen = !isHinoOpen;
-                oracaoContent.classList.add('hidden'); 
-                isOracaoOpen = false;
-                hinoContent.classList.toggle('hidden', !isHinoOpen);
-
-                hinoBtn.innerHTML = isHinoOpen 
-                    ? `<i data-lucide="chevron-up" class="w-5 h-5"></i> Ocultar Hino`
-                    : `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu`;
-
-                oracaoBtn.innerHTML = `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu`;
-            } else if (type === 'oracao') {
-                isOracaoOpen = !isOracaoOpen;
-                hinoContent.classList.add('hidden'); 
-                isHinoOpen = false;
-                oracaoContent.classList.toggle('hidden', !isOracaoOpen);
-
-                oracaoBtn.innerHTML = isOracaoOpen 
-                    ? `<i data-lucide="chevron-up" class="w-5 h-5"></i> Ocultar Oração`
-                    : `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu`;
-                    
-                hinoBtn.innerHTML = `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu`;
-            }
-            lucide.createIcons();
-        }
-
-        function checkNewsBadge() {
-            const lastVersion = localStorage.getItem('last_news_version');
-            const badgeDesktop = document.getElementById('noticias-badge');
-            const badgeMobile = document.getElementById('noticias-badge-mobile');
-            
-            if (lastVersion !== NEWS_VERSION) {
-                 if (badgeDesktop) badgeDesktop.classList.remove('hidden');
-                 if (badgeMobile) badgeMobile.classList.remove('hidden');
-                 
-                if (window.navigator && window.navigator.vibrate) {
-                    window.navigator.vibrate([100, 50, 100]); 
-                }
-            } else {
-                 if (badgeDesktop) badgeDesktop.classList.add('hidden');
-                 if (badgeMobile) badgeMobile.classList.add('hidden');
-            }
-        }
-
-
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            applyTheme(currentTheme); 
-            getUniqueDates(); 
-            checkNewsBadge(); 
-            switchTab('agenda'); 
-            lucide.createIcons();
-        });
-
-    </script>
+    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>aparoquia</title>
+        <meta name="theme-color" content="#fffdf0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content="aparoquia">
+    <meta name="mobile-web-web-app-status-bar-style" content="black-translucent">
+    
+        <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/12114/12114233.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/12114/12114233.png">
+
+        <link rel="manifest" href="./manifest.json">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* DEFINIÇÕES DE CORES NOVAS */
+        :root {
+            --bg-light-yellow: #fffdf0; /* Amarelo muito claro (Amber 50 custom) */
+            --text-dark-blue: #1e3a8a; /* Azul Marinho Escuro (Blue 900) */
+            --card-light-cream: #fffff5; /* Branco Creme */
+            --border-light-yellow: #fde68a; /* Borda Amarela Suave (Yellow 200) */
+            --text-dark-slate: #374151; /* Para texto secundário/botões (Slate 700) */
+        }
+        
+        /* TEMA BASE (AGORA É O "LIGHT MODE VISUAL" - Amarelo/Azul) */
+        body { 
+            font-family: 'Merriweather', serif;
+            background-color: var(--bg-light-yellow); 
+            color: var(--text-dark-blue); 
+            transition: background-color 0.3s, color 0.3s; 
+        }
+        .card { 
+            background-color: var(--card-light-cream); 
+            border: 1px solid var(--border-light-yellow); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            transition: background-color 0.3s, border-color 0.3s; 
+        }
+        .header-bg { 
+            background-color: var(--card-light-cream); 
+            border-color: var(--border-light-yellow);
+        }
+        
+        /* TEMA CLARO (.light-mode) (AGORA É O "DARK MODE VISUAL" - Azul/Amarelo) */
+        body.light-mode { /* Fundo escuro */
+            background-color: #0f172a; /* darkNavy (Slate 900) */
+            color: #f8fafc; /* **White - MAIOR CONTRASTE** */
+        }
+        .light-mode .card {
+            background-color: #1e293b; /* cardDark (Slate 800) */
+            border: 1px solid #475569; /* **Slate 600 - MAIS VISÍVEL** */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3); 
+        }
+        .light-mode .header-bg {
+            background-color: #1e293b; /* cardDark */
+            border-color: #475569; /* **Slate 600** */
+        }
+        
+        /* ELEMENTOS GERAIS */
+        .tab-button { 
+            transition: all 0.3s ease; 
+            border-bottom: 3px solid transparent; 
+            padding-bottom: 8px; 
+            color: var(--text-dark-slate); /* slate-700 */
+        }
+        .tab-button.active { 
+            border-color: #f59e0b; /* amberGold */
+            font-weight: 700; 
+            color: #f59e0b;
+        }
+        /* Cor dos botões de aba no modo escuro (.light-mode) */
+        .light-mode .tab-button {
+             color: #cbd5e1; /* **Slate 300 - Mais Claro** */
+        }
+
+        /* NOVIDADES BADGE - Invertido */
+        .news-badge {
+            background-color: #ef4444; 
+            border: 1px solid var(--card-light-cream); 
+        }
+        .light-mode .news-badge {
+             border: 1px solid #1e293b; 
+        }
+
+        /* Estilo para a Barra de Dias (Picker) - Invertido */
+        .date-picker-scroll { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+        .date-picker-scroll::-webkit-scrollbar { display: none; }
+        .date-button { 
+            padding: 8px 16px; 
+            margin-right: 8px; 
+            border-radius: 9999px; 
+            font-weight: 700; 
+            border: 2px solid transparent; 
+            background-color: #fcd34d; /* Amarelo 300 - para destaque */
+            color: var(--text-dark-blue); 
+        }
+        .date-button.active { 
+            background-color: #d97706; /* Darker Amber/Orange */
+            color: #ffffff; /* White text */
+        }
+        .light-mode .date-button { /* DARK VISUAL */
+            background-color: #334155; /* Slate 700 */
+            color: #f8fafc; /* **White - Melhor Contraste** */
+        }
+        .light-mode .date-button.active { /* DARK VISUAL */
+            background-color: #f59e0b; /* amberGold */
+            color: #1e293b; /* cardDark */
+        }
+
+        /* MENU HAMBÚRGUER CORREÇÃO FINAL: - Invertido */
+        #mobile-menu-overlay {
+            position: fixed; 
+            top: 64px; 
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 64px); 
+            background-color: rgba(255, 255, 255, 0.95); /* Light translucent */
+            z-index: 55; 
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%); 
+            overflow-y: auto; 
+            padding: 16px; 
+        }
+        #mobile-menu-overlay.open {
+            transform: translateX(0); 
+        }
+        .light-mode #mobile-menu-overlay { /* NOVO DARK VISUAL */
+            background-color: rgba(15, 23, 42, 0.95); 
+        }
+        
+        .menu-item {
+            color: var(--text-dark-blue); /* NOVO LIGHT VISUAL - Azul Escuro */
+            width: 100%; 
+            padding: 12px;
+            text-align: left;
+        }
+        .light-mode .menu-item { /* NOVO DARK VISUAL */
+            color: #fef3c7; 
+        }
+        /* Hover item menu no light visual */
+        .menu-item:hover {
+             background-color: #fefce8;
+             color: #f59e0b;
+        }
+
+        /* Estilo para Conteúdo Estático (Hino/Oração/Contatos) - Invertido */
+        .hino-content-bg {
+            background-color: #fefce8; /* Yellow 100 */
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .hino-content-bg { /* NOVO DARK VISUAL */
+            background-color: #1f2937; 
+            color: #f8fafc; /* **White - Maior Contraste** */
+        }
+
+        /* Estilo do Alerta Especial - CORRIGIDO AGORA */
+        /* Light Mode Visual: Fundo claro (red-200), Texto escuro (red-900) */
+        .bg-red-800\/20 {
+             background-color: #fecaca; /* bg-red-200 */
+             border-color: #ef4444; 
+        }
+        .text-red-100 {
+            color: #7f1d1d; /* text-red-900 */
+        }
+        /* Dark Mode Visual: Fundo escuro (red-800/20) com MAIOR VISIBILIDADE, Texto CLARO (red-100/white) */
+        .light-mode .bg-red-800\/20 { 
+            /* Aumentado o alpha de 0.2 para 0.5 para um vermelho mais forte e visível */
+            background-color: rgba(154, 52, 52, 0.5); 
+            border-color: #ef4444; 
+        }
+        .light-mode .text-red-100 { 
+            color: #fef2f2; /* Brancoo para contraste! */
+        }
+        
+        /* CORREÇÃO DO LAYOUT DO CABEÇALHO PARA FICAR IGUAL AO LOGO */
+        .header-title-main {
+             font-family: Arial, sans-serif; /* Usar uma fonte simples e bold, como no logo */
+             font-weight: 900;
+        }
+        .header-subtitle {
+             font-weight: 700;
+             margin-top: 4px; /* Mais espaçamento como no logo */
+        }
+        /* FIM DA CORREÇÃO DO CABEÇALHO */
+        
+        /* CORREÇÃO DO TEXTO DO JUBILEU NO DARK MODE (Melhor contraste) */
+        .jubileu-content-text {
+            /* Texto mais claro no Dark Mode Visual */
+            color: #f8fafc; /* **White - Contraste Máximo** */
+        }
+
+        /* Estilos de layout móvel (manter) */
+        @media (max-width: 640px) { 
+            #desktop-tab-bar { 
+                display: none; 
+            }
+        }
+        @media (min-width: 641px) { 
+            #mobile-menu-button { 
+                display: none; 
+            }
+        }
+        
+    </style>
+
+    <script>
+        // *** DADOS CONSOLIDADOS DE NOVEMBRO (AGENDA COMPLETA) ***
+        const AGENDA_DATA = [
+            // ... (A sua agenda completa permanece inalterada) ...
+            { "date": "01/Nov (Sábado)", "time": "09:00", "title": "Casamento", "location": "Igreja Matriz" },
+            { "date": "01/Nov (Sábado)", "time": "10:00", "title": "Benção", "location": "Bairro Marques" },
+            { "date": "01/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja Matriz" },
+            { "date": "01/Nov (Sábado)", "time": "14:00", "title": "Catequese", "location": "Igreja Matriz" },
+            { "date": "01/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "01/Nov (Sábado)", "time": "18:00", "title": "Vigília", "location": "Igreja Matriz" },
+            { "date": "01/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            
+            { "date": "02/Nov (Domingo)", "time": "05:00", "title": "Santa Missa no Cemitério", "location": "Cemitério" },
+            { "date": "02/Nov (Domingo)", "time": "08:00", "title": "Santa Missa Setor 6", "location": "Bairro São José da Mantiqueira" },
+            { "date": "02/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "02/Nov (Domingo)", "time": "11:00", "title": "Santa Missa Setor 1", "location": "Bairro Mendes" },
+            { "date": "02/Nov (Domingo)", "time": "17:00", "title": "Santa Missa Setor 3", "location": "Bairro Corrêias" },
+            { "date": "02/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            
+            { "date": "03/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
+            { "date": "03/Nov (Segunda-feira)", "time": "14:00", "title": "Visita às Obras", "location": "Visita às Obras" },
+            { "date": "03/Nov (Segunda-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Nossa Senhora Aparecida" },
+            
+            { "date": "04/Nov (Terça-feira)", "time": "--", "title": "Folga", "location": "Folga" },
+            { "date": "04/Nov (Terça-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "04/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Morangal" },
+
+            { "date": "05/Nov (Quarta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "05/Nov (Quarta-feira)", "time": "16:00", "title": "Visita aos Enfermos", "location": "Visita aos Enfermos" },
+            { "date": "05/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Serra Verde" },
+
+            { "date": "06/Nov (Quinta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "06/Nov (Quinta-feira)", "time": "09:00", "title": "Visita às Obras", "location": "Visita às Obras" },
+            { "date": "06/Nov (Quinta-feira)", "time": "14:00", "title": "Visita aos Enfermos", "location": "Visita aos Enfermos" },
+            { "date": "06/Nov (Quinta-feira)", "time": "17:00", "title": "Confissão", "location": "Igreja Matriz" },
+            { "date": "06/Nov (Quinta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
+            { "date": "06/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "06/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa Setor 2", "location": "Bairro Porto" },
+            { "date": "06/Nov (Quinta-feira)", "time": "20:00", "title": "Reunião Irmandade do Santíssimo", "location": "Reunião" },
+
+            { "date": "07/Nov (Sexta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "07/Nov (Sexta-feira)", "time": "09:00", "title": "Santa Missa", "location": "Abrigo São Camilo" },
+            { "date": "07/Nov (Sexta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "07/Nov (Sexta-feira)", "time": "15:00", "title": "Buscar Seminarista", "location": "Buscar Seminarista" },
+            { "date": "07/Nov (Sexta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
+            { "date": "07/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "07/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 4", "location": "Bairro Moreiras" },
+
+            { "date": "08/Nov (Sábado)", "time": "09:00", "title": "Casamento", "location": "Igreja São José" },
+            { "date": "08/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja Matriz" },
+            { "date": "08/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "08/Nov (Sábado)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Marques" },
+            { "date": "08/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+
+            { "date": "09/Nov (Domingo)", "time": "07:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "09/Nov (Domingo)", "time": "08:00", "title": "Santa Missa Setor 3", "location": "Bairro Mogiano" },
+            { "date": "09/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "09/Nov (Domingo)", "time": "10:00", "title": "Batizado", "location": "Igreja Matriz" },
+            { "date": "09/Nov (Domingo)", "time": "18:00", "title": "Santa Missa Setor 1", "location": "Bairro Retirinho" },
+            { "date": "09/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+
+            { "date": "10/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
+            { "date": "10/Nov (Segunda-feira)", "time": "09:00", "title": "Visita às Obras", "location": "Visita às Obras" },
+            { "date": "10/Nov (Segunda-feira)", "time": "16:00", "title": "Atendimento Confissão Primeira Eucaristia", "location": "Bairro Vargem Alegre" },
+            { "date": "10/Nov (Segunda-feira)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Pouso Frio" },
+
+            { "date": "11/Nov (Terça-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "11/Nov (Terça-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "11/Nov (Terça-feira)", "time": "16:00", "title": "Atendimento Confissão Primeira Eucaristia", "location": "Bairro Serra Verde" },
+            { "date": "11/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 2", "location": "Bairro Ribeirão" },
+            { "date": "11/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Roseirinha" },
+
+            { "date": "12/Nov (Quarta-feira)", "time": "09:00", "title": "Santa Missa", "location": "Abrigo São Camilo" },
+            { "date": "12/Nov (Quarta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "12/Nov (Quarta-feira)", "time": "16:00", "title": "Atendimento Confissão Primeira Eucaristia", "location": "Bairro Marques" },
+            { "date": "12/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 6", "location": "Bairro Serra dos Fernandes" },
+            { "date": "12/Nov (Quarta-feira)", "time": "19:00", "title": "Formação MESC", "location": "Formação MESC" },
+
+            { "date": "13/Nov (Quinta-feira)", "time": "09:00", "title": "Visita às Obras", "location": "Visita às Obras" },
+            { "date": "13/Nov (Quinta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "13/Nov (Quinta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "13/Nov (Quinta-feira)", "time": "17:00", "title": "Confissão", "location": "Igreja Matriz" },
+            { "date": "13/Nov (Quinta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
+            { "date": "13/Nov (Quinta-feira)", "time": "18:00", "title": "Confissão Primeira Eucaristia", "location": "Bairro Palmeiras" },
+            { "date": "13/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa Setor 1", "location": "Bairro Palmeiras" },
+            { "date": "13/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+
+            { "date": "14/Nov (Sexta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "14/Nov (Sexta-feira)", "time": "09:00", "title": "Confissão Primeira Eucaristia", "location": "Cidade" },
+            { "date": "14/Nov (Sexta-feira)", "time": "15:00", "title": "Confissões Primeira Eucaristia", "location": "Bairro Moreiras" },
+            { "date": "14/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 4", "location": "Bairro Mato Dentro" },
+            { "date": "14/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Vargem Alegre" },
+
+            { "date": "15/Nov (Sábado)", "time": "08:00", "title": "Abertura Ano Jubilar", "location": "Dia da Forania - Pouso Alto" },
+            { "date": "15/Nov (Sábado)", "time": "09:00", "title": "Casamento", "location": "Igreja Matriz" },
+            { "date": "15/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja São José" },
+            { "date": "15/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "15/Nov (Sábado)", "time": "19:00", "title": "Santa Missa Setor 6", "location": "Bairro São José da Mantiqueira" },
+            { "date": "15/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+
+            { "date": "16/Nov (Domingo)", "time": "07:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "16/Nov (Domingo)", "time": "08:00", "title": "Santa Missa Setor 5", "location": "Bairro Roseira" },
+            { "date": "16/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "16/Nov (Domingo)", "time": "10:30", "title": "Santa Missa Setor 7", "location": "Bairro Retiro dos Marins" },
+            { "date": "16/Nov (Domingo)", "time": "18:00", "title": "Santa Missa Setor 4", "location": "Bairro Moreiras" },
+            { "date": "16/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+
+            { "date": "17/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
+            { "date": "17/Nov (Segunda-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "17/Nov (Segunda-feira)", "time": "14:00", "title": "Confissão Primeira Eucaristia", "location": "Cidade" },
+            { "date": "17/Nov (Segunda-feira)", "time": "19:00", "title": "Santa Missa Setor 9", "location": "Sertãozinho" },
+
+            { "date": "18/Nov (Terça-feira)", "time": "09:00", "title": "Santa Missa", "location": "Abrigo São Camilo" },
+            { "date": "18/Nov (Terça-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "18/Nov (Terça-feira)", "time": "14:00", "title": "Visita às Obras", "location": "Visita às Obras" },
+            { "date": "18/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Felipes" },
+
+            { "date": "19/Nov (Quarta-feira)", "time": "--", "title": "Folga", "location": "Folga" },
+            { "date": "19/Nov (Quarta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "19/Nov (Quarta-feira)", "time": "14:00", "title": "Visita aos Enfermos", "location": "Visita aos Enfermos" },
+            { "date": "19/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 5", "location": "Bairro Marques" },
+
+            { "date": "20/Nov (Quinta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "20/Nov (Quinta-feira)", "time": "17:00", "title": "Confissões", "location": "Igreja Matriz" },
+            { "date": "20/Nov (Quinta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
+            { "date": "20/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "20/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Gonçalves" },
+
+            { "date": "21/Nov (Sexta-feira)", "time": "09:00", "title": "Visita aos Enfermos", "location": "Visita aos Enfermos" },
+            { "date": "21/Nov (Sexta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "21/Nov (Sexta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "21/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 6", "location": "Bairro Torres" },
+            { "date": "21/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 8", "location": "Bairro Caetê" },
+
+            { "date": "22/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja Matriz" },
+            { "date": "22/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Bairro Retirinho" },
+            { "date": "22/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "22/Nov (Sábado)", "time": "18:00", "title": "Santa Missa", "location": "Hotel" },
+            { "date": "22/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+
+            { "date": "23/Nov (Domingo)", "time": "07:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "23/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "23/Nov (Domingo)", "time": "09:00", "title": "Santa Missa Setor 3", "location": "Bairro Mendanha" },
+            { "date": "23/Nov (Domingo)", "time": "15:00", "title": "Primeira Eucaristia", "location": "Igreja Matriz" },
+            { "date": "23/Nov (Domingo)", "time": "18:00", "title": "Santa Missa Setor 1", "location": "Bairro Retirinho" },
+            { "date": "23/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            
+            { "date": "24/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
+            { "date": "24/Nov (Segunda-feira)", "time": "18:00", "title": "Santa Missa", "location": "Igreja Sagrado Coração" }, 
+            { "date": "24/Nov (Segunda-feira)", "time": "19:00", "title": "Formação MESC", "location": "Formação MESC" },
+
+            { "date": "25/Nov (Terça-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "25/Nov (Terça-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "25/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 4", "location": "Bairro Pereiras" },
+            { "date": "25/Nov (Terça-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Rio Acima II" },
+            { "date": "25/Nov (Terça-feira)", "time": "20:00", "title": "Reunião Setor 7", "location": "Reunião Setor 7" },
+            
+            { "date": "26/Nov (Quarta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "26/Nov (Quarta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "26/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 1", "location": "Bairro Mendes" },
+            { "date": "26/Nov (Quarta-feira)", "time": "19:00", "title": "Santa Missa Setor 4", "location": "Bairro Água Limpa" },
+
+            { "date": "27/Nov (Quinta-feira)", "time": "05:00", "title": "Santa Missa Pedra Santa", "location": "Pedra Santa" },
+            { "date": "27/Nov (Quinta-feira)", "time": "09:00", "title": "Abrigo São Camilo", "location": "Abrigo São Camilo" },
+            { "date": "27/Nov (Quinta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "27/Nov (Quinta-feira)", "time": "17:00", "title": "Confissão", "location": "Igreja Matriz" },
+            { "date": "27/Nov (Quinta-feira)", "time": "18:00", "title": "Adoração", "location": "Igreja Matriz" },
+            { "date": "27/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "27/Nov (Quinta-feira)", "time": "19:00", "title": "Santa Missa Setor 1", "location": "Bairro Muquém" },
+
+            { "date": "28/Nov (Sexta-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "28/Nov (Sexta-feira)", "time": "14:00", "title": "Atendimento", "location": "Atendimento" },
+            { "date": "28/Nov (Sexta-feira)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Vargem Alegre" },
+            { "date": "28/Nov (Sexta-feira)", "time": "19:00", "title": "Primeiro dia da Novena", "location": "Novena" },
+            
+            { "date": "29/Nov (Sábado)", "time": "10:00", "title": "Santa Missa Setor 1", "location": "Bairro Virgem do Socorro" },
+            { "date": "29/Nov (Sábado)", "time": "11:00", "title": "Casamento", "location": "Igreja Matriz" },
+            { "date": "29/Nov (Sábado)", "time": "16:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "29/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "29/Nov (Sábado)", "time": "19:00", "title": "Santa Missa Setor 7", "location": "Bairro Roseirinha" },
+            { "date": "29/Nov (Sábado)", "time": "19:00", "title": "Segundo dia da Novena", "location": "Novena" },
+
+            { "date": "30/Nov (Domingo)", "time": "07:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "30/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "30/Nov (Domingo)", "time": "09:00", "title": "Santa Missa Setor 3", "location": "Bairro Mendanha" },
+            { "date": "30/Nov (Domingo)", "time": "11:00", "title": "Santa Missa Setor 1", "location": "Bairro Palmeiras" },
+            { "date": "30/Nov (Domingo)", "time": "18:00", "title": "Santa Missa Setor 5", "location": "Bairro Roseira" },
+            { "date": "30/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
+            { "date": "30/Nov (Domingo)", "time": "19:00", "title": "Terceiro dia da Novena", "location": "Novena" }
+        ];
+        
+        // --- DADOS DA ABA NOTÍCIAS (NOVOS) ---
+        const NEWS_VERSION = '1';
+        const NEWS_DATA = [
+            {
+                date: "27/Nov a 08/Dez",
+                title: "Grande Novena e Festa da Padroeira (Nossa Senhora da Conceição)",
+                events: [
+                    {
+                        time: "27/Nov, 04:30h",
+                        description: "Procissão da Matriz até a Pedra Santa e Santa Missa em Louvor a Nossa Senhora das Graças.",
+                        isHighlight: true
+                    },
+                    {
+                        time: "28/Nov a 07/Dez",
+                        description: "Novena da Padroeira: Missa diária às 19:00h na Igreja Matriz.",
+                        isHighlight: true
+                    },
+                    {
+                        time: "08/Dez",
+                        description: "FESTA DA PADROEIRA - Santa Missa Solene e Celebrações Especiais.",
+                        isHighlight: true
+                    }
+                ]
+            }
+        ];
+
+        // --- Variáveis de Estado ---
+        let uniqueDates = [];
+        let currentTab = 'agenda'; 
+        let currentSelectedDate = ''; 
+        let isMenuOpen = false; 
+        let isHinoOpen = false;
+        let isOracaoOpen = false;
+
+        // --- LÓGICA DO PWA INSTALL PROMPT (REMOVIDA) ---
+        
+        // --- FIM LÓGICA DO PWA INSTALL PROMPT ---
+
+
+        // --- LÓGICA GERAL (Restante do App) ---
+        let touchstartX = 0;
+        let touchstartY = 0;
+        const SWIPE_THRESHOLD = 80;  
+        const PULL_THRESHOLD = 80;   
+
+        function navigateDate(direction) {
+            const currentIndex = uniqueDates.indexOf(currentSelectedDate);
+            const newIndex = currentIndex + direction;
+
+            if (newIndex >= 0 && newIndex < uniqueDates.length) {
+                selectDate(uniqueDates[newIndex]);
+            } else {
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate(50); 
+                }
+            }
+        }
+
+        function handleTouchStart(e) {
+            touchstartX = e.touches[0].clientX;
+            touchstartY = e.touches[0].clientY;
+        }
+
+        function handleTouchEnd(e) {
+            const touchendX = e.changedTouches[0].clientX;
+            const touchendY = e.changedTouches[0].clientY;
+            const diffX = touchendX - touchstartX;
+            const diffY = touchendY - touchstartY;
+
+            if (document.documentElement.scrollTop === 0 && diffY > PULL_THRESHOLD && Math.abs(diffY) > Math.abs(diffX)) {
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate(100); 
+                }
+                location.reload(true); 
+                return;
+            }
+
+            if (currentTab === 'agenda' && Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX < 0) {
+                    navigateDate(-1); 
+                } else {
+                    navigateDate(1); 
+                }
+            }
+        }
+
+        document.addEventListener('touchstart', handleTouchStart, { passive: true });
+        document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        let currentTheme = localStorage.getItem('theme') || 'dark'; 
+
+        // LÓGICA DE TEMA AGORA INVERTIDA
+        function applyTheme(theme) {
+            const body = document.body;
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+            
+            // SE TEMA É 'DARK' (VARIÁVEL) -> APLICAR VISUAL CLARO (Amarelo/Azul)
+            if (theme === 'dark') {
+                body.classList.remove('light-mode'); 
+                if (themeToggleBtn) {
+                    // Mostrar Lua (Sugere ir para o modo ESCURO)
+                    themeToggleBtn.innerHTML = '<i data-lucide="moon" class="w-6 h-6 text-amber-500"></i>'; 
+                }
+                if (metaTheme) {
+                     // Obtém o valor da variável CSS --bg-light-yellow
+                     const lightBg = getComputedStyle(document.documentElement).getPropertyValue('--bg-light-yellow').trim();
+                     metaTheme.setAttribute('content', lightBg); 
+                }
+            } else { // SE TEMA É 'LIGHT' (VARIÁVEL) -> APLICAR VISUAL ESCURO (Azul/Amarelo)
+                body.classList.add('light-mode'); 
+                if (themeToggleBtn) {
+                    // Mostrar Sol (Sugere ir para o modo CLARO)
+                    themeToggleBtn.innerHTML = '<i data-lucide="sun" class="w-6 h-6 text-amber-400"></i>'; 
+                }
+                if (metaTheme) {
+                     metaTheme.setAttribute('content', '#1e293b'); // Barra de Status Escura
+                }
+            }
+            lucide.createIcons();
+            currentTheme = theme;
+        }
+
+        function toggleTheme() {
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        }
+        
+        function getUniqueDates() {
+             const dates = AGENDA_DATA.map(item => item.date.trim());
+             uniqueDates = [...new Set(dates)];
+             
+             if (uniqueDates.length > 0) {
+                 const today = new Date();
+                 const todayDay = today.getDate().toString().padStart(2, '0');
+                 
+                 let closestDate = uniqueDates[0];
+                 for (const fullDate of uniqueDates) {
+                     if (fullDate.startsWith(todayDay + '/Nov')) {
+                         closestDate = fullDate;
+                         break;
+                     }
+                 }
+                 
+                 if (currentSelectedDate === '') {
+                     currentSelectedDate = closestDate; 
+                 }
+             }
+        }
+        
+        function renderDatePicker() {
+            getUniqueDates();
+            const container = document.getElementById('date-picker-container');
+            if (!container) return; 
+            
+            container.innerHTML = '';
+            
+            uniqueDates.forEach(fullDate => {
+                const datePart = fullDate.split('/')[0];
+                const button = document.createElement('button');
+                button.className = 'date-button';
+                button.textContent = datePart;
+                button.setAttribute('data-full-date', fullDate);
+                
+                if (fullDate === currentSelectedDate) {
+                    button.classList.add('active');
+                }
+                
+                button.onclick = () => selectDate(fullDate);
+                container.appendChild(button);
+            });
+            const activeBtn = container.querySelector('.date-button.active');
+            if (activeBtn) {
+                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+        
+        function selectDate(fullDate) {
+            currentSelectedDate = fullDate;
+            renderAgenda(); 
+            renderDatePicker(); 
+        }
+
+        // --- Lógica de Alerta de Santa Missa (INTELIGENTE) ---
+        function getNextDay(currentDateStr) {
+            const parts = currentDateStr.split('/Nov');
+            const dayPart = parseInt(parts[0], 10);
+            
+            const nextDay = dayPart + 1;
+            if (nextDay > 30) return null; // Fim do mês de Novembro
+
+            const nextDayPadded = nextDay.toString().padStart(2, '0');
+            const fullNextDate = AGENDA_DATA.find(e => e.date.startsWith(nextDayPadded + '/Nov'));
+            
+            if (fullNextDate) {
+                return fullNextDate.date;
+            }
+            return null;
+        }
+
+        function getSpecialAlert(selectedDate) {
+            const nextDateStr = getNextDay(selectedDate);
+            if (!nextDateStr) return '';
+
+            // 1. Filtra eventos para o dia seguinte que sejam Novena/Festa/Missa em Capela/Bairro
+            const tomorrowEvents = AGENDA_DATA.filter(event => 
+                event.date.trim() === nextDateStr && 
+                (event.title.includes("Novena") || event.title.includes("Festa") || 
+                 (event.title.includes("Missa") && 
+                  // Incluir: Bairro/Setor/Capela/Cemitério/Hotel, mas não a Matriz
+                  !event.location.includes("Igreja Matriz") && 
+                  // REGRA: Excluir Abrigo São Camilo
+                  !event.location.includes("Abrigo São Camilo") 
+                 )
+                )
+            );
+
+            if (tomorrowEvents.length > 0) {
+                const event = tomorrowEvents[0];
+                const dayOnly = nextDateStr.split('(')[0].trim();
+                const dayOfWeek = nextDateStr.split('(')[1].replace(')', '');
+                
+                let title = event.title;
+                let location = event.location;
+                let eventType = title; 
+
+                // Humaniza a localização
+                if (location.includes("Igreja")) location = location.replace('Igreja ', '');
+                if (location.includes("Bairro")) location = location.replace('Bairro ', '');
+                
+                // CORREÇÃO: Usar sempre Santa Missa (e remover o termo "Especial")
+                if (title.includes("dia da Novena")) {
+                    eventType = ` ${title} `;
+                } else if (title.includes("Missa")) {
+                    // Apenas "Santa Missa" no alerta, sem "Especial"
+                    eventType = ` Santa Missa `; 
+                } else {
+                    eventType = ` ${title} `; // Mantém o título original se não for Missa/Novena
+                }
+                
+                // Texto do Alerta
+                const alertText = `Lembrete! ${dayOfWeek}, ${dayOnly} tem ${eventType} às ${event.time} (${location}).`;
+
+                // Classes invertidas: Base usa o visual claro (bg-red-200, text-red-900)
+                // O light-mode (Dark Visual) usa texto CLARO e fundo ESCURO.
+                const alertBgClass = currentTheme === 'dark' ? 'bg-red-200 light-mode:bg-red-800/20' : 'bg-red-800/20 light-mode:bg-red-200';
+                const alertTextClass = currentTheme === 'dark' ? 'text-red-900 light-mode:text-red-100' : 'text-red-100 light-mode:text-red-900';
+                const alertBorderClass = 'border-red-500';
+
+                return `<div id="special-alert" class="card rounded-lg shadow-md p-3 mb-4 border-l-4 ${alertBgClass} ${alertBorderClass} text-sm flex items-center gap-3">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600 flex-shrink-0"></i>
+                    <p class="font-bold ${alertTextClass}">
+                        ${alertText}
+                    </p>
+                </div>`;
+            }
+            return '';
+        }
+        // --- FIM: Lógica de Alerta de Santa Missa (INTELIGENTE) ---
+
+
+        function renderAgenda() {
+            const container = document.getElementById('agenda-content');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            // --- Alerta de Santa Missa no Dia Seguinte (INCLUÍDO) ---
+            const specialAlertHTML = getSpecialAlert(currentSelectedDate);
+            if (specialAlertHTML) {
+                container.innerHTML += specialAlertHTML; 
+            }
+            // --- FIM ALERTA ---
+
+            const filteredData = AGENDA_DATA.filter(event => event.date.trim() === currentSelectedDate);
+
+            if (filteredData.length === 0) {
+                if (!specialAlertHTML) {
+                    // Texto no Light Mode agora usa a variável escura para contraste.
+                    container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-[var(--text-dark-blue)] light-mode:text-gray-300">
+                        <p>Nenhum evento agendado para esta data.</p>
+                    </div>`;
+                }
+                return;
+            }
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'mb-4 text-center';
+            const dayOfWeek = currentSelectedDate.split('(')[1].replace(')', '');
+            const dateOnly = currentSelectedDate.split(' ')[0];
+            
+            // TÍTULOS E DATAS AGORA COM NOVAS CORES (Azul no Light, Âmbar no Dark)
+            const headerClasses = currentTheme === 'light' 
+                ? 'text-xl font-bold text-amber-200' // Dark Visual: light amber
+                : 'text-xl font-bold text-blue-700'; // Light Visual: dark blue
+            const dateClasses = currentTheme === 'light' 
+                ? 'text-3xl font-extrabold text-amber-400' // Dark Visual: lighter amber
+                : 'text-3xl font-extrabold text-[var(--text-dark-blue)]'; // Light Visual: deep blue var
+
+            headerDiv.innerHTML = `
+                <p class="${headerClasses}">${dayOfWeek}</p>
+                <p class="${dateClasses}">${dateOnly}</p>
+            `;
+            container.appendChild(headerDiv);
+
+            const listCard = document.createElement('div');
+            listCard.className = 'card rounded-xl shadow-lg p-4 space-y-2';
+
+            filteredData.forEach(event => {
+                const eventDiv = document.createElement('div');
+                // BORDER: Invertido
+                eventDiv.className = 'flex justify-between items-center py-3 border-b border-yellow-200 last:border-b-0 light-mode:border-slate-600'; // Alterado para Slate 600
+                
+                const isMatrizOrDestaque = event.location.includes("Igreja Matriz") || event.title.includes("Eucaristia") || event.title.includes("Batizado") || event.title.includes("Casamento") || event.title.includes("Adoração") || event.title.includes("Confissão");
+
+                // TITULO: CORREÇÃO DEFINITIVA DO CONTRASTE NO DARK MODE
+                // Matriz/Destaque: Usa Yellow 100 no Dark Mode (contraste máximo).
+                // Setor/Outros: Usa amber-200 no Dark Mode (claro e legível).
+                const titleColor = isMatrizOrDestaque 
+                    ? 'text-amber-700 light-mode:text-yellow-100' // LIGHT VISUAL: Dark Amber | DARK VISUAL: Yellow 100 (BRILHANTE!)
+                    : 'text-[var(--text-dark-blue)] light-mode:text-amber-200'; // LIGHT VISUAL: Dark Blue | DARK VISUAL: Amber 200 (Claro e Legível)
+
+                // HORA: Amarelo/Âmbar no Dark Mode
+                const timeColor = 'text-amber-800 light-mode:text-amber-500';
+                
+                // LOCALIZAÇÃO: CORREÇÃO DEFINITIVA - Cinza CLARO no Dark Mode para ser visível.
+                const locationColor = 'text-[var(--text-dark-slate)] light-mode:text-gray-300'; // Alterado para Gray 300
+
+                eventDiv.innerHTML = `
+                    <div class="flex-1">
+                        <p class="font-bold text-base ${titleColor}">${event.title}</p>
+                        <p class="text-xs ${locationColor}">${event.location}</p>
+                    </div>
+                    <span class="font-bold text-lg ${timeColor} mr-4">${event.time}</span>
+                `;
+                listCard.appendChild(eventDiv);
+            });
+
+            container.appendChild(listCard);
+            lucide.createIcons();
+        }
+
+        function renderNews() {
+            const container = document.getElementById('noticias-content');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const header = document.createElement('div');
+            header.className = 'news-header text-center mb-6';
+            
+            // Invertido: Base é light visual (Amarelo/Azul), light-mode é dark visual (Azul/Amarelo)
+            const headerColor = currentTheme === 'light' ? 'text-amber-100' : 'text-[var(--text-dark-blue)]';
+            const iconColor = currentTheme === 'light' ? 'text-amber-400' : 'text-amber-700';
+
+            header.innerHTML = `
+                <i data-lucide="megaphone" class="w-8 h-8 mx-auto ${iconColor} mb-2"></i>
+                <h2 class="text-3xl font-bold ${headerColor}">Novidades da Paróquia</h2>
+                                <p class="text-sm text-[var(--text-dark-slate)] light-mode:text-gray-300">Eventos de destaque e comunicados urgentes.</p>
+            `;
+            container.appendChild(header);
+
+            NEWS_DATA.forEach(news => {
+                const newsCard = document.createElement('div');
+                newsCard.className = 'card rounded-xl shadow-lg p-5 space-y-4';
+
+                const titleDiv = document.createElement('div');
+                // BORDER: Invertido
+                titleDiv.className = 'flex items-center gap-3 border-b border-yellow-300 pb-3 mb-3 light-mode:border-slate-600'; // Alterado para Slate 600
+                
+                // TITULO: Invertido
+                const titleTextColor = currentTheme === 'light' ? 'text-amber-400' : 'text-amber-700';
+
+                titleDiv.innerHTML = `
+                    <i data-lucide="bell" class="w-6 h-6 text-red-500"></i>
+                    <div>
+                        <p class="font-bold text-xl ${titleTextColor}">${news.title}</p>
+                                                <p class="text-sm text-[var(--text-dark-slate)] light-mode:text-gray-300">Período: ${news.date}</p>
+                    </div>
+                `;
+                newsCard.appendChild(titleDiv);
+
+                const eventsList = document.createElement('div');
+                eventsList.className = 'space-y-3';
+
+                news.events.forEach(event => {
+                    const eventItem = document.createElement('div');
+                    // Background e Border Invertidos (Amarelo claro vs Dark)
+                    eventItem.className = 'news-item bg-amber-100 light-mode:bg-amber-400/20 border-l-4 border-amber-700 light-mode:border-amber-500 p-3 rounded-md'; // Alterado para amber 400/20
+                    
+                    // Texto Invertido
+                    const descColor = currentTheme === 'light' ? 'text-amber-100' : 'text-[var(--text-dark-blue)]';
+                    const timeColor = currentTheme === 'light' ? 'text-amber-500' : 'text-amber-800';
+
+                    eventItem.innerHTML = `
+                        <p class="font-bold text-base ${descColor}">${event.description}</p>
+                        <p class="text-sm font-extrabold ${timeColor}">${event.time}</p>
+                    `;
+                    eventsList.appendChild(eventItem);
+                });
+
+                newsCard.appendChild(eventsList);
+                container.appendChild(newsCard);
+            });
+            
+            localStorage.setItem('last_news_version', NEWS_VERSION);
+            checkNewsBadge();
+            lucide.createIcons();
+        }
+
+        // NOVO COMANDO: Mudar de aba e fechar o menu, com delay para evitar conflito de toque.
+        function switchTabAndClose(tabName) {
+             // Fecha o menu imediatamente (inicia a transição)
+            if (isMenuOpen) {
+                toggleMobileMenu();
+            }
+             // Aplica um atraso para dar tempo ao menu de deslizar, eliminando o bug de toque
+            setTimeout(() => {
+                switchTab(tabName);
+            }, 300); 
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            document.getElementById('agenda-section').classList.add('hidden');
+            document.getElementById('noticias-section').classList.add('hidden'); 
+            document.getElementById('jubileu-section').classList.add('hidden'); 
+            document.getElementById('info-section').classList.add('hidden');
+            document.getElementById('contatos-section').classList.add('hidden');
+            document.getElementById(`${tabName}-section`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeBtn = document.getElementById(`${tabName}-btn`);
+            if (activeBtn) {
+                 activeBtn.classList.add('active');
+            }
+
+            if (tabName === 'agenda') {
+                renderDatePicker(); 
+                renderAgenda(); 
+            } else if (tabName === 'noticias') {
+                renderNews();
+            }
+            lucide.createIcons();
+        }
+        
+        function toggleMobileMenu() {
+            isMenuOpen = !isMenuOpen;
+            const menuOverlay = document.getElementById('mobile-menu-overlay');
+            const menuIconContainer = document.getElementById('mobile-menu-button');
+
+            if (isMenuOpen) {
+                menuOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden'; 
+                // Ícone mantém a cor do modo visual.
+                menuIconContainer.innerHTML = currentTheme === 'dark' 
+                    ? `<i data-lucide="x" class="w-6 h-6 text-amber-700"></i>` // Light visual: Dark text color (amber 700 is dark enough)
+                    : `<i data-lucide="x" class="w-6 h-6 text-amber-400"></i>`; // Dark visual: Light text color
+            } else {
+                document.body.style.overflow = 'auto'; 
+                menuIconContainer.innerHTML = currentTheme === 'dark' 
+                    ? `<i data-lucide="menu" class="w-6 h-6 text-amber-700"></i>`
+                    : `<i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>`; 
+                menuOverlay.classList.remove('open');
+            }
+            lucide.createIcons();
+        }
+        
+        function toggleContent(type) {
+            const hinoContent = document.getElementById('content-hino');
+            const oracaoContent = document.getElementById('content-oracao');
+            const hinoBtn = document.getElementById('toggle-hino');
+            const oracaoBtn = document.getElementById('toggle-oracao');
+            
+
+            if (type === 'hino') {
+                isHinoOpen = !isHinoOpen;
+                oracaoContent.classList.add('hidden'); 
+                isOracaoOpen = false;
+                hinoContent.classList.toggle('hidden', !isHinoOpen);
+
+                hinoBtn.innerHTML = isHinoOpen 
+                    ? `<i data-lucide="chevron-up" class="w-5 h-5"></i> Ocultar Hino`
+                    : `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu`;
+
+                oracaoBtn.innerHTML = `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu`;
+            } else if (type === 'oracao') {
+                isOracaoOpen = !isOracaoOpen;
+                hinoContent.classList.add('hidden'); 
+                isHinoOpen = false;
+                oracaoContent.classList.toggle('hidden', !isOracaoOpen);
+
+                oracaoBtn.innerHTML = isOracaoOpen 
+                    ? `<i data-lucide="chevron-up" class="w-5 h-5"></i> Ocultar Oração`
+                    : `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu`;
+                    
+                hinoBtn.innerHTML = `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu`;
+            }
+            lucide.createIcons();
+        }
+
+        function checkNewsBadge() {
+            const lastVersion = localStorage.getItem('last_news_version');
+            const badgeDesktop = document.getElementById('noticias-badge');
+            const badgeMobile = document.getElementById('noticias-badge-mobile');
+            
+            if (lastVersion !== NEWS_VERSION) {
+                 if (badgeDesktop) badgeDesktop.classList.remove('hidden');
+                 if (badgeMobile) badgeMobile.classList.remove('hidden');
+                 
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate([100, 50, 100]); 
+                }
+            } else {
+                 if (badgeDesktop) badgeDesktop.classList.add('hidden');
+                 if (badgeMobile) badgeMobile.classList.add('hidden');
+            }
+        }
+
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTheme(currentTheme); 
+            getUniqueDates(); 
+            checkNewsBadge(); 
+            switchTab('agenda'); 
+            lucide.createIcons();
+        });
+
+    </script>
 </head>
 <body class="min-h-screen flex flex-col">
-    <!-- O MODAL DE INSTRUÇÕES DE INSTALAÇÃO FOI REMOVIDO A PEDIDO DO SENHOR SUPREMO -->
+            <div id="mobile-menu-overlay" class="fixed inset-0 w-full h-full sm:hidden p-4 transition-transform duration-300 transform -translate-x-full">
+        <div class="hino-content-bg rounded-xl shadow-2xl p-6 flex flex-col items-start space-y-2 mt-0">
+                        <h3 class="text-lg font-bold text-amber-700 light-mode:text-amber-400 mb-2">Navegação Principal</h3>
+            
+                        <button onclick="switchTabAndClose('agenda')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="calendar-days" class="w-5 h-5"></i> Agenda</button>
+            <button onclick="switchTabAndClose('noticias')" class="menu-item flex items-center justify-start gap-3 rounded-lg tab-with-badge hover:bg-yellow-100 light-mode:hover:bg-gray-700">
+                <i data-lucide="bell" class="w-5 h-5"></i> Notícias
+                <span id="noticias-badge-mobile" class="news-badge hidden"></span>
+            </button>
+            <button onclick="switchTabAndClose('jubileu')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="crown" class="w-5 h-5"></i> Jubileu 160</button>
+            <button onclick="switchTabAndClose('info')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="info" class="w-5 h-5"></i> Informações</button>
+            <button onclick="switchTabAndClose('contatos')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="phone" class="w-5 h-5"></i> Contatos</button>
+        </div>
+    </div>
+    
+        <header class="border-b border-yellow-200 sticky top-0 z-20 shadow-lg header-bg light-mode:border-slate-600">
+        <div class="max-w-xl mx-auto px-4 py-4 flex justify-between items-center">
+                        <div class="flex items-start gap-3">
+                                <i data-lucide="church" class="w-8 h-8 text-amber-700 light-mode:text-amber-400 mt-1"></i>
+                <div>
+                                        <h1 class="text-xl header-title-main text-[var(--text-dark-blue)] light-mode:text-amber-100">Paróquia Nossa Senhora</h1>
+                                        <p class="text-xl header-title-main text-[var(--text-dark-blue)] light-mode:text-amber-100 leading-none">da Conceição</p>
+                    <p class="text-sm header-subtitle text-amber-700 light-mode:text-amber-400">Virgínia-MG</p>
+                </div>
+            </div>
+            
+                        <div class="flex items-center gap-4">
+                                <button id="theme-toggle" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-yellow-100 light-mode:hover:bg-gray-700 transition-colors">
+                                    </button>
+                
+                <div class="text-right hidden sm:block">
+                                        <p class="text-xs font-bold text-amber-700 light-mode:text-amber-400">Ano Jubilar</p>
+                    <p class="text-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200">1866 – 2026</p>
+                </div>
+                                 <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-yellow-100 light-mode:hover:bg-gray-700 transition-colors z-50">
+                    <i data-lucide="menu" class="w-6 h-6 text-amber-700"></i>
+                </button>
+            </div>
+        </div>
+        
+                <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-yellow-200 light-mode:border-slate-600 overflow-x-auto whitespace-nowrap hidden sm:flex">
+            <button id="agenda-btn" onclick="switchTab('agenda')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
+                <i data-lucide="calendar-days" class="w-4 h-4"></i> Agenda
+            </button>
+             <button id="noticias-btn" onclick="switchTab('noticias')" class="tab-button py-3 text-sm flex justify-center items-center gap-2 tab-with-badge">
+                <i data-lucide="bell" class="w-4 h-4"></i> Notícias
+                <span id="noticias-badge" class="news-badge hidden"></span>
+            </button>
+            <button id="jubileu-btn" onclick="switchTab('jubileu')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
+                <i data-lucide="crown" class="w-4 h-4"></i> Jubileu 160
+            </button>
+            <button id="info-btn" onclick="switchTab('info')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
+                <i data-lucide="info" class="w-4 h-4"></i> Informações
+            </button>
+            <button id="contatos-btn" onclick="switchTab('contatos')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
+                <i data-lucide="phone" class="w-4 h-4"></i> Contatos
+            </button>
+        </div>
+    </header>
 
-    <!-- Menu Hambúrguer Overlay (Mobile) - INVERTIDO -->
-    <div id="mobile-menu-overlay" class="fixed inset-0 w-full h-full sm:hidden p-4 transition-transform duration-300 transform -translate-x-full">
-        <div class="hino-content-bg rounded-xl shadow-2xl p-6 flex flex-col items-start space-y-2 mt-0">
-            <!-- TÍTULO INVERTIDO -->
-            <h3 class="text-lg font-bold text-amber-700 light-mode:text-amber-400 mb-2">Navegação Principal</h3>
-            
-            <!-- CORES DOS BOTÕES INVERTIDAS - AGORA USA O NOVO AZUL/AMARELO -->
-            <button onclick="switchTabAndClose('agenda')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="calendar-days" class="w-5 h-5"></i> Agenda</button>
-            <button onclick="switchTabAndClose('noticias')" class="menu-item flex items-center justify-start gap-3 rounded-lg tab-with-badge hover:bg-yellow-100 light-mode:hover:bg-gray-700">
-                <i data-lucide="bell" class="w-5 h-5"></i> Notícias
-                <span id="noticias-badge-mobile" class="news-badge hidden"></span>
-            </button>
-            <button onclick="switchTabAndClose('jubileu')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="crown" class="w-5 h-5"></i> Jubileu 160</button>
-            <button onclick="switchTabAndClose('info')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="info" class="w-5 h-5"></i> Informações</button>
-            <button onclick="switchTabAndClose('contatos')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="phone" class="w-5 h-5"></i> Contatos</button>
-        </div>
-    </div>
-    
-    <!-- HEADER REVISADO PARA FICAR IGUAL AO LOGO -->
-    <header class="border-b border-yellow-200 sticky top-0 z-20 shadow-lg header-bg light-mode:border-gray-700">
-        <div class="max-w-xl mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- BLOCO ESQUERDO: NOME E LOGÓTIPO -->
-            <div class="flex items-start gap-3">
-                <!-- ÍCONE INVERTIDO -->
-                <i data-lucide="church" class="w-8 h-8 text-amber-700 light-mode:text-amber-400 mt-1"></i>
-                <div>
-                    <!-- TEXTO PRINCIPAL: APARÓQUIA (Fonte Simples para parecer logo) -->
-                    <h1 class="text-xl header-title-main text-[var(--text-dark-blue)] light-mode:text-amber-100">Paróquia Nossa Senhora</h1>
-                    <!-- SUBTÍTULO: NOME COMPLETO DA PARÓQUIA E CIDADE (CORRIGIDO) -->
-                    <p class="text-xl header-title-main text-[var(--text-dark-blue)] light-mode:text-amber-100 leading-none">da Conceição</p>
-                    <p class="text-sm header-subtitle text-amber-700 light-mode:text-amber-400">Virgínia-MG</p>
-                </div>
-            </div>
-            
-            <!-- BLOCO DIREITO: JUBILEU EM DESTAQUE E MENU/TEMA MÓVEL -->
-            <div class="flex items-center gap-4">
-                <!-- TEMA TOGGLE BUTTON -->
-                <button id="theme-toggle" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-yellow-100 light-mode:hover:bg-gray-700 transition-colors">
-                    <!-- Ícone injetado pelo JavaScript (sun/moon) -->
-                </button>
-                
-                <div class="text-right hidden sm:block">
-                    <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                    <p class="text-xs font-bold text-amber-700 light-mode:text-amber-400">Ano Jubilar</p>
-                    <p class="text-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200">1866 – 2026</p>
-                </div>
-                 <!-- Botão Menu Hambúrguer (APENAS em Mobile) -->
-                <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-yellow-100 light-mode:hover:bg-gray-700 transition-colors z-50">
-                    <i data-lucide="menu" class="w-6 h-6 text-amber-700"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- BARRA DE NAVEGAÇÃO POR ABAS (Apenas em Desktop) - INVERTIDA -->
-        <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-yellow-200 light-mode:border-gray-700 overflow-x-auto whitespace-nowrap hidden sm:flex">
-            <button id="agenda-btn" onclick="switchTab('agenda')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
-                <i data-lucide="calendar-days" class="w-4 h-4"></i> Agenda
-            </button>
-             <button id="noticias-btn" onclick="switchTab('noticias')" class="tab-button py-3 text-sm flex justify-center items-center gap-2 tab-with-badge">
-                <i data-lucide="bell" class="w-4 h-4"></i> Notícias
-                <span id="noticias-badge" class="news-badge hidden"></span>
-            </button>
-            <button id="jubileu-btn" onclick="switchTab('jubileu')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
-                <i data-lucide="crown" class="w-4 h-4"></i> Jubileu 160
-            </button>
-            <button id="info-btn" onclick="switchTab('info')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
-                <i data-lucide="info" class="w-4 h-4"></i> Informações
-            </button>
-            <button id="contatos-btn" onclick="switchTab('contatos')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
-                <i data-lucide="phone" class="w-4 h-4"></i> Contatos
-            </button>
-        </div>
-    </header>
+    <main class="flex-1 max-w-xl mx-auto px-4 py-6 w-full">
+                
+                <div id="agenda-section">
+                        <div class="mb-6">
+                <div id="date-picker-container" class="date-picker-scroll flex pb-2">
+                                    </div>
+            </div>
+            
+                        <div id="agenda-content" class="space-y-4">
+                            </div>
+        </div>
 
-    <main class="flex-1 max-w-xl mx-auto px-4 py-6 w-full">
-        <!-- Removida a classe mb-[72px] do main, pois o FAB e a barra de instalação sumiram. -->
-        
-        <!-- SEÇÃO 1: AGENDA -->
-        <div id="agenda-section">
-            <!-- BARRA DE SELEÇÃO DE DIAS (CALENDÁRIO) -->
-            <div class="mb-6">
-                <div id="date-picker-container" class="date-picker-scroll flex pb-2">
-                    <!-- Botões dos dias injetados pelo JavaScript -->
-                </div>
-            </div>
-            
-            <!-- Conteúdo da Agenda (Apenas do Dia Selecionado) -->
-            <div id="agenda-content" class="space-y-4">
-                <!-- Conteúdo injetado pelo JavaScript (inclui o Alerta de Santa Missa) -->
-            </div>
-        </div>
+                <div id="noticias-section" class="hidden space-y-6">
+            <div id="noticias-content" class="card rounded-xl shadow-lg p-5 space-y-4">
+                             </div>
+        </div>
+        
+                <div id="jubileu-section" class="hidden space-y-6">
+            <div class="card rounded-xl shadow-lg p-5 space-y-4">
+                                <h2 class="text-2xl font-bold mb-4 text-amber-700 light-mode:text-amber-400 text-center">Celebração de 160 Anos</h2>
+                
+                                <button id="toggle-hino" onclick="toggleContent('hino')" class="w-full card bg-yellow-100 hover:bg-yellow-200 p-4 rounded-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200 light-mode:bg-amber-400/20 light-mode:hover:bg-amber-400/30 flex items-center justify-between transition-colors">
+                    <i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu
+                </button>
+                
+                                <div id="content-hino" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
+                    <h3 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-200 text-center">Hino do Jubileu</h3>
+                                        <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-4">
+                        <p class="verse-block">
+                            Aqui nesta terra, ornada de serra,<br>
+                            Coberta pelo céu azul anil,<br>
+                            Nasceu nossa fé, que o tempo não encerra,<br>
+                            Abençoando este chão do Brasil.<br>
+                            Nesta alvorada bendita e festiva,<br>
+                            A semente de Cristo cresceu,<br>
+                            E a vossa presença, ó Mãe compassiva,<br>
+                            Nossa Paróquia edificou.
+                        </p>
+                        
+                        <span class="refrain font-extrabold block mt-3">
+                            Soberana da pátria celeste,<br>
+                            Velai por Virgínia querida;<br>
+                            Nossa Paróquia em festa celebra<br>
+                            O jubileu de cento e sessenta anos<br>
+                            de história!
+                        </span>
+                        
+                        <p class="verse-block pt-4">
+                            Gerações que aqui receberam<br>
+                            O santo batismo e a união,<br>
+                            Em cada jornada da vida souberam<br>
+                            Buscar em Vós consolação.
+                            As preces dos filhos que aqui cresceram<br>
+                            Sustentam a força da missão,<br>
+                            E o amor que em Cristo sempre viveram<br>
+                            Guia firme todo o coração.
+                        </p>
 
-        <!-- SEÇÃO 2: NOTÍCIAS (Novena da Padroeira) -->
-        <div id="noticias-section" class="hidden space-y-6">
-            <div id="noticias-content" class="card rounded-xl shadow-lg p-5 space-y-4">
-                 <!-- Conteúdo injetado pelo JavaScript (renderNews) -->
-            </div>
-        </div>
-        
-        <!-- SEÇÃO 3: JUBILEU 160 (Hino e Oração) -->
-        <div id="jubileu-section" class="hidden space-y-6">
-            <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <!-- TEXTO INVERTIDO -->
-                <h2 class="text-2xl font-bold mb-4 text-amber-700 light-mode:text-amber-400 text-center">Celebração de 160 Anos</h2>
-                
-                <!-- Botão Hino - INVERTIDO -->
-                <button id="toggle-hino" onclick="toggleContent('hino')" class="w-full card bg-yellow-100 hover:bg-yellow-200 p-4 rounded-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200 light-mode:bg-amber-500/10 light-mode:hover:bg-amber-500/20 flex items-center justify-between transition-colors">
-                    <i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu
-                </button>
-                
-                <!-- Conteúdo do Hino (Inicialmente Escondido) - INVERTIDO -->
-                <div id="content-hino" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
-                    <h3 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-200 text-center">Hino do Jubileu</h3>
-                    <!-- TEXTO INVERTIDO -->
-                    <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-4">
-                        <p class="verse-block">
-                            Aqui nesta terra, ornada de serra,<br>
-                            Coberta pelo céu azul anil,<br>
-                            Nasceu nossa fé, que o tempo não encerra,<br>
-                            Abençoando este chão do Brasil.<br>
-                            Nesta alvorada bendita e festiva,<br>
-                            A semente de Cristo cresceu,<br>
-                            E a vossa presença, ó Mãe compassiva,<br>
-                            Nossa Paróquia edificou.
-                        </p>
-                        
-                        <span class="refrain font-extrabold block mt-3">
-                            Soberana da pátria celeste,<br>
-                            Velai por Virgínia querida;<br>
-                            Nossa Paróquia em festa celebra<br>
-                            O jubileu de cento e sessenta anos<br>
-                            de história!
-                        </span>
-                        
-                        <p class="verse-block pt-4">
-                            Gerações que aqui receberam<br>
-                            O santo batismo e a união,<br>
-                            Em cada jornada da vida souberam<br>
-                            Buscar em Vós consolação.<br>
-                            As preces dos filhos que aqui cresceram<br>
-                            Sustentam a força da missão,<br>
-                            E o amor que em Cristo sempre viveram<br>
-                            Guia firme todo o coração.
-                        </p>
+                        <span class="refrain font-extrabold block mt-3">
+                            Soberana da pátria celeste,<br>
+                            Velai por Virgínia querida;<br>
+                            Nossa Paróquia em festa celebra<br>
+                            O jubileu de cento e sessenta anos<br>
+                            de história!
+                        </span>
+                        
+                        <p class="verse-block pt-4">
+                            Que a fé que herdamos acesa<br>
+                            Nos guarde em Vós, fortaleza.
+                            Que a nossa Paróquia seja<br>
+                            Sinal de esperança e fé.
+                            E que o Evangelho, nossa luz,<br>
+                            Nos leve sempre ao Cristo Jesus.
+                        </p>
 
-                        <span class="refrain font-extrabold block mt-3">
-                            Soberana da pátria celeste,<br>
-                            Velai por Virgínia querida;<br>
-                            Nossa Paróquia em festa celebra<br>
-                            O jubileu de cento e sessenta anos<br>
-                            de história!
-                        </span>
-                        
-                        <p class="verse-block pt-4">
-                            Que a fé que herdamos acesa<br>
-                            Nos guarde em Vós, fortaleza.<br>
-                            Que a nossa Paróquia seja<br>
-                            Sinal de esperança e fé.<br>
-                            E que o Evangelho, nossa luz,<br>
-                            Nos leve sempre ao Cristo Jesus.
-                        </p>
+                        <span class="refrain font-extrabold block mt-3">
+                            Soberana da pátria celeste,<br>
+                            Velai por Virgínia querida;
+                            Nossa Paróquia em festa celebra<br>
+                            O jubileu de cento e sessenta anos<br>
+                            de história!
+                        </span>
+                    </div>
+                </div>
 
-                        <span class="refrain font-extrabold block mt-3">
-                            Soberana da pátria celeste,<br>
-                            Velai por Virgínia querida;<br>
-                            Nossa Paróquia em festa celebra<br>
-                            O jubileu de cento e sessenta anos<br>
-                            de história!
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Botão Oração - INVERTIDO -->
-                <button id="toggle-oracao" onclick="toggleContent('oracao')" class="w-full card bg-yellow-100 hover:bg-yellow-200 p-4 rounded-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200 light-mode:bg-amber-500/10 light-mode:hover:bg-amber-500/20 flex items-center justify-between transition-colors">
-                    <i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu
-                </button>
-                
-                <!-- Conteúdo da Oração (Inicialmente Escondido) - INVERTIDO -->
-                <div id="content-oracao" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
-                    <h3 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-200 text-center">Oração do Jubileu</h3>
-                    <!-- TEXTO INVERTIDO -->
-                    <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-4">
-                        <p class="pt-2">Deus Todo-poderoso, Senhor do Tempo e da História, a Ti elevamos nossa voz neste Ano de Graça. Somos herdeiros de 160 anos de fé que não se dobrou, e Te bendizemos por cada vida iluminada, por cada Sacramento que fez este Templo pulsar com a força do Teu Reino.</p>
-                        
-                        <p class="pt-2">Senhor Jesus Cristo, Fonte Eterna de Misericórdia, concede-nos viver este Jubileu com coração renovado.</p>
-                        
-                        <p>Purifica-nos. Reconcilia-nos. Reergue-nos na luz da Tua Ressurreição, para que sejamos um só povo, firme e ardente na fé.</p>
-                        
-                        <p>Que a memória dos que vieram antes de nós seja chama que não se apaga e nos impulsione a levar o Evangelho com coragem, esperança e verdade.</p>
-                        
-                        <p>Nossa Senhora da Conceição, Mãe e Padroeira, estrela que guia os passos desta Paróquia, intercede por nós.</p>
-                        
-                        <p>Guarda-nos no Teu manto, inspira-nos com o Teu "Sim" e conduz-nos a uma nova primavera espiritual.</p>
-                        
-                        <p class="pt-4 italic">Pai santo, recebe este Jubileu como oferta viva, para Tua glória e para a salvação das almas.</p>
-                        <p class="font-bold">Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e contigo vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos. Amém.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+                                <button id="toggle-oracao" onclick="toggleContent('oracao')" class="w-full card bg-yellow-100 hover:bg-yellow-200 p-4 rounded-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200 light-mode:bg-amber-400/20 light-mode:hover:bg-amber-400/30 flex items-center justify-between transition-colors">
+                    <i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu
+                </button>
+                
+                                <div id="content-oracao" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
+                    <h3 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-200 text-center">Oração do Jubileu</h3>
+                                        <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-4">
+                        <p class="pt-2">Deus Todo-poderoso, Senhor do Tempo e da História, a Ti elevamos nossa voz neste Ano de Graça. Somos herdeiros de 160 anos de fé que não se dobrou, e Te bendizemos por cada vida iluminada, por cada Sacramento que fez este Templo pulsar com a força do Teu Reino.</p>
+                        
+                        <p class="pt-2">Senhor Jesus Cristo, Fonte Eterna de Misericórdia, concede-nos viver este Jubileu com coração renovado.</p>
+                        
+                        <p>Purifica-nos. Reconcilia-nos. Reergue-nos na luz da Tua Ressurreição, para que sejamos um só povo, firme e ardente na fé.</p>
+                        
+                        <p>Que a memória dos que vieram antes de nós seja chama que não se apaga e nos impulsione a levar o Evangelho com coragem, esperança e verdade.</p>
+                        
+                        <p>Nossa Senhora da Conceição, Mãe e Padroeira, estrela que guia os passos desta Paróquia, intercede por nós.</p>
+                        
+                        <p>Guarda-nos no Teu manto, inspira-nos com o Teu "Sim" e conduz-nos a uma nova primavera espiritual.</p>
+                        
+                        <p class="pt-4 italic">Pai santo, recebe este Jubileu como oferta viva, para Tua glória e para a salvação das almas.</p>
+                        <p class="font-bold">Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e contigo vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos. Amém.</p>
+                    </div>
+                </div>
+            </div>
 
 
-        <!-- SEÇÃO 4: INFORMAÇÕES -->
-        <div id="info-section" class="hidden space-y-6">
-             <!-- Horários de Missa (Matriz) - INVERTIDO -->
-            <div class="card rounded-xl shadow-lg p-5">
-                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="church" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Horários de Santa Missa (Matriz)</h2>
-                <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-2">
-                    <!-- CORRIGIDO: Usa dark-slate no light mode para legendas em negrito -->
-                    <div class="flex justify-between border-b border-yellow-200 light-mode:border-gray-700 pb-1"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Quinta-feira:</span><span class="text-amber-700 light-mode:text-amber-500">19:00h</span></div>
-                    <div class="flex justify-between border-b border-yellow-200 light-mode:border-gray-700 pb-1"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Sábado:</span><span class="text-amber-700 light-mode:text-amber-500">16:00h e 19:00h</span></div>
-                    <div class="flex justify-between"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Domingo:</span><span class="text-amber-700 light-mode:text-amber-500">07:00h, 09:00h e 19:00h</span></div>
-                </div>
-            </div>
+                <div id="info-section" class="hidden space-y-6">
+                         <div class="card rounded-xl shadow-lg p-5">
+                                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="church" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Horários de Santa Missa (Matriz)</h2>
+                                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-2">
+                                        <div class="flex justify-between border-b border-yellow-200 light-mode:border-slate-600 pb-1"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Quinta-feira:</span><span class="text-amber-700 light-mode:text-amber-500">19:00h</span></div>
+                    <div class="flex justify-between border-b border-yellow-200 light-mode:border-slate-600 pb-1"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Sábado:</span><span class="text-amber-700 light-mode:text-amber-500">16:00h e 19:00h</span></div>
+                    <div class="flex justify-between"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Domingo:</span><span class="text-amber-700 light-mode:text-amber-500">07:00h, 09:00h e 19:00h</span></div>
+                </div>
+            </div>
 
-            <!-- Sobre a Paróquia (Otimizado) - INVERTIDO -->
-            <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <h2 class="text-xl font-bold text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="landmark" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Sobre a Paróquia</h2>
-                
-                <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-3">
-                    <div class="flex gap-3 items-start">
-                        <i data-lucide="calendar-check" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Fundação:</span> A Paróquia Nossa Senhora da Conceição de Virgínia/MG foi criada em 15 de Novembro de 1866, com raízes em 1856, quando Padre Custódio de Oliveira Monte-Raso ergueu a capela.</p>
-                    </div>
-                    <div class="flex gap-3 items-start">
-                        <i data-lucide="map" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Localização Histórica:</span> Situada em Virgínia/MG, a paróquia é um farol de fé no Sul de Minas, conhecida pela sua devoção a Nossa Senhora da Conceição.</p>
-                    </div>
-                    <div class="flex gap-3 items-start">
-                        <i data-lucide="heart" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Missão:</span> Evangelizar e acolher a todos com amor fraterno, dando continuidade à tradição centenária de fé e caridade na região.</p>
-                    </div>
-                </div>
-            </div>
+                        <div class="card rounded-xl shadow-lg p-5 space-y-4">
+                                <h2 class="text-xl font-bold text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="landmark" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Sobre a Paróquia</h2>
+                
+                                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-3">
+                    <div class="flex gap-3 items-start">
+                        <i data-lucide="calendar-check" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Fundação:</span> A Paróquia Nossa Senhora da Conceição de Virgínia/MG foi criada em 15 de Novembro de 1866, com raízes em 1856, quando Padre Custódio de Oliveira Monte-Raso ergueu a capela.</p>
+                    </div>
+                    <div class="flex gap-3 items-start">
+                        <i data-lucide="map" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Localização Histórica:</span> Situada em Virgínia/MG, a paróquia é um farol de fé no Sul de Minas, conhecida pela sua devoção a Nossa Senhora da Conceição.</p>
+                    </div>
+                    <div class="flex gap-3 items-start">
+                        <i data-lucide="heart" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Missão:</span> Evangelizar e acolher a todos com amor fraterno, dando continuidade à tradição centenária de fé e caridade na região.</p>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Horário do Escritório Paroquial - INVERTIDO -->
-            <div class="card rounded-xl shadow-lg p-5">
-                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Horário do Escritório Paroquial</h2>
-                <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-2">
-                    <div class="flex justify-between border-b border-yellow-200 light-mode:border-gray-700 pb-1"><span class="font-bold">Segunda a Sexta:</span><span>08:00h – 17:00h</span></div>
-                    <div class="flex justify-between"><span class="font-bold">Sábados e Domingos:</span><span>Fechado</span></div>
-                </div>
-            </div>
-        </div>
+                        <div class="card rounded-xl shadow-lg p-5">
+                                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Horário do Escritório Paroquial</h2>
+                                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-2">
+                    <div class="flex justify-between border-b border-yellow-200 light-mode:border-slate-600 pb-1"><span class="font-bold">Segunda a Sexta:</span><span>08:00h – 17:00h</span></div>
+                    <div class="flex justify-between"><span class="font-bold">Sábados e Domingos:</span><span>Fechado</span></div>
+                </div>
+            </div>
+        </div>
 
-        <!-- SEÇÃO 5: CONTATOS -->
-        <div id="contatos-section" class="hidden space-y-4">
-            <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="phone-call" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Escritório Paroquial</h2>
-                
-                <!-- LINKS DE CONTATO - INVERTIDO -->
-                <!-- WHATSAPP -->
-                <a href="https://wa.me/553533731397" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors light-mode:bg-amber-400/20 light-mode:hover:bg-amber-500/30">
-                    <i data-lucide="message-square" class="w-6 h-6 text-amber-700 light-mode:text-amber-400"></i>
-                    <div>
-                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">WhatsApp Oficial</p>
-                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
-                        <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">(35) 3373-1397</p>
-                    </div>
-                </a>
-                
-                <!-- INSTAGRAM -->
-                <a href="https://www.instagram.com/aparoquia/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-pink-100 hover:bg-pink-200 rounded-lg transition-colors light-mode:bg-pink-400/20 light-mode:hover:bg-pink-500/30">
-                    <i data-lucide="instagram" class="w-6 h-6 text-pink-700 light-mode:text-pink-400"></i>
-                    <div>
-                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">Instagram Oficial</p>
-                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
-                        <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">@aparoquia</p>
-                    </div>
-                </a>
+                <div id="contatos-section" class="hidden space-y-4">
+            <div class="card rounded-xl shadow-lg p-5 space-y-4">
+                                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="phone-call" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Escritório Paroquial</h2>
+                
+                                                <a href="https://wa.me/553533731397" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors light-mode:bg-amber-400/20 light-mode:hover:bg-amber-500/30">
+                    <i data-lucide="message-square" class="w-6 h-6 text-amber-700 light-mode:text-amber-400"></i>
+                    <div>
+                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">WhatsApp Oficial</p>
+                                                <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">(35) 3373-1397</p>
+                    </div>
+                </a>
+                
+                                <a href="https://www.instagram.com/aparoquia/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-pink-100 hover:bg-pink-200 rounded-lg transition-colors light-mode:bg-pink-400/20 light-mode:hover:bg-pink-500/30">
+                    <i data-lucide="instagram" class="w-6 h-6 text-pink-700 light-mode:text-pink-400"></i>
+                    <div>
+                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">Instagram Oficial</p>
+                                                <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">@aparoquia</p>
+                    </div>
+                </a>
 
-                <!-- TELEFONE -->
-                <a href="tel:+553532611217,8007" class="flex items-center gap-4 p-3 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors light-mode:bg-amber-400/20 light-mode:hover:bg-amber-500/30">
-                    <i data-lucide="phone" class="w-6 h-6 text-amber-700 light-mode:text-amber-400"></i>
-                    <div>
-                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">Telefone com Ramal</p>
-                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
-                        <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">(35) 3261-1217 ramal 8007</p>
-                    </div>
-                </a>
+                                <a href="tel:+553532611217,8007" class="flex items-center gap-4 p-3 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors light-mode:bg-amber-400/20 light-mode:hover:bg-amber-500/30">
+                    <i data-lucide="phone" class="w-6 h-6 text-amber-700 light-mode:text-amber-400"></i>
+                    <div>
+                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">Telefone com Ramal</p>
+                                                <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">(35) 3261-1217 ramal 8007</p>
+                    </div>
+                </a>
 
-                <!-- E-MAIL -->
-                <a href="mailto:paroquiavirginia@yahoo.com.br" class="flex items-center gap-4 p-3 bg-red-100 hover:bg-red-200 rounded-lg transition-colors light-mode:bg-red-400/20 light-mode:hover:bg-red-500/30">
-                    <i data-lucide="mail" class="w-6 h-6 text-red-700 light-mode:text-red-400"></i>
-                    <div>
-                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">E-mail Oficial</p>
-                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
-                        <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">paroquiavirginia@yahoo.com.br</p>
-                    </div>
-                </a>
-            </div>
+                                <a href="mailto:paroquiavirginia@yahoo.com.br" class="flex items-center gap-4 p-3 bg-red-100 hover:bg-red-200 rounded-lg transition-colors light-mode:bg-red-400/20 light-mode:hover:bg-red-500/30">
+                    <i data-lucide="mail" class="w-6 h-6 text-red-700 light-mode:text-red-400"></i>
+                    <div>
+                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">E-mail Oficial</p>
+                                                <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">paroquiavirginia@yahoo.com.br</p>
+                    </div>
+                </a>
+            </div>
 
-            <!-- LOCALIZAÇÃO - INVERTIDO -->
-            <div class="card rounded-xl shadow-lg p-5">
-                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Localização</h2>
-                <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <p class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300">Praça Cônego Monte Raso, nº 304 - Centro<br>37465-000, Virgínia/MG</p>
-                <!-- LINK INVERTIDO -->
-                <a href="https://www.google.com/maps/search/?api=1&query=Praça+Cônego+Monte+Raso,+304,+Virgínia+-+MG" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 text-sm font-bold text-amber-700 hover:text-amber-900 light-mode:text-amber-500 light-mode:hover:text-amber-400">
-                    Ver no Mapa <i data-lucide="external-link" class="w-4 h-4"></i>
-                </a>
-            </div>
-        </div>
-    </main>
-    
-    <!-- FOOTER INVERTIDO -->
-    <footer class="text-center py-4 text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300 border-t border-yellow-200 light-mode:border-gray-700 mt-auto header-bg">
-        Desenvolvido por Emanuel Uchôas
-    </footer>
-    
+                        <div class="card rounded-xl shadow-lg p-5">
+                                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Localização</h2>
+                                <p class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300">Praça Cônego Monte Raso, nº 304 - Centro<br>37465-000, Virgínia/MG</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Praça+Cônego+Monte+Raso,+304,+Virgínia+-+MG" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 text-sm font-bold text-amber-700 hover:text-amber-900 light-mode:text-amber-500 light-mode:hover:text-amber-400">
+                    Ver no Mapa <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+    
+        <footer class="text-center py-4 text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300 border-t border-yellow-200 light-mode:border-slate-600 mt-auto header-bg">
+        Desenvolvido por Emanuel Uchôas
+    </footer>
+    
 </body>
 </html>
