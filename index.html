@@ -144,8 +144,9 @@
             padding: 12px;
             text-align: left;
         }
+        /* CORREÇÃO DO TEXTO DO MENU NO LIGHT MODE */
         .light-mode .menu-item {
-            color: #0f172a;
+            color: #0f172a; /* Garante texto escuro sobre fundo claro */
         }
         .light-mode .menu-item:hover {
             color: #d97706;
@@ -168,7 +169,6 @@
         
         /* ESTILO DA BARRA DE INSTALAÇÃO PWA */
         #install-prompt-bar {
-            /* Adiciona espaço para o FAB e garante visibilidade */
             padding-bottom: 24px; 
             z-index: 40; /* Acima do FAB (z-index 30) */
         }
@@ -207,6 +207,7 @@
         }
         .light-mode .hino-content-bg {
             background-color: #f1f5f9; 
+            color: #0f172a; /* Garante texto escuro no Hino/Oração Light Mode */
         }
 
         /* Estilo do Alerta Especial */
@@ -218,6 +219,9 @@
         }
         .light-mode .bg-red-200 {
             background-color: #fecaca;
+        }
+        .light-mode .text-red-900 {
+            color: #7f1d1d; /* Garante alto contraste no alerta */
         }
 
     </style>
@@ -370,7 +374,6 @@
             { "date": "23/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
             
             { "date": "24/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
-            // Evento de Destaque que acionará o Alerta no dia 23/Nov
             { "date": "24/Nov (Segunda-feira)", "time": "18:00", "title": "Santa Missa", "location": "Igreja Sagrado Coração" }, 
             { "date": "24/Nov (Segunda-feira)", "time": "19:00", "title": "Formação MESC", "location": "Formação MESC" },
 
@@ -639,17 +642,14 @@
             renderDatePicker(); 
         }
 
-        // --- NOVO: Lógica de Alerta de Missa Especial ---
+        // --- NOVO: Lógica de Alerta de Missa Especial (INTELIGENTE) ---
         function getNextDay(currentDateStr) {
-            // A data é "DD/Nov (Dia-da-semana)"
             const parts = currentDateStr.split('/Nov');
             const dayPart = parseInt(parts[0], 10);
             
             const nextDay = dayPart + 1;
-            // Assumindo que o mês atual é Novembro
-            if (nextDay > 30) return null; 
+            if (nextDay > 30) return null; // Fim do mês de Novembro
 
-            // Encontra a data completa do próximo dia
             const nextDayPadded = nextDay.toString().padStart(2, '0');
             const fullNextDate = AGENDA_DATA.find(e => e.date.startsWith(nextDayPadded + '/Nov'));
             
@@ -663,31 +663,48 @@
             const nextDateStr = getNextDay(selectedDate);
             if (!nextDateStr) return '';
 
-            // Filtra eventos para o dia seguinte que sejam Santa Missa OU Missa e não sejam na Matriz/Novena
+            // 1. Filtra eventos para o dia seguinte que sejam Novena/Festa/Missa Especial
             const tomorrowEvents = AGENDA_DATA.filter(event => 
                 event.date.trim() === nextDateStr && 
-                (event.title.includes("Missa") || event.title.includes("Santa Missa")) && 
-                !event.location.includes("Igreja Matriz") && 
-                !event.location.includes("Novena")
+                (event.title.includes("Novena") || event.title.includes("Festa") || 
+                 (event.title.includes("Missa") && 
+                  !event.location.includes("Bairro") && 
+                  !event.location.includes("Setor") && 
+                  !event.location.includes("Igreja Matriz") &&
+                  !event.location.includes("Abrigo São Camilo") /* NOVO: Exclui missas privadas no Abrigo */
+                 )
+                )
             );
 
             if (tomorrowEvents.length > 0) {
                 const event = tomorrowEvents[0];
                 const dayOnly = nextDateStr.split('(')[0].trim();
                 const dayOfWeek = nextDateStr.split('(')[1].replace(')', '');
-                const location = event.location.replace('Bairro ', '').replace('Igreja ', '');
                 
-                // Exemplo: Amanhã (Segunda, 24/Nov): Santa Missa no Sagrado Coração.
+                let title = event.title;
+                let location = event.location;
+
+                // Humaniza a localização
+                if (location.includes("Igreja")) location = location.replace('Igreja ', '');
+                if (location.includes("Bairro")) location = location.replace('Bairro ', '');
+                
+                // Humaniza o título
+                if (title.includes("dia da Novena")) title = ` ${title} `;
+                else if (title.includes("Missa")) title = ` Missa Especial `;
+
+                // Texto do Alerta
+                const alertText = `Lembrete! ${dayOfWeek}, ${dayOnly} tem ${title} às ${event.time} (${location}).`;
+
                 return `<div id="special-alert" class="card rounded-lg shadow-md p-3 mb-4 border-l-4 bg-red-800/20 border-red-500 light-mode:bg-red-200 light-mode:border-red-600 text-sm flex items-center gap-3">
                     <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400 flex-shrink-0"></i>
                     <p class="font-bold text-red-100 light-mode:text-red-900">
-                        Lembrete! <span class="text-amber-400 font-extrabold">${dayOfWeek}, ${dayOnly}</span> tem ${event.title} (${location}).
+                        ${alertText}
                     </p>
                 </div>`;
             }
             return '';
         }
-        // --- FIM: Lógica de Alerta de Missa Especial ---
+        // --- FIM: Lógica de Alerta de Missa Especial (INTELIGENTE) ---
 
 
         function renderAgenda() {
@@ -695,17 +712,16 @@
             if (!container) return;
             container.innerHTML = '';
             
-            // --- NOVO: Alerta de Missa Especial no Dia Seguinte ---
+            // --- Alerta de Missa Especial no Dia Seguinte (INCLUÍDO) ---
             const specialAlertHTML = getSpecialAlert(currentSelectedDate);
             if (specialAlertHTML) {
-                container.innerHTML += specialAlertHTML; // Adiciona o alerta ANTES do conteúdo principal do dia
+                container.innerHTML += specialAlertHTML; 
             }
-            // --- FIM NOVO ---
+            // --- FIM ALERTA ---
 
             const filteredData = AGENDA_DATA.filter(event => event.date.trim() === currentSelectedDate);
 
             if (filteredData.length === 0) {
-                // Se não houver eventos, mas houver alerta, o alerta já foi adicionado acima
                 if (!specialAlertHTML) {
                     container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-gray-500">
                         <p>Nenhum evento agendado para esta data.</p>
@@ -717,10 +733,15 @@
             const headerDiv = document.createElement('div');
             headerDiv.className = 'mb-4 text-center';
             const dayOfWeek = currentSelectedDate.split('(')[1].replace(')', '');
-            const dateOnly = currentSelectedDate.split('(')[0].trim();
+            const dateOnly = currentSelectedDate.split(' ')[0];
+            
+            // CORREÇÃO: Garante alto contraste no Light Mode
+            const headerClasses = currentTheme === 'light' ? 'text-xl font-bold text-gray-800' : 'text-xl font-bold text-amber-100';
+            const dateClasses = currentTheme === 'light' ? 'text-3xl font-extrabold text-gray-900' : 'text-3xl font-extrabold text-amber-200';
+
             headerDiv.innerHTML = `
-                <p class="text-xl font-bold text-amber-100">${dayOfWeek}</p>
-                <p class="text-3xl font-extrabold text-amber-200">${dateOnly}</p>
+                <p class="${headerClasses}">${dayOfWeek}</p>
+                <p class="${dateClasses}">${dateOnly}</p>
             `;
             container.appendChild(headerDiv);
 
@@ -729,17 +750,19 @@
 
             filteredData.forEach(event => {
                 const eventDiv = document.createElement('div');
-                eventDiv.className = 'flex justify-between items-center py-3 border-b border-gray-700 last:border-b-0';
+                eventDiv.className = 'flex justify-between items-center py-3 border-b border-gray-700 last:border-b-0 light-mode:border-gray-200';
                 
                 const isMatriz = event.title.includes("Igreja Matriz") || event.location.includes("Igreja Matriz");
-                const titleColor = isMatriz ? 'text-amber-400' : 'text-amber-100';
+                const titleColor = isMatriz ? 'text-amber-400 light-mode:text-amber-700' : 'text-amber-100 light-mode:text-gray-900';
+                const timeColor = 'text-amber-500 light-mode:text-amber-800';
+                const locationColor = 'text-gray-500 light-mode:text-gray-500';
 
                 eventDiv.innerHTML = `
                     <div class="flex-1">
                         <p class="font-bold text-base ${titleColor}">${event.title}</p>
-                        <p class="text-xs text-gray-500">${event.location}</p>
+                        <p class="text-xs ${locationColor}">${event.location}</p>
                     </div>
-                    <span class="font-bold text-lg text-amber-500 mr-4">${event.time}</span>
+                    <span class="font-bold text-lg ${timeColor} mr-4">${event.time}</span>
                 `;
                 listCard.appendChild(eventDiv);
             });
@@ -755,9 +778,13 @@
 
             const header = document.createElement('div');
             header.className = 'news-header text-center mb-6';
+            
+            const headerColor = currentTheme === 'light' ? 'text-gray-900' : 'text-amber-100';
+            const iconColor = currentTheme === 'light' ? 'text-amber-700' : 'text-amber-400';
+
             header.innerHTML = `
-                <i data-lucide="megaphone" class="w-8 h-8 mx-auto text-amber-400 mb-2"></i>
-                <h2 class="text-3xl font-bold text-amber-100">Novidades da Paróquia</h2>
+                <i data-lucide="megaphone" class="w-8 h-8 mx-auto ${iconColor} mb-2"></i>
+                <h2 class="text-3xl font-bold ${headerColor}">Novidades da Paróquia</h2>
                 <p class="text-sm text-gray-500">Eventos de destaque e comunicados urgentes.</p>
             `;
             container.appendChild(header);
@@ -768,11 +795,14 @@
 
                 const titleDiv = document.createElement('div');
                 titleDiv.className = 'flex items-center gap-3 border-b border-gray-700 pb-3 mb-3 light-mode:border-gray-300';
+                
+                const titleTextColor = currentTheme === 'light' ? 'text-amber-700' : 'text-amber-400';
+
                 titleDiv.innerHTML = `
                     <i data-lucide="bell" class="w-6 h-6 text-red-500"></i>
                     <div>
-                        <p class="font-bold text-xl text-amber-400">${news.title}</p>
-                        <p class="text-sm text-gray-500">${news.date}</p>
+                        <p class="font-bold text-xl ${titleTextColor}">${news.title}</p>
+                        <p class="text-sm text-gray-500">Período: ${news.date}</p>
                     </div>
                 `;
                 newsCard.appendChild(titleDiv);
@@ -782,11 +812,15 @@
 
                 news.events.forEach(event => {
                     const eventItem = document.createElement('div');
-                    eventItem.className = 'news-item';
+                    // NOVO ESTILO CORRIGIDO
+                    eventItem.className = 'news-item bg-amber-500/10 light-mode:bg-amber-100 border-l-4 border-amber-500 light-mode:border-amber-700 p-3 rounded-md';
                     
+                    const descColor = currentTheme === 'light' ? 'text-gray-800' : 'text-amber-100';
+                    const timeColor = currentTheme === 'light' ? 'text-amber-800' : 'text-amber-500';
+
                     eventItem.innerHTML = `
-                        <p class="font-bold text-base text-amber-100 light-mode:text-gray-900">${event.description}</p>
-                        <p class="text-sm font-extrabold text-amber-500">${event.time}</p>
+                        <p class="font-bold text-base ${descColor}">${event.description}</p>
+                        <p class="text-sm font-extrabold ${timeColor}">${event.time}</p>
                     `;
                     eventsList.appendChild(eventItem);
                 });
@@ -800,12 +834,22 @@
             lucide.createIcons();
         }
 
-        function switchTab(tabName) {
-            currentTab = tabName;
-            
+        // NOVO COMANDO: Mudar de aba e fechar o menu, com delay para evitar conflito de toque.
+        function switchTabAndClose(tabName) {
+             // Fecha o menu imediatamente (inicia a transição)
             if (isMenuOpen) {
                 toggleMobileMenu();
             }
+             // Aplica um atraso para dar tempo ao menu de deslizar, eliminando o bug de toque
+            setTimeout(() => {
+                switchTab(tabName);
+            }, 300); 
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // NOTE: A função switchTabAndClose agora é responsável por fechar o menu.
 
             document.getElementById('agenda-section').classList.add('hidden');
             document.getElementById('noticias-section').classList.add('hidden'); 
@@ -903,7 +947,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             applyTheme(currentTheme); 
             getUniqueDates(); 
-            checkInstallationStatus(); // NOVO: Verifica se deve mostrar a barra de instalação
+            checkInstallationStatus(); 
             checkNewsBadge(); 
             switchTab('agenda'); 
             lucide.createIcons();
@@ -935,25 +979,26 @@
     <div id="mobile-menu-overlay" class="fixed inset-0 w-full h-full sm:hidden p-4 transition-transform duration-300 transform -translate-x-full">
         <div class="hino-content-bg rounded-xl shadow-2xl p-6 flex flex-col items-start space-y-2 mt-0">
             <h3 class="text-lg font-bold text-amber-400 mb-2">Navegação Principal</h3>
-            <button onclick="switchTab('agenda')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="calendar-days" class="w-5 h-5"></i> Agenda</button>
-            <button onclick="switchTab('noticias')" class="menu-item flex items-center justify-start gap-3 rounded-lg tab-with-badge">
+            <!-- CORREÇÃO: Usando switchTabAndClose -->
+            <button onclick="switchTabAndClose('agenda')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="calendar-days" class="w-5 h-5"></i> Agenda</button>
+            <button onclick="switchTabAndClose('noticias')" class="menu-item flex items-center justify-start gap-3 rounded-lg tab-with-badge">
                 <i data-lucide="bell" class="w-5 h-5"></i> Notícias
                 <span id="noticias-badge-mobile" class="news-badge hidden"></span>
             </button>
-            <button onclick="switchTab('jubileu')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="crown" class="w-5 h-5"></i> Jubileu 160</button>
-            <button onclick="switchTab('info')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="info" class="w-5 h-5"></i> Informações</button>
-            <button onclick="switchTab('contatos')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="phone" class="w-5 h-5"></i> Contatos</button>
+            <button onclick="switchTabAndClose('jubileu')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="crown" class="w-5 h-5"></i> Jubileu 160</button>
+            <button onclick="switchTabAndClose('info')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="info" class="w-5 h-5"></i> Informações</button>
+            <button onclick="switchTabAndClose('contatos')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="phone" class="w-5 h-5"></i> Contatos</button>
         </div>
     </div>
     
-    <header class="border-b border-gray-700 sticky top-0 z-20 shadow-lg header-bg">
+    <header class="border-b border-gray-700 sticky top-0 z-20 shadow-lg header-bg light-mode:border-gray-200">
         <div class="max-w-xl mx-auto px-4 py-4 flex justify-between items-center">
             <!-- BLOCO ESQUERDO: NOME E LOGÓTIPO -->
             <div class="flex items-center gap-3">
-                <i data-lucide="church" class="w-8 h-8 text-amber-400"></i>
+                <i data-lucide="church" class="w-8 h-8 text-amber-400 light-mode:text-amber-700"></i>
                 <div>
-                    <h1 class="text-xl font-bold text-amber-100">Paróquia</h1>
-                    <p class="text-xs text-amber-400">Nossa Senhora da Conceição</p>
+                    <h1 class="text-xl font-bold text-amber-100 light-mode:text-gray-900">Paróquia</h1>
+                    <p class="text-xs text-amber-400 light-mode:text-amber-700">Nossa Senhora da Conceição</p>
                 </div>
             </div>
             
@@ -965,18 +1010,18 @@
                 </button>
                 
                 <div class="text-right hidden sm:block">
-                    <p class="text-xs font-bold text-amber-400">Ano Jubilar</p>
-                    <p class="text-lg font-bold text-amber-200">1866 – 2026</p>
+                    <p class="text-xs font-bold text-amber-400 light-mode:text-amber-700">Ano Jubilar</p>
+                    <p class="text-lg font-bold text-amber-200 light-mode:text-gray-900">1866 – 2026</p>
                 </div>
                  <!-- Botão Menu Hambúrguer (APENAS em Mobile) -->
-                <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-gray-700 transition-colors z-50">
+                <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-gray-700 light-mode:hover:bg-gray-200 transition-colors z-50">
                     <i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>
                 </button>
             </div>
         </div>
         
         <!-- BARRA DE NAVEGAÇÃO POR ABAS (Apenas em Desktop) -->
-        <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-gray-700 overflow-x-auto whitespace-nowrap hidden sm:flex">
+        <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-gray-700 light-mode:border-gray-200 overflow-x-auto whitespace-nowrap hidden sm:flex">
             <button id="agenda-btn" onclick="switchTab('agenda')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
                 <i data-lucide="calendar-days" class="w-4 h-4"></i> Agenda
             </button>
@@ -1022,17 +1067,17 @@
         <!-- SEÇÃO 3: JUBILEU 160 (Hino e Oração) -->
         <div id="jubileu-section" class="hidden space-y-6">
             <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <h2 class="text-2xl font-bold mb-4 text-amber-400 text-center">Celebração de 160 Anos</h2>
+                <h2 class="text-2xl font-bold mb-4 text-amber-400 light-mode:text-amber-700 text-center">Celebração de 160 Anos</h2>
                 
                 <!-- Botão Hino -->
-                <button id="toggle-hino" onclick="toggleContent('hino')" class="w-full card bg-amber-500/10 hover:bg-amber-500/20 p-4 rounded-lg font-bold text-amber-200 flex items-center justify-between transition-colors">
+                <button id="toggle-hino" onclick="toggleContent('hino')" class="w-full card bg-amber-500/10 hover:bg-amber-500/20 p-4 rounded-lg font-bold text-amber-200 light-mode:text-gray-900 flex items-center justify-between transition-colors">
                     <i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu
                 </button>
                 
                 <!-- Conteúdo do Hino (Inicialmente Escondido) -->
                 <div id="content-hino" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
-                    <h3 class="text-xl font-bold mb-3 text-amber-200 text-center">Hino do Jubileu</h3>
-                    <div class="text-sm text-gray-300">
+                    <h3 class="text-xl font-bold mb-3 text-amber-200 light-mode:text-gray-900 text-center">Hino do Jubileu</h3>
+                    <div class="text-sm text-gray-300 light-mode:text-gray-800">
                         <p class="verse-block">
                             Aqui nesta terra, ornada de serra,<br>
                             Coberta pelo céu azul anil,<br>
@@ -1091,14 +1136,14 @@
                 </div>
 
                 <!-- Botão Oração -->
-                <button id="toggle-oracao" onclick="toggleContent('oracao')" class="w-full card bg-amber-500/10 hover:bg-amber-500/20 p-4 rounded-lg font-bold text-amber-200 flex items-center justify-between transition-colors">
+                <button id="toggle-oracao" onclick="toggleContent('oracao')" class="w-full card bg-amber-500/10 hover:bg-amber-500/20 p-4 rounded-lg font-bold text-amber-200 light-mode:text-gray-900 flex items-center justify-between transition-colors">
                     <i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu
                 </button>
                 
                 <!-- Conteúdo da Oração (Inicialmente Escondido) -->
                 <div id="content-oracao" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
-                     <h3 class="text-xl font-bold mb-3 text-amber-200 text-center">Oração do Jubileu</h3>
-                    <div class="text-sm text-gray-300 space-y-4">
+                    <h3 class="text-xl font-bold mb-3 text-amber-200 light-mode:text-gray-900 text-center">Oração do Jubileu</h3>
+                    <div class="text-sm text-gray-300 light-mode:text-gray-800 space-y-4">
                         <p class="pt-2">Deus Todo-poderoso, Senhor do Tempo e da História, a Ti elevamos nossa voz neste Ano de Graça. Somos herdeiros de 160 anos de fé que não se dobrou, e Te bendizemos por cada vida iluminada, por cada Sacramento que fez este Templo pulsar com a força do Teu Reino.</p>
                         
                         <p class="pt-2">Senhor Jesus Cristo, Fonte Eterna de Misericórdia, concede-nos viver este Jubileu com coração renovado.</p>
@@ -1123,39 +1168,39 @@
         <div id="info-section" class="hidden space-y-6">
              <!-- Horários de Missa (Matriz) -->
             <div class="card rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-bold mb-3 text-amber-100 flex items-center gap-2"><i data-lucide="church" class="w-5 h-5 text-amber-400"></i> Horários de Missa (Matriz)</h2>
-                <div class="text-sm text-gray-300 space-y-2">
-                    <div class="flex justify-between border-b border-gray-700 pb-1"><span class="font-bold text-amber-200">Quinta-feira:</span><span class="text-amber-500">19:00h</span></div>
-                    <div class="flex justify-between border-b border-gray-700 pb-1"><span class="font-bold text-amber-200">Sábado:</span><span class="text-amber-500">16:00h e 19:00h</span></div>
-                    <div class="flex justify-between"><span class="font-bold text-amber-200">Domingo:</span><span class="text-amber-500">07:00h, 09:00h e 19:00h</span></div>
+                <h2 class="text-xl font-bold mb-3 text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="church" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Horários de Missa (Matriz)</h2>
+                <div class="text-sm text-gray-300 light-mode:text-gray-800 space-y-2">
+                    <div class="flex justify-between border-b border-gray-700 light-mode:border-gray-200 pb-1"><span class="font-bold text-amber-200 light-mode:text-gray-700">Quinta-feira:</span><span class="text-amber-500 light-mode:text-amber-700">19:00h</span></div>
+                    <div class="flex justify-between border-b border-gray-700 light-mode:border-gray-200 pb-1"><span class="font-bold text-amber-200 light-mode:text-gray-700">Sábado:</span><span class="text-amber-500 light-mode:text-amber-700">16:00h e 19:00h</span></div>
+                    <div class="flex justify-between"><span class="font-bold text-amber-200 light-mode:text-gray-700">Domingo:</span><span class="text-amber-500 light-mode:text-amber-700">07:00h, 09:00h e 19:00h</span></div>
                 </div>
             </div>
 
             <!-- Sobre a Paróquia (Otimizado) -->
             <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <h2 class="text-xl font-bold text-amber-100 flex items-center gap-2"><i data-lucide="landmark" class="w-5 h-5 text-amber-400"></i> Sobre a Paróquia</h2>
+                <h2 class="text-xl font-bold text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="landmark" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Sobre a Paróquia</h2>
                 
-                <div class="text-sm text-gray-300 space-y-3">
+                <div class="text-sm text-gray-300 light-mode:text-gray-800 space-y-3">
                     <div class="flex gap-3 items-start">
-                        <i data-lucide="calendar-check" class="w-5 h-5 text-amber-400 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-amber-200">Fundação:</span> A Paróquia foi criada em 15 de Novembro de 1866, com raízes em 1856, quando Padre Custódio de Oliveira Monte-Raso ergueu a capela.</p>
+                        <i data-lucide="calendar-check" class="w-5 h-5 text-amber-400 light-mode:text-amber-700 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-amber-200 light-mode:text-gray-700">Fundação:</span> A Paróquia foi criada em 15 de Novembro de 1866, com raízes em 1856, quando Padre Custódio de Oliveira Monte-Raso ergueu a capela.</p>
                     </div>
                     <div class="flex gap-3 items-start">
-                        <i data-lucide="map" class="w-5 h-5 text-amber-400 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-amber-200">Localização Histórica:</span> Situada em Virgínia/MG, a paróquia é um farol de fé no Sul de Minas, conhecida pela sua devoção a Nossa Senhora da Conceição.</p>
+                        <i data-lucide="map" class="w-5 h-5 text-amber-400 light-mode:text-amber-700 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-amber-200 light-mode:text-gray-700">Localização Histórica:</span> Situada em Virgínia/MG, a paróquia é um farol de fé no Sul de Minas, conhecida pela sua devoção a Nossa Senhora da Conceição.</p>
                     </div>
                     <div class="flex gap-3 items-start">
-                        <i data-lucide="heart" class="w-5 h-5 text-amber-400 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-amber-200">Missão:</span> Evangelizar e acolher a todos com amor fraterno, dando continuidade à tradição centenária de fé e caridade na região.</p>
+                        <i data-lucide="heart" class="w-5 h-5 text-amber-400 light-mode:text-amber-700 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-amber-200 light-mode:text-gray-700">Missão:</span> Evangelizar e acolher a todos com amor fraterno, dando continuidade à tradição centenária de fé e caridade na região.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Horário do Escritório Paroquial -->
             <div class="card rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-bold mb-3 text-amber-100 flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-amber-400"></i> Horário do Escritório Paroquial</h2>
-                <div class="text-sm text-gray-300 space-y-2">
-                    <div class="flex justify-between border-b border-gray-700 pb-1"><span class="font-bold">Segunda a Sexta:</span><span>08:00h – 17:00h</span></div>
+                <h2 class="text-xl font-bold mb-3 text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Horário do Escritório Paroquial</h2>
+                <div class="text-sm text-gray-300 light-mode:text-gray-800 space-y-2">
+                    <div class="flex justify-between border-b border-gray-700 light-mode:border-gray-200 pb-1"><span class="font-bold">Segunda a Sexta:</span><span>08:00h – 17:00h</span></div>
                     <div class="flex justify-between"><span class="font-bold">Sábados e Domingos:</span><span>Fechado</span></div>
                 </div>
             </div>
@@ -1164,56 +1209,56 @@
         <!-- SEÇÃO 5: CONTATOS -->
         <div id="contatos-section" class="hidden space-y-4">
             <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <h2 class="text-xl font-bold mb-3 text-amber-100 flex items-center gap-2"><i data-lucide="phone-call" class="w-5 h-5 text-amber-400"></i> Escritório Paroquial</h2>
+                <h2 class="text-xl font-bold mb-3 text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="phone-call" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Escritório Paroquial</h2>
                 
                 <!-- WHATSAPP (Corrigido para Âmbar) -->
-                <a href="https://wa.me/553533731397" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-amber-400/20 hover:bg-amber-300/20 rounded-lg transition-colors">
-                    <i data-lucide="message-square" class="w-6 h-6 text-amber-400"></i>
+                <a href="https://wa.me/553533731397" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-amber-400/20 hover:bg-amber-500/30 rounded-lg transition-colors light-mode:bg-amber-100 light-mode:hover:bg-amber-200">
+                    <i data-lucide="message-square" class="w-6 h-6 text-amber-400 light-mode:text-amber-700"></i>
                     <div>
-                        <p class="font-bold text-sm text-amber-100">WhatsApp Oficial</p>
-                        <p class="text-xs text-gray-400 contact-link-text">(35) 3373-1397</p>
+                        <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">WhatsApp Oficial</p>
+                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-600">(35) 3373-1397</p>
                     </div>
                 </a>
                 
                 <!-- INSTAGRAM -->
-                <a href="https://www.instagram.com/aparoquia/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-pink-400/20 hover:bg-pink-300/20 rounded-lg transition-colors">
-                    <i data-lucide="instagram" class="w-6 h-6 text-pink-400"></i>
+                <a href="https://www.instagram.com/aparoquia/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-pink-400/20 hover:bg-pink-500/30 rounded-lg transition-colors light-mode:bg-pink-100 light-mode:hover:bg-pink-200">
+                    <i data-lucide="instagram" class="w-6 h-6 text-pink-400 light-mode:text-pink-700"></i>
                     <div>
-                        <p class="font-bold text-sm text-amber-100">Instagram Oficial</p>
-                        <p class="text-xs text-gray-400 contact-link-text">@aparoquia</p>
+                        <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">Instagram Oficial</p>
+                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-600">@aparoquia</p>
                     </div>
                 </a>
 
                 <!-- TELEFONE -->
-                <a href="tel:+553532611217,8007" class="flex items-center gap-4 p-3 bg-amber-400/20 hover:bg-amber-300/20 rounded-lg transition-colors">
-                    <i data-lucide="phone" class="w-6 h-6 text-amber-400"></i>
+                <a href="tel:+553532611217,8007" class="flex items-center gap-4 p-3 bg-amber-400/20 hover:bg-amber-500/30 rounded-lg transition-colors light-mode:bg-amber-100 light-mode:hover:bg-amber-200">
+                    <i data-lucide="phone" class="w-6 h-6 text-amber-400 light-mode:text-amber-700"></i>
                     <div>
-                        <p class="font-bold text-sm text-amber-100">Telefone com Ramal</p>
-                        <p class="text-xs text-gray-400 contact-link-text">(35) 3261-1217 ramal 8007</p>
+                        <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">Telefone com Ramal</p>
+                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-600">(35) 3261-1217 ramal 8007</p>
                     </div>
                 </a>
 
                 <!-- E-MAIL -->
-                <a href="mailto:paroquiavirginia@yahoo.com.br" class="flex items-center gap-4 p-3 bg-red-400/20 hover:bg-red-300/20 rounded-lg transition-colors">
-                    <i data-lucide="mail" class="w-6 h-6 text-red-400"></i>
+                <a href="mailto:paroquiavirginia@yahoo.com.br" class="flex items-center gap-4 p-3 bg-red-400/20 hover:bg-red-500/30 rounded-lg transition-colors light-mode:bg-red-100 light-mode:hover:bg-red-200">
+                    <i data-lucide="mail" class="w-6 h-6 text-red-400 light-mode:text-red-700"></i>
                     <div>
-                        <p class="font-bold text-sm text-amber-100">E-mail Oficial</p>
-                        <p class="text-xs text-gray-400 contact-link-text">paroquiavirginia@yahoo.com.br</p>
+                        <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">E-mail Oficial</p>
+                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-600">paroquiavirginia@yahoo.com.br</p>
                     </div>
                 </a>
             </div>
 
             <div class="card rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-bold mb-3 text-amber-100 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-400"></i> Localização</h2>
-                <p class="text-sm text-gray-300">Praça Cônego Monte Raso, nº 304 - Centro<br>37465-000, Virgínia/MG</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=Praça+Cônego+Monte+Raso,+304,+Virgínia+-+MG" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 text-sm font-bold text-amber-500 hover:text-amber-400">
+                <h2 class="text-xl font-bold mb-3 text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Localização</h2>
+                <p class="text-sm text-gray-300 light-mode:text-gray-800">Praça Cônego Monte Raso, nº 304 - Centro<br>37465-000, Virgínia/MG</p>
+                <a href="https://www.google.com/maps/search/?api=1&query=Praça+Cônego+Monte+Raso,+304,+Virgínia+-+MG" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 text-sm font-bold text-amber-500 hover:text-amber-400 light-mode:text-amber-700 light-mode:hover:text-amber-900">
                     Ver no Mapa <i data-lucide="external-link" class="w-4 h-4"></i>
                 </a>
             </div>
         </div>
     </main>
     
-    <footer class="text-center py-4 text-xs text-gray-500 border-t border-gray-700 mt-auto header-bg">
+    <footer class="text-center py-4 text-xs text-gray-500 border-t border-gray-700 light-mode:border-gray-200 mt-auto header-bg">
         Desenvolvido por Emanuel Uchôas
     </footer>
 
