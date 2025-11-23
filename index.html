@@ -167,22 +167,40 @@
             color: #e2e8f0; 
         }
 
-        /* Estilo do Alerta Especial - Invertido */
+        /* Estilo do Alerta Especial - CORREÇÃO DE CONTRASTE NO DARK MODE */
+        /* Light Mode Visual: Fundo claro (red-200), Texto escuro (red-900) */
         .bg-red-800\/20 {
-             /* LIGHT VISUAL */
              background-color: #fecaca; /* bg-red-200 */
              border-color: #ef4444; 
         }
         .text-red-100 {
-            /* LIGHT VISUAL TEXT */
             color: #7f1d1d; /* text-red-900 */
         }
-        .light-mode .bg-red-800\/20 { /* NOVO DARK VISUAL */
-            background-color: rgba(154, 52, 52, 0.2); 
+        /* Dark Mode Visual: Fundo escuro (red-800/20) com MAIS VISIBILIDADE, Texto CLARO (red-100/white) */
+        .light-mode .bg-red-800\/20 { 
+            /* Aumentado o alpha de 0.2 para 0.4 para um vermelho mais forte */
+            background-color: rgba(154, 52, 52, 0.4); 
             border-color: #ef4444; 
         }
-        .light-mode .text-red-100 { /* NOVO DARK VISUAL TEXT */
-            color: #fef2f2; 
+        .light-mode .text-red-100 { 
+            color: #fef2f2; /* Brancoo para contraste! */
+        }
+        
+        /* CORREÇÃO DO LAYOUT DO CABEÇALHO PARA FICAR IGUAL AO LOGO */
+        .header-title-main {
+             font-family: Arial, sans-serif; /* Usar uma fonte simples e bold, como no logo */
+             font-weight: 900;
+        }
+        .header-subtitle {
+             font-weight: 700;
+             margin-top: 4px; /* Mais espaçamento como no logo */
+        }
+        /* FIM DA CORREÇÃO DO CABEÇALHO */
+        
+        /* CORREÇÃO DO TEXTO DO JUBILEU NO DARK MODE (Melhor contraste) */
+        .jubileu-content-text {
+            /* Texto mais claro no Dark Mode Visual */
+            color: #cbd5e1; /* slate-300 */
         }
 
         /* Estilos de layout móvel (manter) */
@@ -211,7 +229,7 @@
             { "date": "01/Nov (Sábado)", "time": "18:00", "title": "Vigília", "location": "Igreja Matriz" },
             { "date": "01/Nov (Sábado)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
             
-            { "date": "02/Nov (Domingo)", "time": "05:00", "title": "Santa Missa", "location": "Cemitério" },
+            { "date": "02/Nov (Domingo)", "time": "05:00", "title": "Santa Missa no Cemitério", "location": "Cemitério" },
             { "date": "02/Nov (Domingo)", "time": "08:00", "title": "Santa Missa Setor 6", "location": "Bairro São José da Mantiqueira" },
             { "date": "02/Nov (Domingo)", "time": "09:00", "title": "Santa Missa", "location": "Igreja Matriz" },
             { "date": "02/Nov (Domingo)", "time": "11:00", "title": "Santa Missa Setor 1", "location": "Bairro Mendes" },
@@ -409,7 +427,7 @@
                     },
                     {
                         time: "08/Dez",
-                        description: "FESTA DA PADROEIRA - Missa Solene e Celebrações Especiais.",
+                        description: "FESTA DA PADROEIRA - Santa Missa Solene e Celebrações Especiais.",
                         isHighlight: true
                     }
                 ]
@@ -469,9 +487,9 @@
 
             if (currentTab === 'agenda' && Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(diffX) > Math.abs(diffY)) {
                 if (diffX < 0) {
-                    navigateDate(1); 
-                } else {
                     navigateDate(-1); 
+                } else {
+                    navigateDate(1); 
                 }
             }
         }
@@ -574,7 +592,7 @@
             renderDatePicker(); 
         }
 
-        // --- Lógica de Alerta de Missa Especial (INTELIGENTE) ---
+        // --- Lógica de Alerta de Santa Missa (INTELIGENTE) ---
         function getNextDay(currentDateStr) {
             const parts = currentDateStr.split('/Nov');
             const dayPart = parseInt(parts[0], 10);
@@ -595,14 +613,13 @@
             const nextDateStr = getNextDay(selectedDate);
             if (!nextDateStr) return '';
 
-            // 1. Filtra eventos para o dia seguinte que sejam Novena/Festa/Missa Especial
+            // 1. Filtra eventos para o dia seguinte que sejam Novena/Festa/Missa em Capela/Bairro
             const tomorrowEvents = AGENDA_DATA.filter(event => 
                 event.date.trim() === nextDateStr && 
                 (event.title.includes("Novena") || event.title.includes("Festa") || 
                  (event.title.includes("Missa") && 
-                  !event.location.includes("Bairro") && 
-                  !event.location.includes("Setor") && 
-                  !event.location.includes("Igreja Matriz") &&
+                  // Incluir: Bairro/Setor/Capela/Cemitério/Hotel, mas não a Matriz
+                  !event.location.includes("Igreja Matriz") && 
                   // REGRA: Excluir Abrigo São Camilo
                   !event.location.includes("Abrigo São Camilo") 
                  )
@@ -616,20 +633,27 @@
                 
                 let title = event.title;
                 let location = event.location;
+                let eventType = title; 
 
                 // Humaniza a localização
                 if (location.includes("Igreja")) location = location.replace('Igreja ', '');
                 if (location.includes("Bairro")) location = location.replace('Bairro ', '');
                 
-                // Humaniza o título
-                if (title.includes("dia da Novena")) title = ` ${title} `;
-                else if (title.includes("Missa")) title = ` Missa Especial `;
-
+                // CORREÇÃO: Usar sempre Santa Missa (e remover o termo "Especial")
+                if (title.includes("dia da Novena")) {
+                    eventType = ` ${title} `;
+                } else if (title.includes("Missa")) {
+                    // Apenas "Santa Missa" no alerta, sem "Especial"
+                    eventType = ` Santa Missa `; 
+                } else {
+                    eventType = ` ${title} `; // Mantém o título original se não for Missa/Novena
+                }
+                
                 // Texto do Alerta
-                const alertText = `Lembrete! ${dayOfWeek}, ${dayOnly} tem ${title} às ${event.time} (${location}).`;
+                const alertText = `Lembrete! ${dayOfWeek}, ${dayOnly} tem ${eventType} às ${event.time} (${location}).`;
 
                 // Classes invertidas: Base usa o visual claro (bg-red-200, text-red-900)
-                // Usando classes CSS hardcoded para garantir a inversão:
+                // O light-mode (Dark Visual) usa texto CLARO e fundo ESCURO.
                 const alertBgClass = currentTheme === 'dark' ? 'bg-red-200 light-mode:bg-red-800/20' : 'bg-red-800/20 light-mode:bg-red-200';
                 const alertTextClass = currentTheme === 'dark' ? 'text-red-900 light-mode:text-red-100' : 'text-red-100 light-mode:text-red-900';
                 const alertBorderClass = 'border-red-500';
@@ -643,7 +667,7 @@
             }
             return '';
         }
-        // --- FIM: Lógica de Alerta de Missa Especial (INTELIGENTE) ---
+        // --- FIM: Lógica de Alerta de Santa Missa (INTELIGENTE) ---
 
 
         function renderAgenda() {
@@ -651,7 +675,7 @@
             if (!container) return;
             container.innerHTML = '';
             
-            // --- Alerta de Missa Especial no Dia Seguinte (INCLUÍDO) ---
+            // --- Alerta de Santa Missa no Dia Seguinte (INCLUÍDO) ---
             const specialAlertHTML = getSpecialAlert(currentSelectedDate);
             if (specialAlertHTML) {
                 container.innerHTML += specialAlertHTML; 
@@ -663,7 +687,7 @@
             if (filteredData.length === 0) {
                 if (!specialAlertHTML) {
                     // Texto no Light Mode agora usa a variável escura para contraste.
-                    container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-[var(--text-dark-blue)] light-mode:text-gray-500">
+                    container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-[var(--text-dark-blue)] light-mode:text-gray-300">
                         <p>Nenhum evento agendado para esta data.</p>
                     </div>`;
                 }
@@ -699,15 +723,15 @@
                 
                 const isMatriz = event.title.includes("Igreja Matriz") || event.location.includes("Igreja Matriz");
                 
-                // TITULO: Invertido - Agora usa o novo Azul Escuro no Light Mode
+                // TITULO: CORRIGIDO! Mais claro para se destacar do fundo no dark mode.
                 const titleColor = isMatriz 
-                    ? 'text-amber-700 light-mode:text-amber-400' 
+                    ? 'text-amber-700 light-mode:text-yellow-200' 
                     : 'text-[var(--text-dark-blue)] light-mode:text-amber-100';
                 
                 // HORA: Invertido
                 const timeColor = 'text-amber-800 light-mode:text-amber-500';
                 
-                // LOCALIZAÇÃO: CORRIGIDO! Usa dark-slate no light mode, e CINZA CLARO no dark mode.
+                // LOCALIZAÇÃO: Usa dark-slate no light mode, e CINZA CLARO no dark mode.
                 const locationColor = 'text-[var(--text-dark-slate)] light-mode:text-gray-300';
 
                 eventDiv.innerHTML = `
@@ -938,18 +962,19 @@
         </div>
     </div>
     
-    <!-- HEADER INVERTIDO -->
+    <!-- HEADER REVISADO PARA FICAR IGUAL AO LOGO -->
     <header class="border-b border-yellow-200 sticky top-0 z-20 shadow-lg header-bg light-mode:border-gray-700">
         <div class="max-w-xl mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- BLOCO ESQUERDO: NOME E LOGÓTIPO (AGORA COM O NOME COMPLETO DA PARÓQUIA) -->
-            <div class="flex items-center gap-3">
+            <!-- BLOCO ESQUERDO: NOME E LOGÓTIPO -->
+            <div class="flex items-start gap-3">
                 <!-- ÍCONE INVERTIDO -->
-                <i data-lucide="church" class="w-8 h-8 text-amber-700 light-mode:text-amber-400"></i>
+                <i data-lucide="church" class="w-8 h-8 text-amber-700 light-mode:text-amber-400 mt-1"></i>
                 <div>
-                    <!-- TEXTO PRINCIPAL: APARÓQUIA -->
-                    <h1 class="text-xl font-bold text-[var(--text-dark-blue)] light-mode:text-amber-100">aparoquia</h1>
-                    <!-- SUBTÍTULO: NOME COMPLETO DA PARÓQUIA E CIDADE -->
-                    <p class="text-xs text-amber-700 light-mode:text-amber-400">Nossa Senhora da Conceição - Virgínia-MG</p>
+                    <!-- TEXTO PRINCIPAL: APARÓQUIA (Fonte Simples para parecer logo) -->
+                    <h1 class="text-xl header-title-main text-[var(--text-dark-blue)] light-mode:text-amber-100">Paróquia Nossa Senhora</h1>
+                    <!-- SUBTÍTULO: NOME COMPLETO DA PARÓQUIA E CIDADE (CORRIGIDO) -->
+                    <p class="text-xl header-title-main text-[var(--text-dark-blue)] light-mode:text-amber-100 leading-none">da Conceição</p>
+                    <p class="text-sm header-subtitle text-amber-700 light-mode:text-amber-400">Virgínia-MG</p>
                 </div>
             </div>
             
@@ -1007,7 +1032,7 @@
             
             <!-- Conteúdo da Agenda (Apenas do Dia Selecionado) -->
             <div id="agenda-content" class="space-y-4">
-                <!-- Conteúdo injetado pelo JavaScript (inclui o Alerta de Missa Especial) -->
+                <!-- Conteúdo injetado pelo JavaScript (inclui o Alerta de Santa Missa) -->
             </div>
         </div>
 
@@ -1033,7 +1058,7 @@
                 <div id="content-hino" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
                     <h3 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-200 text-center">Hino do Jubileu</h3>
                     <!-- TEXTO INVERTIDO -->
-                    <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300">
+                    <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-4">
                         <p class="verse-block">
                             Aqui nesta terra, ornada de serra,<br>
                             Coberta pelo céu azul anil,<br>
@@ -1045,7 +1070,7 @@
                             Nossa Paróquia edificou.
                         </p>
                         
-                        <span class="refrain">
+                        <span class="refrain font-extrabold block mt-3">
                             Soberana da pátria celeste,<br>
                             Velai por Virgínia querida;<br>
                             Nossa Paróquia em festa celebra<br>
@@ -1064,7 +1089,7 @@
                             Guia firme todo o coração.
                         </p>
 
-                        <span class="refrain">
+                        <span class="refrain font-extrabold block mt-3">
                             Soberana da pátria celeste,<br>
                             Velai por Virgínia querida;<br>
                             Nossa Paróquia em festa celebra<br>
@@ -1081,7 +1106,7 @@
                             Nos leve sempre ao Cristo Jesus.
                         </p>
 
-                        <span class="refrain">
+                        <span class="refrain font-extrabold block mt-3">
                             Soberana da pátria celeste,<br>
                             Velai por Virgínia querida;<br>
                             Nossa Paróquia em festa celebra<br>
@@ -1126,7 +1151,7 @@
              <!-- Horários de Missa (Matriz) - INVERTIDO -->
             <div class="card rounded-xl shadow-lg p-5">
                 <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
-                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="church" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Horários de Missa (Matriz)</h2>
+                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="church" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Horários de Santa Missa (Matriz)</h2>
                 <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
                 <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-2">
                     <!-- CORRIGIDO: Usa dark-slate no light mode para legendas em negrito -->
@@ -1145,7 +1170,7 @@
                 <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-3">
                     <div class="flex gap-3 items-start">
                         <i data-lucide="calendar-check" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Fundação:</span> A Paróquia foi criada em 15 de Novembro de 1866, com raízes em 1856, quando Padre Custódio de Oliveira Monte-Raso ergueu a capela.</p>
+                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Fundação:</span> A Paróquia Nossa Senhora da Conceição de Virgínia/MG foi criada em 15 de Novembro de 1866, com raízes em 1856, quando Padre Custódio de Oliveira Monte-Raso ergueu a capela.</p>
                     </div>
                     <div class="flex gap-3 items-start">
                         <i data-lucide="map" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
