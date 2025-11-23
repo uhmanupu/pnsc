@@ -284,7 +284,7 @@
     <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica -->
     <script>
         // Mapeamento da agenda mensal para demonstração (Novembro/2025)
-        // Os dados foram consolidados das imagens enviadas pelo Senhor Supremo.
+        // Os dados foram consolidados das imagens enviadas pelo Senhor Supremo, sem complementos para 'FOLGA'.
         const dailyAgendaData = {
             '1': {
                 dayName: 'SÁBADO',
@@ -314,7 +314,7 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '03/Nov',
                 events: [
-                    { title: 'FOLGA SEMANAL', subtitle: 'Sem Missa na Matriz', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Visita às obras', subtitle: 'Agendamento', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa', subtitle: 'Igreja Nossa Senhora Aparecida', time: '19:00', color: 'parish-blue' },
                 ]
@@ -323,7 +323,7 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '04/Nov',
                 events: [
-                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Confissões', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial (Tarde)', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Morangal', time: '19:00', color: 'parish-blue' },
                 ]
@@ -332,7 +332,7 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '05/Nov',
                 events: [
-                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Visitas', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '10:00', color: 'text-gray-300' },
                     { title: 'Visita aos enfermos', subtitle: 'Agendamento Prévio', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', color: 'parish-blue' },
@@ -389,7 +389,7 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '10/Nov',
                 events: [
-                    { title: 'FOLGA SEMANAL', subtitle: 'Sem Missa na Matriz', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Visita às obras', subtitle: 'Agendamento', time: '09:00', color: 'text-gray-300' },
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Vargem Alegre e Retiro dos Marins', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Pouso Frio', time: '19:00', color: 'parish-blue' },
@@ -399,7 +399,7 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '11/Nov',
                 events: [
-                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Confissões', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Serra Verde e Rio Acima II', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '19:00', color: 'parish-blue' },
@@ -469,7 +469,7 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '17/Nov',
                 events: [
-                    { title: 'FOLGA SEMANAL', subtitle: 'Sem Missa na Matriz', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Atendimento / Confissão (Eucaristia)', subtitle: 'Cidade', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', color: 'parish-blue' },
                 ]
@@ -487,7 +487,7 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '19/Nov',
                 events: [
-                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Visitas', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
                     { title: 'Visita aos enfermos', subtitle: 'Agendamento Prévio', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', color: 'parish-blue' },
@@ -524,7 +524,7 @@
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
                 ]
             },
-            // Dados Mockados para o final do mês, mantendo o padrão do senhor
+            // Dados Mockados para o final do mês, seguindo a nova regra de 'FOLGA'
             '23': {
                 dayName: 'DOMINGO',
                 dateStr: '23/Nov (Cristo Rei)',
@@ -541,7 +541,7 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '24/Nov',
                 events: [
-                    { title: 'FOLGA SEMANAL', subtitle: 'Sem Missa na Matriz', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', color: 'text-gray-300' },
                     { title: 'Visita às obras', subtitle: 'Agendamento', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', color: 'parish-blue' },
@@ -551,7 +551,7 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '25/Nov',
                 events: [
-                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Confissões', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial (Manhã)', time: '09:00', color: 'text-gray-300' },
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', color: 'parish-blue' },
@@ -561,7 +561,7 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '26/Nov',
                 events: [
-                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Visitas', time: '--', color: 'text-gray-500' },
+                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, // Alterado
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
                     { title: 'Visita aos enfermos', subtitle: 'Agendamento Prévio', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', color: 'parish-blue' },
@@ -648,10 +648,11 @@
                     const itemDiv = document.createElement('div');
                     itemDiv.className = `flex justify-between items-start py-4 ${index < data.events.length - 1 ? 'border-b border-gray-700' : ''}`;
                     
+                    // Renderização aprimorada: só inclui a tag de subtítulo se houver subtítulo (para o caso de 'FOLGA')
                     itemDiv.innerHTML = `
                         <div class="flex-grow pr-4">
                             <p class="text-xl font-bold ${titleColorClass}">${event.title}</p>
-                            <p class="text-sm text-gray-400 italic">${event.subtitle}</p>
+                            ${event.subtitle ? `<p class="text-sm text-gray-400 italic">${event.subtitle}</p>` : ''}
                         </div>
                         <span class="text-3xl font-extrabold ${timeColorClass}">${event.time}</span>
                     `;
@@ -754,7 +755,7 @@
             const menuButton = document.getElementById('menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             
-            // MOCK: Dia atual para demonstração (23 de Novembro)
+            // MOCK: Dia atual para demonstração (23 de Novembro - Domingo)
             const currentDayNumber = 23; 
             
             // 1. Toggle do menu mobile
