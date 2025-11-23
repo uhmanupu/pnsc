@@ -284,7 +284,7 @@
     <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica -->
     <script>
         // Mapeamento da agenda mensal para demonstração (Novembro/2025)
-        // Os dados foram consolidados das imagens enviadas pelo Senhor Supremo, sem complementos para atividades gerais como Atendimento e Visitas.
+        // Apenas eventos específicos e Missas foram mantidos, removendo "FOLGA", "Atendimento" genérico e "Visita às obras"
         const dailyAgendaData = {
             '1': {
                 dayName: 'SÁBADO',
@@ -314,8 +314,6 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '03/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Visita às obras', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Santa Missa', subtitle: 'Igreja Nossa Senhora Aparecida', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -323,8 +321,6 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '04/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Morangal', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -332,9 +328,6 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '05/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Atendimento', subtitle: '', time: '10:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Visita aos enfermos', subtitle: '', time: '16:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -342,8 +335,6 @@
                 dayName: 'QUINTA-FEIRA',
                 dateStr: '06/Nov',
                 events: [
-                    { title: 'Atendimento / Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Visita aos enfermos', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
@@ -355,8 +346,6 @@
                 dayName: 'SEXTA-FEIRA',
                 dateStr: '07/Nov',
                 events: [
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Atendimento / Visita Abrigo S. Camilo', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '19:00', color: 'parish-blue' },
@@ -389,8 +378,6 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '10/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Vargem Alegre e Retiro dos Marins', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Pouso Frio', time: '19:00', color: 'parish-blue' },
                 ]
@@ -399,8 +386,6 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '11/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Serra Verde e Rio Acima II', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '19:00', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '19:00', color: 'parish-blue' },
@@ -411,7 +396,6 @@
                 dateStr: '12/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', color: 'parish-blue' },
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Bairro Marques', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 8', subtitle: 'Serra dos Fernandes', time: '19:00', color: 'parish-blue' },
                     { title: 'Formação MESC', subtitle: 'Salão Paroquial', time: '19:00', color: 'parish-blue' },
@@ -421,8 +405,6 @@
                 dayName: 'QUINTA-FEIRA',
                 dateStr: '13/Nov',
                 events: [
-                    { title: 'Atendimento / Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Confissão (Eucaristia)', subtitle: 'Bairro Palmeiras (Retirinho e Lavras)', time: '18:00', color: 'text-gray-300' },
@@ -434,7 +416,6 @@
                 dayName: 'SEXTA-FEIRA',
                 dateStr: '14/Nov',
                 events: [
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '09:00', color: 'text-gray-300' },
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Bairro Moreiras', time: '15:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Mato Dentro', time: '19:00', color: 'parish-blue' },
@@ -469,7 +450,6 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '17/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
                     { title: 'Atendimento / Confissão (Eucaristia)', subtitle: 'Cidade', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', color: 'parish-blue' },
                 ]
@@ -479,7 +459,6 @@
                 dateStr: '18/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', color: 'parish-blue' },
-                    { title: 'Atendimento / Visita às obras', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -487,9 +466,6 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '19/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Visita aos enfermos', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -497,7 +473,6 @@
                 dayName: 'QUINTA-FEIRA',
                 dateStr: '20/Nov',
                 events: [
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Gonçalves', time: '19:00', color: 'parish-blue' },
@@ -508,8 +483,6 @@
                 dayName: 'SEXTA-FEIRA',
                 dateStr: '21/Nov',
                 events: [
-                    { title: 'Atendimento / Visita aos enfermos', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Santa Missa Setor 6', subtitle: 'Bairro Torres', time: '19:00', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 8', subtitle: 'Bairro Caeté', time: '19:00', color: 'parish-blue' },
                 ]
@@ -524,7 +497,7 @@
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
                 ]
             },
-            // Dados Mockados para o final do mês, seguindo a nova regra de 'FOLGA' e 'Atendimento'
+            // Dados Mockados para o final do mês, limpos e sem folgas
             '23': {
                 dayName: 'DOMINGO',
                 dateStr: '23/Nov (Cristo Rei)',
@@ -541,9 +514,6 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '24/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Visita às obras', subtitle: '', time: '16:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -551,8 +521,6 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '25/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', color: 'parish-blue' },
                 ]
@@ -561,9 +529,6 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '26/Nov',
                 events: [
-                    { title: 'FOLGA', subtitle: '', time: '--', color: 'text-gray-500' }, 
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Visita aos enfermos', subtitle: '', time: '16:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -571,7 +536,6 @@
                 dayName: 'QUINTA-FEIRA',
                 dateStr: '27/Nov',
                 events: [
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
                     { title: 'Adoração ao Santíssimo', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
@@ -581,8 +545,6 @@
                 dayName: 'SEXTA-FEIRA',
                 dateStr: '28/Nov',
                 events: [
-                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, // Subtítulo removido
-                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, // Subtítulo removido
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
                 ]
@@ -609,6 +571,63 @@
             }
         };
 
+        // ===============================================
+        // LÓGICA DE NAVEGAÇÃO E GESTOS (SWIPE / PULL-TO-REFRESH)
+        // ===============================================
+        let touchstartX = 0;
+        let touchendX = 0;
+        let touchstartY = 0;
+        let touchendY = 0;
+        const swipeThreshold = 50; // Pixels para detectar swipe horizontal
+        const pullThreshold = 80;  // Pixels para detectar swipe vertical (pull-to-refresh)
+        const topOfPageThreshold = 20; // Limite de scroll para pull-to-refresh
+        const allDays = Object.keys(dailyAgendaData);
+
+        function checkDirection() {
+            const currentDay = document.querySelector('.day-active').id.replace('day-', '');
+            const currentIndex = allDays.indexOf(currentDay);
+            
+            // 1. SWIPE HORIZONTAL (Troca de Dia na Agenda)
+            // Verifica se o swipe horizontal foi mais significativo que o vertical
+            if (Math.abs(touchendX - touchstartX) > swipeThreshold && Math.abs(touchendX - touchstartX) > Math.abs(touchendY - touchstartY)) {
+                if (touchendX < touchstartX) { // Deslizar para a Esquerda (Próximo Dia)
+                    const nextIndex = currentIndex + 1;
+                    if (nextIndex < allDays.length) {
+                        loadDailyAgenda(allDays[nextIndex]);
+                    }
+                } else if (touchendX > touchstartX) { // Deslizar para a Direita (Dia Anterior)
+                    const prevIndex = currentIndex - 1;
+                    if (prevIndex >= 0) {
+                        loadDailyAgenda(allDays[prevIndex]);
+                    }
+                }
+            }
+
+            // 2. SWIPE VERTICAL (Pull-to-Refresh)
+            // Verifica se está perto do topo da página E se foi um swipe forte para baixo
+            if (window.scrollY < topOfPageThreshold && (touchendY > touchstartY) && (touchendY - touchstartY) > pullThreshold) {
+                if (!document.body.classList.contains('is-reloading')) {
+                    document.body.classList.add('is-reloading');
+                    // Adiciona um pequeno delay para a UX antes de recarregar
+                    setTimeout(() => {
+                        location.reload(); 
+                    }, 400); 
+                }
+            }
+        }
+
+        // Adiciona listeners para capturar o início e fim do toque na tela
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+            touchstartY = e.changedTouches[0].screenY;
+        }, false);
+
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            touchendY = e.changedTouches[0].screenY;
+            checkDirection();
+        }, false);
+        
         // Arrays para nomes de dias e meses (em português)
         const dayNamesFull = ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO'];
         const dayNamesShort = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
@@ -632,9 +651,9 @@
             // Limpa o conteúdo anterior
             listContainer.innerHTML = '';
             
-            if (!data) {
-                dayTitle.innerHTML = `Dia ${day}/Nov - Sem Agenda Detalhada`;
-                listContainer.innerHTML = `<p class="text-center text-gray-400 py-8">Nenhuma programação detalhada encontrada para este dia.</p>`;
+            if (!data || data.events.length === 0) {
+                dayTitle.innerHTML = `<span class="text-parish-gold">Dia ${day}/Nov</span><br>Sem Eventos Agendados`;
+                listContainer.innerHTML = `<p class="text-center text-gray-400 py-8">Não há programação pública para este dia.</p>`;
                 
             } else {
                 dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span><br>${data.dateStr}`;
@@ -648,7 +667,7 @@
                     const itemDiv = document.createElement('div');
                     itemDiv.className = `flex justify-between items-start py-4 ${index < data.events.length - 1 ? 'border-b border-gray-700' : ''}`;
                     
-                    // Renderização aprimorada: só inclui a tag de subtítulo se houver subtítulo (para o caso de 'FOLGA', 'Atendimento', etc.)
+                    // Renderização aprimorada: só inclui a tag de subtítulo se houver subtítulo
                     itemDiv.innerHTML = `
                         <div class="flex-grow pr-4">
                             <p class="text-xl font-bold ${titleColorClass}">${event.title}</p>
@@ -668,6 +687,16 @@
             const activeDayButton = document.getElementById(`day-${day}`);
             if(activeDayButton) {
                 activeDayButton.classList.add('day-active');
+                
+                // Rola o carrossel para centralizar o dia ativo
+                const carouselContainer = document.getElementById('day-carousel');
+                setTimeout(() => {
+                    const offset = activeDayButton.offsetLeft - (carouselContainer.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
+                    carouselContainer.scroll({
+                        left: offset,
+                        behavior: 'smooth'
+                    });
+                }, 50); // Pequeno delay para garantir que o layout esteja pronto
             }
         }
 
@@ -701,18 +730,7 @@
                 carouselContainer.appendChild(button);
             }
             
-            // Rola para o dia atual no carrossel
-            const activeDayButton = document.getElementById(`day-${currentDay}`);
-            if(activeDayButton && carouselContainer.scroll) {
-                // Rola para centralizar o botão ativo (ajustado para ser visível)
-                setTimeout(() => {
-                    const offset = activeDayButton.offsetLeft - (carouselContainer.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
-                    carouselContainer.scroll({
-                        left: offset,
-                        behavior: 'smooth'
-                    });
-                }, 100); 
-            }
+            // Não é necessário rolar aqui, pois o loadDailyAgenda faz isso
         }
 
 
