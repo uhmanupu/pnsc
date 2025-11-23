@@ -382,6 +382,66 @@
         let isHinoOpen = false;
         let isOracaoOpen = false;
 
+        // --- GESTURE LOGIC START (Swipe & Pull-to-Refresh) ---
+        let touchstartX = 0;
+        let touchstartY = 0;
+        const SWIPE_THRESHOLD = 80;  // Pixels para deslizar lateralmente
+        const PULL_THRESHOLD = 80;   // Pixels para puxar para atualizar (Pull-to-Refresh)
+
+        // Função para navegar entre os dias
+        function navigateDate(direction) {
+            const currentIndex = uniqueDates.indexOf(currentSelectedDate);
+            const newIndex = currentIndex + direction;
+
+            if (newIndex >= 0 && newIndex < uniqueDates.length) {
+                selectDate(uniqueDates[newIndex]);
+            } else {
+                // Feedback sutil (vibração) quando o limite é atingido
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate(50); 
+                }
+            }
+        }
+
+        function handleTouchStart(e) {
+            touchstartX = e.touches[0].clientX;
+            touchstartY = e.touches[0].clientY;
+        }
+
+        function handleTouchEnd(e) {
+            const touchendX = e.changedTouches[0].clientX;
+            const touchendY = e.changedTouches[0].clientY;
+            const diffX = touchendX - touchstartX;
+            const diffY = touchendY - touchstartY;
+
+            // 1. Lógica de Pull-to-Refresh
+            // Verifica se está no topo da página (scrollTop 0) E puxou para baixo (> PULL_THRESHOLD)
+            // E o movimento vertical foi dominante sobre o horizontal
+            if (document.documentElement.scrollTop === 0 && diffY > PULL_THRESHOLD && Math.abs(diffY) > Math.abs(diffX)) {
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate(100); 
+                }
+                // Recarrega a página do servidor, garantindo a última atualização do index.html
+                location.reload(true); 
+                return; // Termina, pois o P-T-R foi acionado
+            }
+
+            // 2. Lógica de Swipe (apenas se estiver na seção Agenda e movimento horizontal dominante)
+            if (currentTab === 'agenda' && Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX < 0) {
+                    navigateDate(1); // Deslizar para a Esquerda (Próximo Dia)
+                } else {
+                    navigateDate(-1); // Deslizar para a Direita (Dia Anterior)
+                }
+            }
+        }
+
+        // Anexar listeners ao documento para capturar gestos globais (Swipe & P-T-R)
+        document.addEventListener('touchstart', handleTouchStart, { passive: true });
+        document.addEventListener('touchend', handleTouchEnd, { passive: true });
+        // --- GESTURE LOGIC END ---
+
+
         // --- Lógica de Tema (Dark/Light) ---
         let currentTheme = localStorage.getItem('theme') || 'dark'; // Padrão: dark
 
