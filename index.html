@@ -71,6 +71,24 @@
             font-weight: 700; 
             color: #f59e0b;
         }
+        
+        /* NOVIDADES BADGE */
+        .tab-with-badge {
+            position: relative;
+        }
+        .news-badge {
+            position: absolute;
+            top: 2px;
+            right: -2px;
+            background-color: #ef4444; /* Vermelho/Ouro */
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 1px solid #1e293b; /* Garante visibilidade no dark mode */
+        }
+        .light-mode .news-badge {
+             border: 1px solid #ffffff; 
+        }
 
         /* Estilo para a Barra de Dias (Picker) */
         .date-picker-scroll { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
@@ -91,6 +109,11 @@
         .light-mode .date-button {
             background-color: #e2e8f0; /* light slate */
             color: #334155; /* dark slate */
+        }
+        /* FIX (2) : Corrigir a cor do botão ativo no Light Mode */
+        .light-mode .date-button.active {
+            background-color: #d97706; /* Darker Amber/Orange */
+            color: #ffffff; /* White text */
         }
 
         /* CORES DE TEXTO NO DARK MODE */
@@ -122,8 +145,6 @@
             background-color: #f1f5f9; /* Mais claro no tema claro */
         }
         
-        /* Outros estilos omitidos para brevidade, mas estão no ficheiro completo */
-
         .verse-block { 
             margin-bottom: 1.5rem;
             line-height: 1.5;
@@ -145,9 +166,10 @@
         #content-oracao .text-amber-200 { color: #f1f5f9 !important; } 
         #content-oracao .font-bold { font-weight: 400 !important; }
 
+        /* FIX: Z-Index do overlay ajustado para ser o mais alto */
         #mobile-menu-overlay {
             background-color: rgba(15, 23, 42, 0.95);
-            z-index: 40;
+            z-index: 55; /* FIX (1) */
             transition: transform 0.3s ease-in-out;
             transform: translateX(100%); 
         }
@@ -201,7 +223,6 @@
             transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
         }
-        /* Corrigido para ser sempre um botão de WhatsApp (Verde/Âmbar) */
         #main-fab {
             background-color: #25d366; /* WhatsApp Green */
             color: #ffffff; 
@@ -211,7 +232,20 @@
             background-color: #25d366; 
             color: #ffffff;
         }
-        /* REMOVEMOS SUB-FABS */
+
+        /* NOTÍCIAS ESTILO */
+        .news-item {
+            border-left: 4px solid #f59e0b; /* Âmbar Destaque */
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #1f2937; /* Fundo levemente diferente */
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        .light-mode .news-item {
+            background-color: #e2e8f0; 
+            border-left: 4px solid #d97706; 
+        }
 
     </style>
 
@@ -405,15 +439,42 @@
             { "date": "30/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
             { "date": "30/Nov (Domingo)", "time": "19:00", "title": "Terceiro dia da Novena", "location": "Novena" }
         ];
+        
+        // --- DADOS DA ABA NOTÍCIAS (NOVOS) ---
+        // Usamos o localStorage para saber se a Novena é novidade (new_news_version: '1')
+        const NEWS_VERSION = '1';
+        const NEWS_DATA = [
+            {
+                date: "27/Nov a 08/Dez",
+                title: "Grande Novena e Festa da Padroeira (Nossa Senhora da Conceição)",
+                events: [
+                    {
+                        time: "27/Nov, 04:30h",
+                        description: "Procissão da Matriz até a Pedra Santa e Santa Missa em Louvor a Nossa Senhora das Graças.",
+                        isHighlight: true
+                    },
+                    {
+                        time: "28/Nov a 07/Dez",
+                        description: "Novena da Padroeira: Missa diária às 19:00h na Igreja Matriz.",
+                        isHighlight: true
+                    },
+                    {
+                        time: "08/Dez",
+                        description: "FESTA DA PADROEIRA - Missa Solene e Celebrações Especiais.",
+                        isHighlight: true
+                    }
+                ]
+            }
+        ];
 
+        // --- Variáveis de Estado ---
         let uniqueDates = [];
         let currentTab = 'agenda'; 
         let currentSelectedDate = ''; 
         let isMenuOpen = false; // Estado do menu móvel
         let isHinoOpen = false;
         let isOracaoOpen = false;
-        // FAB agora não precisa de estado aberto/fechado, é um clique único
-        
+
         // --- GESTURE LOGIC START (Swipe & Pull-to-Refresh) ---
         let touchstartX = 0;
         let touchstartY = 0;
@@ -447,15 +508,12 @@
             const diffY = touchendY - touchstartY;
 
             // 1. Lógica de Pull-to-Refresh
-            // Verifica se está no topo da página (scrollTop 0) E puxou para baixo (> PULL_THRESHOLD)
-            // E o movimento vertical foi dominante sobre o horizontal
             if (document.documentElement.scrollTop === 0 && diffY > PULL_THRESHOLD && Math.abs(diffY) > Math.abs(diffX)) {
                 if (window.navigator && window.navigator.vibrate) {
                     window.navigator.vibrate(100); 
                 }
-                // Recarrega a página do servidor, garantindo a última atualização do index.html
                 location.reload(true); 
-                return; // Termina, pois o P-T-R foi acionado
+                return;
             }
 
             // 2. Lógica de Swipe (apenas se estiver na seção Agenda e movimento horizontal dominante)
@@ -629,6 +687,65 @@
             container.appendChild(listCard);
             lucide.createIcons();
         }
+
+        // Renderiza a Aba Notícias (Novena)
+        function renderNews() {
+            const container = document.getElementById('noticias-content');
+            if (!container) return;
+            container.innerHTML = '';
+
+            // Título Principal
+            const header = document.createElement('div');
+            header.className = 'news-header text-center mb-6';
+            header.innerHTML = `
+                <i data-lucide="megaphone" class="w-8 h-8 mx-auto text-amber-400 mb-2"></i>
+                <h2 class="text-3xl font-bold text-amber-100">Novidades da Paróquia</h2>
+                <p class="text-sm text-gray-500">Eventos de destaque e comunicados urgentes.</p>
+            `;
+            container.appendChild(header);
+
+            // Lista de Notícias (A Novena)
+            NEWS_DATA.forEach(news => {
+                const newsCard = document.createElement('div');
+                newsCard.className = 'card rounded-xl shadow-lg p-5 space-y-4';
+
+                // Título da Notícia
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'flex items-center gap-3 border-b border-gray-700 pb-3 mb-3 light-mode:border-gray-300';
+                titleDiv.innerHTML = `
+                    <i data-lucide="bell" class="w-6 h-6 text-red-500"></i>
+                    <div>
+                        <p class="font-bold text-xl text-amber-400">${news.title}</p>
+                        <p class="text-sm text-gray-500">${news.date}</p>
+                    </div>
+                `;
+                newsCard.appendChild(titleDiv);
+
+                // Eventos Detalhados da Novena
+                const eventsList = document.createElement('div');
+                eventsList.className = 'space-y-3';
+
+                news.events.forEach(event => {
+                    const eventItem = document.createElement('div');
+                    eventItem.className = 'news-item';
+                    
+                    eventItem.innerHTML = `
+                        <p class="font-bold text-base text-amber-100 light-mode:text-gray-900">${event.description}</p>
+                        <p class="text-sm font-extrabold text-amber-500">${event.time}</p>
+                    `;
+                    eventsList.appendChild(eventItem);
+                });
+
+                newsCard.appendChild(eventsList);
+                container.appendChild(newsCard);
+            });
+            
+            // Remove o badge de "novidade" ao clicar na aba
+            localStorage.setItem('last_news_version', NEWS_VERSION);
+            checkNewsBadge();
+            lucide.createIcons();
+        }
+
         
         // --- Função de Troca de Abas ---
         function switchTab(tabName) {
@@ -641,7 +758,8 @@
 
             // Gerenciar Visibilidade
             document.getElementById('agenda-section').classList.add('hidden');
-            document.getElementById('jubileu-section').classList.add('hidden'); // Nova aba
+            document.getElementById('noticias-section').classList.add('hidden'); // NOVA SEÇÃO
+            document.getElementById('jubileu-section').classList.add('hidden'); 
             document.getElementById('info-section').classList.add('hidden');
             document.getElementById('contatos-section').classList.add('hidden');
             document.getElementById(`${tabName}-section`).classList.remove('hidden');
@@ -659,6 +777,8 @@
             if (tabName === 'agenda') {
                 renderDatePicker(); 
                 renderAgenda(); 
+            } else if (tabName === 'noticias') {
+                renderNews();
             }
             lucide.createIcons();
         }
@@ -671,8 +791,10 @@
 
             if (isMenuOpen) {
                 menuOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden'; 
                 menuIconContainer.innerHTML = `<i data-lucide="x" class="w-6 h-6 text-amber-400"></i>`; // Ícone X
             } else {
+                document.body.style.overflow = 'auto'; // Restaura o scroll
                 menuIconContainer.innerHTML = `<i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>`; // Ícone Menu
                 menuOverlay.classList.remove('open');
             }
@@ -712,12 +834,33 @@
             lucide.createIcons();
         }
 
+        // Verifica e aplica o badge de novidades
+        function checkNewsBadge() {
+            const lastVersion = localStorage.getItem('last_news_version');
+            const badgeDesktop = document.getElementById('noticias-badge');
+            const badgeMobile = document.getElementById('noticias-badge-mobile');
+            
+            if (lastVersion !== NEWS_VERSION) {
+                 if (badgeDesktop) badgeDesktop.classList.remove('hidden');
+                 if (badgeMobile) badgeMobile.classList.remove('hidden');
+                 
+                 // VIBRAR APENAS SE FOR NOVIDADE
+                if (window.navigator && window.navigator.vibrate) {
+                    window.navigator.vibrate([100, 50, 100]); // Dupla vibração sutil
+                }
+            } else {
+                 if (badgeDesktop) badgeDesktop.classList.add('hidden');
+                 if (badgeMobile) badgeMobile.classList.add('hidden');
+            }
+        }
+
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', () => {
             // Aplicar o tema guardado antes de qualquer renderização
             applyTheme(currentTheme); 
             getUniqueDates(); 
+            checkNewsBadge(); // Verifica se precisa mostrar o badge
             switchTab('agenda'); 
             lucide.createIcons();
         });
@@ -727,10 +870,15 @@
 <body class="min-h-screen flex flex-col">
     <!-- Menu Hambúrguer Overlay (Mobile) -->
     <div id="mobile-menu-overlay" class="fixed inset-0 w-full h-full sm:hidden p-4 transition-transform duration-300 transform -translate-x-full">
+        <!-- Z-INDEX 55 (FIX) para garantir que está acima de tudo -->
         <div class="hino-content-bg rounded-xl shadow-2xl p-6 flex flex-col items-start space-y-2 mt-20">
             <h3 class="text-lg font-bold text-amber-400 mb-2">Navegação Principal</h3>
             <button onclick="switchTab('agenda')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="calendar-days" class="w-5 h-5"></i> Agenda</button>
-             <button onclick="switchTab('jubileu')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="crown" class="w-5 h-5"></i> Jubileu 160</button>
+            <button onclick="switchTab('noticias')" class="menu-item flex items-center justify-start gap-3 rounded-lg tab-with-badge">
+                <i data-lucide="bell" class="w-5 h-5"></i> Notícias
+                <span id="noticias-badge-mobile" class="news-badge hidden"></span>
+            </button>
+            <button onclick="switchTab('jubileu')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="crown" class="w-5 h-5"></i> Jubileu 160</button>
             <button onclick="switchTab('info')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="info" class="w-5 h-5"></i> Informações</button>
             <button onclick="switchTab('contatos')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="phone" class="w-5 h-5"></i> Contatos</button>
         </div>
@@ -759,6 +907,7 @@
                     <p class="text-lg font-bold text-amber-200">1866 – 2026</p>
                 </div>
                  <!-- Botão Menu Hambúrguer (APENAS em Mobile) -->
+                <!-- Z-INDEX 50 (FIX) para garantir que está acima da barra de menu (se o z-index do overlay for 55, isto deve funcionar) -->
                 <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-gray-700 transition-colors z-50">
                     <i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>
                 </button>
@@ -769,6 +918,10 @@
         <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-gray-700 overflow-x-auto whitespace-nowrap hidden sm:flex">
             <button id="agenda-btn" onclick="switchTab('agenda')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
                 <i data-lucide="calendar-days" class="w-4 h-4"></i> Agenda
+            </button>
+             <button id="noticias-btn" onclick="switchTab('noticias')" class="tab-button py-3 text-sm flex justify-center items-center gap-2 tab-with-badge">
+                <i data-lucide="bell" class="w-4 h-4"></i> Notícias
+                <span id="noticias-badge" class="news-badge hidden"></span>
             </button>
             <button id="jubileu-btn" onclick="switchTab('jubileu')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
                 <i data-lucide="crown" class="w-4 h-4"></i> Jubileu 160
@@ -797,8 +950,15 @@
                 <!-- Conteúdo injetado pelo JavaScript -->
             </div>
         </div>
+
+        <!-- SEÇÃO 2: NOTÍCIAS (Novena da Padroeira) -->
+        <div id="noticias-section" class="hidden space-y-6">
+            <div id="noticias-content" class="card rounded-xl shadow-lg p-5 space-y-4">
+                 <!-- Conteúdo injetado pelo JavaScript (renderNews) -->
+            </div>
+        </div>
         
-        <!-- SEÇÃO 2: JUBILEU 160 (Hino e Oração) -->
+        <!-- SEÇÃO 3: JUBILEU 160 (Hino e Oração) -->
         <div id="jubileu-section" class="hidden space-y-6">
             <div class="card rounded-xl shadow-lg p-5 space-y-4">
                 <h2 class="text-2xl font-bold mb-4 text-amber-400 text-center">Celebração de 160 Anos</h2>
@@ -996,7 +1156,7 @@
         Desenvolvido por Emanuel Uchôas
     </footer>
 
-    <!-- FAB (Floating Action Button) Container - APENAS WHATSAPP -->
+    <!-- FAB (Floating Action Button) Container - APENNAS WHATSAPP -->
     <div id="fab-container" class="sm:hidden">
         <!-- Botão Principal (Abre o WhatsApp) -->
         <button id="main-fab" onclick="openWhatsApp()" class="fab-button mt-4" aria-label="Abrir WhatsApp">
