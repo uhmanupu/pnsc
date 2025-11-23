@@ -166,7 +166,8 @@
         }
 
         @media (max-width: 640px) { #desktop-tab-bar { display: none; } }
-        @media (min-width: 641px) { #mobile-menu-button { display: none; } }
+        /* O botão de tema agora é visível em SM e abaixo também! */
+        /* Removida a restrição de visibilidade aqui: @media (min-width: 641px) { #mobile-menu-button { display: none; } } */ 
         
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #1e293b; }
@@ -636,8 +637,8 @@
             
             <!-- BLOCO DIREITO: JUBILEU EM DESTAQUE E MENU/TEMA MÓVEL -->
             <div class="flex items-center gap-4">
-                <!-- NOVO: TEMA TOGGLE BUTTON -->
-                <button id="theme-toggle" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-gray-700 light-mode:hover:bg-gray-200 transition-colors hidden sm:block">
+                <!-- TEMA TOGGLE BUTTON (AGORA VISÍVEL EM TUDO) -->
+                <button id="theme-toggle" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-gray-700 light-mode:hover:bg-gray-200 transition-colors">
                     <!-- Ícone injetado pelo JavaScript (sun/moon) -->
                 </button>
                 
