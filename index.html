@@ -5,13 +5,13 @@
     <!-- Configuração PWA/Mobile para Ecrã Inteiro -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- NOME PRINCIPAL DO SITE/APP -->
-    <title>Aparóquia</title>
+    <title>aparoquia</title>
     <!-- Cor da Barra de Status (Padrão Dark Mode) - Alterada dinamicamente pelo JS -->
     <meta name="theme-color" content="#1e293b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <!-- NOME CORRIGIDO PARA A INSTALAÇÃO NA TELA INICIAL (iOS e Android) -->
-    <meta name="apple-mobile-web-app-title" content="Aparóquia">
+    <meta name="apple-mobile-web-app-title" content="aparoquia">
     <meta name="mobile-web-web-app-status-bar-style" content="black-translucent">
     
     <!-- Ícone para compatibilidade (Favicon/Apple) - Reforço -->
@@ -642,7 +642,7 @@
             renderDatePicker(); 
         }
 
-        // --- NOVO: Lógica de Alerta de Missa Especial (INTELIGENTE) ---
+        // --- Lógica de Alerta de Missa Especial (INTELIGENTE) ---
         function getNextDay(currentDateStr) {
             const parts = currentDateStr.split('/Nov');
             const dayPart = parseInt(parts[0], 10);
@@ -671,7 +671,8 @@
                   !event.location.includes("Bairro") && 
                   !event.location.includes("Setor") && 
                   !event.location.includes("Igreja Matriz") &&
-                  !event.location.includes("Abrigo São Camilo") /* NOVO: Exclui missas privadas no Abrigo */
+                  // REGRA: Excluir Abrigo São Camilo
+                  !event.location.includes("Abrigo São Camilo") 
                  )
                 )
             );
@@ -755,7 +756,9 @@
                 const isMatriz = event.title.includes("Igreja Matriz") || event.location.includes("Igreja Matriz");
                 const titleColor = isMatriz ? 'text-amber-400 light-mode:text-amber-700' : 'text-amber-100 light-mode:text-gray-900';
                 const timeColor = 'text-amber-500 light-mode:text-amber-800';
-                const locationColor = 'text-gray-500 light-mode:text-gray-500';
+                
+                // CORREÇÃO DE CONTRASTE: Usando text-gray-700 no light-mode para a localização
+                const locationColor = 'text-gray-500 light-mode:text-gray-700';
 
                 eventDiv.innerHTML = `
                     <div class="flex-1">
@@ -966,7 +969,7 @@
             <ol class="list-decimal list-inside text-sm text-gray-200 light-mode:text-gray-800 space-y-2">
                 <li>Toque no **Menu** do Navegador (os **3 pontinhos** `⋮` ou o **ícone de Partilha** `⇧` ).</li>
                 <li>Procure a opção **"Instalar Aplicativo"** ou **"Adicionar à Tela Inicial"**.</li>
-                <li>Confirme a instalação para ter o ícone da **Aparóquia** na sua tela!</li>
+                <li>Confirme a instalação para ter o ícone da **aparoquia** na sua tela!</li>
             </ol>
 
             <button onclick="dismissInstallPrompt()" class="w-full bg-amber-500 text-white font-bold p-3 rounded-lg hover:bg-amber-600 transition-colors">
@@ -997,7 +1000,8 @@
             <div class="flex items-center gap-3">
                 <i data-lucide="church" class="w-8 h-8 text-amber-400 light-mode:text-amber-700"></i>
                 <div>
-                    <h1 class="text-xl font-bold text-amber-100 light-mode:text-gray-900">Paróquia</h1>
+                    <!-- NOME PRINCIPAL DO APP: aparoquia -->
+                    <h1 class="text-xl font-bold text-amber-100 light-mode:text-gray-900">aparoquia</h1>
                     <p class="text-xs text-amber-400 light-mode:text-amber-700">Nossa Senhora da Conceição</p>
                 </div>
             </div>
@@ -1216,7 +1220,8 @@
                     <i data-lucide="message-square" class="w-6 h-6 text-amber-400 light-mode:text-amber-700"></i>
                     <div>
                         <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">WhatsApp Oficial</p>
-                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-600">(35) 3373-1397</p>
+                        <!-- CORREÇÃO DE CONTRASTE: text-gray-700 no light-mode -->
+                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-700">(35) 3373-1397</p>
                     </div>
                 </a>
                 
@@ -1225,7 +1230,8 @@
                     <i data-lucide="instagram" class="w-6 h-6 text-pink-400 light-mode:text-pink-700"></i>
                     <div>
                         <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">Instagram Oficial</p>
-                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-600">@aparoquia</p>
+                        <!-- CORREÇÃO DE CONTRASTE: text-gray-700 no light-mode -->
+                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-700">@aparoquia</p>
                     </div>
                 </a>
 
@@ -1234,7 +1240,8 @@
                     <i data-lucide="phone" class="w-6 h-6 text-amber-400 light-mode:text-amber-700"></i>
                     <div>
                         <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">Telefone com Ramal</p>
-                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-600">(35) 3261-1217 ramal 8007</p>
+                        <!-- CORREÇÃO DE CONTRASTE: text-gray-700 no light-mode -->
+                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-700">(35) 3261-1217 ramal 8007</p>
                     </div>
                 </a>
 
@@ -1243,7 +1250,8 @@
                     <i data-lucide="mail" class="w-6 h-6 text-red-400 light-mode:text-red-700"></i>
                     <div>
                         <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">E-mail Oficial</p>
-                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-600">paroquiavirginia@yahoo.com.br</p>
+                        <!-- CORREÇÃO DE CONTRASTE: text-gray-700 no light-mode -->
+                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-700">paroquiavirginia@yahoo.com.br</p>
                     </div>
                 </a>
             </div>
@@ -1258,7 +1266,7 @@
         </div>
     </main>
     
-    <footer class="text-center py-4 text-xs text-gray-500 border-t border-gray-700 light-mode:border-gray-200 mt-auto header-bg">
+    <footer class="text-center py-4 text-xs text-gray-500 light-mode:text-gray-700 border-t border-gray-700 light-mode:border-gray-200 mt-auto header-bg">
         Desenvolvido por Emanuel Uchôas
     </footer>
 
