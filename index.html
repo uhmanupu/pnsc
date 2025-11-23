@@ -643,6 +643,7 @@
                 dateStr: '29/Nov',
                 events: [
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', church: 'Matriz', color: 'parish-gold' }, // NOVO EVENTO ADICIONADO
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '16:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Segundo dia da Novena', subtitle: 'Ronda Pastoral', time: '19:00', church: 'External', color: 'parish-red' }, // EXTERNAL
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
@@ -892,15 +893,15 @@
             
             // Reconstroi o carrossel quando a agenda é ativada para garantir o scroll correto
             if (targetId === 'content-agenda') {
-                const currentDayNumber = 27; // Dia mockado para demonstração
+                const currentDayNumber = 29; // Dia mockado para demonstração
                 buildDayCarousel();
                 loadDailyAgenda(currentDayNumber.toString());
             }
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-            // MOCK: Dia atual para demonstração (27 de Novembro - Quinta-feira)
-            const currentDayNumber = 27; 
+            // MOCK: Dia atual para demonstração (29 de Novembro - Sábado)
+            const currentDayNumber = 29; 
             
             // 1. Lógica de Navegação por Abas (Clique)
             document.querySelectorAll('.tab-button').forEach(button => {
