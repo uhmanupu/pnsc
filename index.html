@@ -81,6 +81,12 @@
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
         }
+        /* Novo estilo para o banner minimalista */
+        .minimal-hero {
+            height: 100px; /* Altura super reduzida */
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
     </style>
 </head>
 <body class="text-gray-100">
@@ -116,31 +122,25 @@
         </nav>
     </header>
 
-    <!-- Seção Principal (Hero) -->
-    <section class="relative bg-parish-card h-96 flex items-center justify-center p-4 overflow-hidden shadow-2xl">
+    <!-- Seção Principal (Hero) - AGORA MINIMALISTA -->
+    <section class="relative bg-parish-card minimal-hero flex items-center justify-center p-4 overflow-hidden shadow-2xl">
         <!-- Imagem de fundo/placeholder para a igreja matriz -->
         <div class="absolute inset-0 bg-cover bg-center opacity-30" 
              style="background-image: url('https://placehold.co/1200x600/1e293b/a5b4fc?text=IGREJA+MATRIZ');">
         </div>
         
         <div class="relative text-center text-white">
-            <h1 class="text-4xl sm:text-6xl font-extrabold mb-3 drop-shadow-lg text-parish-gold">
+            <h1 class="text-3xl sm:text-4xl font-extrabold mb-1 drop-shadow-lg text-parish-gold">
                 Nossa Senhora da Conceição
             </h1>
-            <p class="text-xl sm:text-2xl font-light italic mb-8 drop-shadow-md text-gray-300">
+            <p class="text-sm sm:text-base font-light italic drop-shadow-md text-gray-300">
                 Virgínia, Diocese de Campanha - MG.
             </p>
-            <!-- O botão principal ativa a aba da Agenda -->
-            <button onclick="showSection('content-agenda')" class="btn-primary inline-flex items-center bg-parish-gold text-parish-dark font-bold py-3 px-8 rounded-full shadow-xl transition duration-300 transform hover:scale-105">
-                Ver Agenda de Missas
-                <!-- Ícone Lucide Calendar (simples SVG) -->
-                <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            </button>
         </div>
     </section>
 
     <!-- CONTAINER PRINCIPAL DE CONTEÚDO (Controlado por JS) -->
-    <main class="container mx-auto px-4 py-16">
+    <main class="container mx-auto px-4 py-10">
         
         <!-- ========================================================= -->
         <!-- SEÇÃO 1: AGENDA (VISÍVEL POR PADRÃO) -->
@@ -153,8 +153,9 @@
                 <!-- Estes botões serão preenchidos via JavaScript -->
             </div>
 
-            <!-- Título do Dia Selecionado -->
-            <h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-8"></h3>
+            <!-- Título do Dia Selecionado + Dia Litúrgico -->
+            <h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-2"></h3>
+            <p id="liturgical-day" class="text-xl font-semibold text-center text-parish-blue mb-8"></p>
 
             <!-- Aviso Importante (Cor de destaque Vermelho Forte) -->
             <div class="bg-parish-red/10 border-l-4 border-parish-red p-4 rounded-lg mb-8 shadow-xl">
@@ -288,7 +289,8 @@
         const dailyAgendaData = {
             '1': {
                 dayName: 'SÁBADO',
-                dateStr: '01/Nov (Todos os Santos)',
+                liturgical: 'SOLENIDADE de Todos os Santos',
+                dateStr: '01/Nov',
                 events: [
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '09:00', color: 'parish-blue' },
                     { title: 'Benção', subtitle: 'Bairro Marques', time: '11:00', color: 'parish-blue' },
@@ -300,7 +302,8 @@
             },
             '2': {
                 dayName: 'DOMINGO',
-                dateStr: '02/Nov (Finados)',
+                liturgical: 'Comemoração de Todos os Fiéis Defuntos',
+                dateStr: '02/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Cemitério', time: '05:00', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 6', subtitle: 'Bairro São José da Mantiqueira', time: '08:00', color: 'parish-blue' },
@@ -312,6 +315,7 @@
             },
             '3': {
                 dayName: 'SEGUNDA-FEIRA',
+                liturgical: 'Segunda-feira da 31ª Semana do Tempo Comum',
                 dateStr: '03/Nov',
                 events: [
                     { title: 'Visita às obras', subtitle: '', time: '14:00', color: 'text-gray-300' }, 
@@ -320,6 +324,7 @@
             },
             '4': {
                 dayName: 'TERÇA-FEIRA',
+                liturgical: 'Terça-feira da 31ª Semana do Tempo Comum',
                 dateStr: '04/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, 
@@ -328,6 +333,7 @@
             },
             '5': {
                 dayName: 'QUARTA-FEIRA',
+                liturgical: 'Quarta-feira da 31ª Semana do Tempo Comum',
                 dateStr: '05/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '10:00', color: 'text-gray-300' }, 
@@ -337,6 +343,7 @@
             },
             '6': {
                 dayName: 'QUINTA-FEIRA',
+                liturgical: 'Memória de São Nuno de Santa Maria, Religioso',
                 dateStr: '06/Nov',
                 events: [
                     { title: 'Atendimento / Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -350,6 +357,7 @@
             },
             '7': {
                 dayName: 'SEXTA-FEIRA',
+                liturgical: 'Sexta-feira da 31ª Semana do Tempo Comum',
                 dateStr: '07/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -361,6 +369,7 @@
             },
             '8': {
                 dayName: 'SÁBADO',
+                liturgical: 'Memória de Nossa Senhora no Sábado',
                 dateStr: '08/Nov',
                 events: [
                     { title: 'Casamento', subtitle: 'Igreja São José', time: '09:00', color: 'parish-blue' },
@@ -372,6 +381,7 @@
             },
             '9': {
                 dayName: 'DOMINGO',
+                liturgical: 'FESTA da Dedicação da Basílica de Latrão',
                 dateStr: '09/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', color: 'parish-gold' },
@@ -384,6 +394,7 @@
             },
             '10': {
                 dayName: 'SEGUNDA-FEIRA',
+                liturgical: 'Memória de São Leão Magno, Papa e Doutor',
                 dateStr: '10/Nov',
                 events: [
                     { title: 'Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -393,6 +404,7 @@
             },
             '11': {
                 dayName: 'TERÇA-FEIRA',
+                liturgical: 'Memória de São Martinho de Tours, Bispo',
                 dateStr: '11/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -403,6 +415,7 @@
             },
             '12': {
                 dayName: 'QUARTA-FEIRA',
+                liturgical: 'Memória de São Josafat, Bispo e Mártir',
                 dateStr: '12/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', color: 'parish-blue' },
@@ -414,6 +427,7 @@
             },
             '13': {
                 dayName: 'QUINTA-FEIRA',
+                liturgical: 'Quinta-feira da 32ª Semana do Tempo Comum',
                 dateStr: '13/Nov',
                 events: [
                     { title: 'Atendimento / Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -427,6 +441,7 @@
             },
             '14': {
                 dayName: 'SEXTA-FEIRA',
+                liturgical: 'Sexta-feira da 32ª Semana do Tempo Comum',
                 dateStr: '14/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -438,7 +453,8 @@
             },
             '15': {
                 dayName: 'SÁBADO',
-                dateStr: '15/Nov (Abertura Ano Jubilar)',
+                liturgical: 'SÁBADO: Abertura Ano Jubilar',
+                dateStr: '15/Nov',
                 events: [
                     { title: 'Abertura Ano Jubilar', subtitle: 'Pouso Alto', time: '08:00', color: 'parish-blue' },
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '09:00', color: 'parish-blue' },
@@ -450,6 +466,7 @@
             },
             '16': {
                 dayName: 'DOMINGO',
+                liturgical: 'XXXIII Domingo do Tempo Comum',
                 dateStr: '16/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', color: 'parish-gold' },
@@ -462,6 +479,7 @@
             },
             '17': {
                 dayName: 'SEGUNDA-FEIRA',
+                liturgical: 'Memória de Santa Isabel da Hungria, Religiosa',
                 dateStr: '17/Nov',
                 events: [
                     { title: 'Atendimento / Confissão (Eucaristia)', subtitle: 'Cidade', time: '14:00', color: 'text-gray-300' },
@@ -470,6 +488,7 @@
             },
             '18': {
                 dayName: 'TERÇA-FEIRA',
+                liturgical: 'Memória da Dedicação das Basílicas de S. Pedro e S. Paulo',
                 dateStr: '18/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', color: 'parish-blue' },
@@ -479,6 +498,7 @@
             },
             '19': {
                 dayName: 'QUARTA-FEIRA',
+                liturgical: 'Quarta-feira da 33ª Semana do Tempo Comum',
                 dateStr: '19/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -488,6 +508,7 @@
             },
             '20': {
                 dayName: 'QUINTA-FEIRA',
+                liturgical: 'Quinta-feira da 33ª Semana do Tempo Comum',
                 dateStr: '20/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -499,6 +520,7 @@
             },
             '21': {
                 dayName: 'SEXTA-FEIRA',
+                liturgical: 'Memória da Apresentação da Virgem Santa Maria',
                 dateStr: '21/Nov',
                 events: [
                     { title: 'Atendimento / Visita aos enfermos', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -509,6 +531,7 @@
             },
             '22': {
                 dayName: 'SÁBADO',
+                liturgical: 'Memória de Santa Cecília, Virgem e Mártir',
                 dateStr: '22/Nov',
                 events: [
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', color: 'parish-blue' },
@@ -520,7 +543,8 @@
             // Dados Mockados para o final do mês, com Atendimentos e Visitas mantidos
             '23': {
                 dayName: 'DOMINGO',
-                dateStr: '23/Nov (Cristo Rei)',
+                liturgical: 'SOLENIDADE de Nosso Senhor Jesus Cristo, Rei do Universo',
+                dateStr: '23/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', color: 'parish-blue' },
@@ -532,6 +556,7 @@
             },
             '24': {
                 dayName: 'SEGUNDA-FEIRA',
+                liturgical: 'Feria do Tempo Comum',
                 dateStr: '24/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, 
@@ -541,6 +566,7 @@
             },
              '25': {
                 dayName: 'TERÇA-FEIRA',
+                liturgical: 'Feria do Tempo Comum',
                 dateStr: '25/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -550,6 +576,7 @@
             },
             '26': {
                 dayName: 'QUARTA-FEIRA',
+                liturgical: 'Feria do Tempo Comum',
                 dateStr: '26/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, 
@@ -559,6 +586,7 @@
             },
             '27': {
                 dayName: 'QUINTA-FEIRA',
+                liturgical: 'Feria do Tempo Comum',
                 dateStr: '27/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
@@ -569,6 +597,7 @@
             },
             '28': {
                 dayName: 'SEXTA-FEIRA',
+                liturgical: 'Feria do Tempo Comum',
                 dateStr: '28/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, 
@@ -579,6 +608,7 @@
             },
             '29': {
                 dayName: 'SÁBADO',
+                liturgical: 'Feria do Tempo Comum',
                 dateStr: '29/Nov',
                 events: [
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', color: 'parish-blue' },
@@ -588,7 +618,8 @@
             },
             '30': {
                 dayName: 'DOMINGO',
-                dateStr: '30/Nov (1º Adv. - Mock)',
+                liturgical: '1º DOMINGO DO ADVENTO',
+                dateStr: '30/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '08:30', color: 'parish-blue' },
@@ -678,16 +709,23 @@
             const data = dailyAgendaData[day];
             const listContainer = document.getElementById('daily-agenda-list');
             const dayTitle = document.getElementById('current-day-title');
+            const liturgicalDay = document.getElementById('liturgical-day');
             
             // Limpa o conteúdo anterior
             listContainer.innerHTML = '';
-            
+            liturgicalDay.innerHTML = '';
+
             if (!data || data.events.length === 0) {
-                dayTitle.innerHTML = `<span class="text-parish-gold">Dia ${day}/Nov</span><br>Sem Eventos Agendados`;
+                dayTitle.innerHTML = `<span class="text-parish-gold">Dia ${day}/Nov</span>, Sem Eventos Agendados`;
                 listContainer.innerHTML = `<p class="text-center text-gray-400 py-8">Não há programação pública para este dia.</p>`;
                 
             } else {
-                dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span><br>${data.dateStr}`;
+                dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span>, ${data.dateStr}`;
+                
+                // Adiciona o dia litúrgico
+                if (data.liturgical) {
+                    liturgicalDay.innerHTML = data.liturgical;
+                }
 
                 data.events.forEach((event, index) => {
                     // Determina as cores com base no campo 'color'
@@ -754,7 +792,7 @@
                 button.setAttribute('onclick', `loadDailyAgenda('${day}')`);
                 
                 button.innerHTML = `
-                    <span class="block text-xl">${day}</span>
+                    <span class="block text-xl">${i}</span>
                     <span class="block text-xs">${dayNames.short}</span>
                 `;
                 
