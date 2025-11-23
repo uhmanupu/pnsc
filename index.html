@@ -6,14 +6,17 @@
     <title>Paróquia Nossa Senhora da Conceição - Virgínia/MG</title>
     <!-- Carrega o Tailwind CSS CDN para estilização -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configuração personalizada do Tailwind para um visual mais devocional (azul marinho e dourado) -->
+    <!-- Configuração personalizada do Tailwind para um visual mais devocional (azul profundo e dourado) -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'parish-blue': '#1D4ED8', // Azul profundo/marinho
-                        'parish-gold': '#FBBF24', // Amarelo/Dourado
+                        'parish-dark': '#0e1428', // Fundo principal, azul muito escuro
+                        'parish-card': '#1a2039', // Fundo dos cards, ligeiramente mais claro
+                        'parish-blue': '#3b82f6', // Azul claro para destaque (para eventos externos/secundários)
+                        'parish-gold': '#FBBF24', // Dourado forte para contraste (para eventos principais)
+                        'parish-red': '#dc2626', // Vermelho para avisos importantes
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -23,10 +26,11 @@
         }
     </script>
     <style>
-        /* Estilos customizados para a fonte Inter e fundo */
+        /* Estilos customizados para a fonte Inter e fundo Dark Mode */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f8f8;
+            background-color: #0e1428; /* Fundo principal escuro */
+            color: #f1f1f1; /* Texto padrão claro */
         }
         .section-title {
             position: relative;
@@ -46,17 +50,46 @@
         /* Efeito de hover no botão principal */
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(29, 78, 216, 0.4);
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.4); /* Sombra dourada */
+        }
+        /* Estilo para a aba ativa na navegação principal */
+        .nav-active {
+            color: #FBBF24 !important; /* Dourado */
+            border-color: #FBBF24 !important; /* Dourado */
+        }
+        /* Estilo para o carrossel de dias */
+        .day-active {
+            background-color: #FBBF24 !important; /* Dourado */
+            color: #0e1428 !important; /* Dark */
+            font-weight: 800;
+        }
+        .day-button {
+            transition: all 0.2s;
+            min-width: 70px; /* Aumentado para melhor toque/clique */
+            margin-right: 8px; /* Espaçamento entre os botões */
+        }
+        /* Garante que o carrossel seja scrollable */
+        #day-carousel {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* Melhora o scroll em iOS */
+        }
+        /* Esconde a barra de scroll horizontal */
+        #day-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        #day-carousel {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="text-gray-100">
 
-    <!-- Navbar Responsiva -->
-    <header class="bg-parish-blue shadow-lg sticky top-0 z-50">
+    <!-- Navbar Responsiva (Dark Mode) -->
+    <header class="bg-parish-card shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-white tracking-wider">
-                Virgínia/MG
+            <a href="#" class="text-2xl font-extrabold text-parish-gold tracking-wider">
+                APARÓQUIA
             </a>
             
             <!-- Botão do Menu Mobile (Ícone Lucide Menu) -->
@@ -64,64 +97,103 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
             </button>
 
-            <!-- Links de Navegação Desktop -->
-            <nav class="hidden md:flex space-x-6">
-                <a href="#historia" class="text-white hover:text-parish-gold transition duration-300">História</a>
-                <a href="#missas" class="text-white hover:text-parish-gold transition duration-300">Missas e Agenda</a>
-                <a href="#contato" class="text-white hover:text-parish-gold transition duration-300">Contato</a>
-                <a href="https://diocesedacampanha.org.br/" target="_blank" class="text-parish-gold border border-parish-gold px-3 py-1 rounded-full hover:bg-parish-gold hover:text-parish-blue transition duration-300">Diocese</a>
+            <!-- Links de Navegação Desktop (Usados como abas) -->
+            <nav class="hidden md:flex space-x-6 text-lg font-semibold" id="desktop-nav">
+                <!-- Data-target aponta para o ID da seção de conteúdo -->
+                <a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold pb-1 transition duration-300" data-target="content-agenda">Agenda</a>
+                <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300" data-target="content-historia">História</a>
+                <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300" data-target="content-contato">Contatos</a>
+                <a href="https://diocesedacampanha.org.br/" target="_blank" class="text-parish-blue border border-parish-blue px-3 py-1 rounded-full hover:bg-parish-blue hover:text-white transition duration-300">Diocese</a>
             </nav>
         </div>
 
-        <!-- Menu Mobile (oculto por padrão) -->
-        <nav id="mobile-menu" class="hidden md:hidden bg-parish-blue/95 pb-2">
-            <a href="#historia" class="block text-white py-2 px-4 hover:bg-parish-blue/70">História</a>
-            <a href="#missas" class="block text-white py-2 px-4 hover:bg-parish-blue/70">Missas e Agenda</a>
-            <a href="#contato" class="block text-white py-2 px-4 hover:bg-parish-blue/70">Contato</a>
-            <a href="https://diocesedacampanha.org.br/" target="_blank" class="block text-parish-gold py-2 px-4 hover:bg-parish-gold hover:text-parish-blue">Diocese de Campanha</a>
+        <!-- Menu Mobile (oculto por padrão) (Usados como abas) -->
+        <nav id="mobile-menu" class="hidden md:hidden bg-parish-card/95 pb-2">
+            <a href="#" class="block tab-button text-parish-gold py-2 px-4 border-l-4 border-parish-gold bg-parish-card/70" data-target="content-agenda">Agenda</a>
+            <a href="#" class="block tab-button text-white py-2 px-4 hover:bg-parish-card/70" data-target="content-historia">História</a>
+            <a href="#" class="block tab-button text-white py-2 px-4 hover:bg-parish-card/70" data-target="content-contato">Contatos</a>
+            <a href="https://diocesedacampanha.org.br/" target="_blank" class="block text-parish-blue py-2 px-4 hover:bg-parish-blue hover:text-white">Diocese de Campanha</a>
         </nav>
     </header>
 
     <!-- Seção Principal (Hero) -->
-    <section class="relative bg-parish-blue h-96 flex items-center justify-center p-4 overflow-hidden">
+    <section class="relative bg-parish-card h-96 flex items-center justify-center p-4 overflow-hidden shadow-2xl">
         <!-- Imagem de fundo/placeholder para a igreja matriz -->
-        <div class="absolute inset-0 bg-cover bg-center opacity-40" 
-             style="background-image: url('https://placehold.co/1200x600/102b70/ffffff?text=IGREJA+MATRIZ');">
+        <div class="absolute inset-0 bg-cover bg-center opacity-30" 
+             style="background-image: url('https://placehold.co/1200x600/1e293b/a5b4fc?text=IGREJA+MATRIZ');">
         </div>
         
         <div class="relative text-center text-white">
-            <h1 class="text-4xl sm:text-6xl font-extrabold mb-3 drop-shadow-lg">
-                Paróquia Nossa Senhora da Conceição
+            <h1 class="text-4xl sm:text-6xl font-extrabold mb-3 drop-shadow-lg text-parish-gold">
+                Nossa Senhora da Conceição
             </h1>
-            <p class="text-xl sm:text-2xl font-light italic mb-8 drop-shadow-md">
+            <p class="text-xl sm:text-2xl font-light italic mb-8 drop-shadow-md text-gray-300">
                 Virgínia, Diocese de Campanha - MG.
             </p>
-            <a href="#missas" class="btn-primary inline-flex items-center bg-parish-gold text-parish-blue font-bold py-3 px-8 rounded-full shadow-xl transition duration-300 transform hover:scale-105">
-                Ver Horários de Missa
+            <!-- O botão principal ativa a aba da Agenda -->
+            <button onclick="showSection('content-agenda')" class="btn-primary inline-flex items-center bg-parish-gold text-parish-dark font-bold py-3 px-8 rounded-full shadow-xl transition duration-300 transform hover:scale-105">
+                Ver Agenda de Missas
                 <!-- Ícone Lucide Calendar (simples SVG) -->
                 <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            </a>
+            </button>
         </div>
     </section>
 
+    <!-- CONTAINER PRINCIPAL DE CONTEÚDO (Controlado por JS) -->
     <main class="container mx-auto px-4 py-16">
+        
+        <!-- ========================================================= -->
+        <!-- SEÇÃO 1: AGENDA (VISÍVEL POR PADRÃO) -->
+        <!-- ========================================================= -->
+        <section id="content-agenda" class="content-section mb-20">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Agenda Mensal</h2>
 
-        <!-- Seção 1: História da Paróquia -->
-        <section id="historia" class="mb-20 bg-white p-8 rounded-xl shadow-2xl">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-blue mb-10">Nossa História de Fé</h2>
+            <!-- Carrossel de Dias (Navegação) -->
+            <div id="day-carousel" class="flex flex-row justify-start space-x-2 sm:space-x-4 mb-8 p-4 bg-parish-card rounded-xl shadow-lg whitespace-nowrap">
+                <!-- Estes botões serão preenchidos via JavaScript -->
+            </div>
+
+            <!-- Título do Dia Selecionado -->
+            <h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-8"></h3>
+
+            <!-- Aviso Importante (Cor de destaque Vermelho Forte) -->
+            <div class="bg-parish-red/10 border-l-4 border-parish-red p-4 rounded-lg mb-8 shadow-xl">
+                <p class="font-bold text-parish-red flex items-center">
+                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-triangle"><path d="m21.73 18-9-16c-.36-.67-1.42-.67-1.78 0l-9 16c-.32.6-.08 1.3.66 1.3h17.16c.73 0 1.05-.7.66-1.3z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                    ATENÇÃO:
+                </p>
+                <p class="text-sm mt-1 text-gray-200">
+                    A agenda das Comunidades Rurais (43 setores) deve ser confirmada diretamente na Secretaria Paroquial.
+                </p>
+            </div>
+
+
+            <!-- Lista de Eventos do Dia (Container Dinâmico) -->
+            <div id="daily-agenda-list" class="bg-parish-card p-6 rounded-xl shadow-2xl space-y-4">
+                <!-- Conteúdo da agenda será injetado aqui pelo JavaScript -->
+            </div>
+            
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- SEÇÃO 2: HISTÓRIA (OCULTA POR PADRÃO) -->
+        <!-- ========================================================= -->
+        <section id="content-historia" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Nossa História de Fé</h2>
             
             <div class="md:flex md:space-x-8 items-center">
                 <div class="md:w-1/2">
-                    <p class="mb-4 text-lg leading-relaxed">
+                    <p class="mb-4 text-lg leading-relaxed text-gray-300">
                         A história da Paróquia Nossa Senhora da Conceição, em Virgínia/MG, remonta à segunda metade do século XIX, sendo oficialmente <strong class="text-parish-blue">criada em 15 de novembro de 1866</strong>.
                     </p>
-                    <p class="mb-4 text-lg leading-relaxed">
+                    <p class="mb-4 text-lg leading-relaxed text-gray-300">
                         O marco inicial foi a passagem do <strong class="text-parish-blue">Padre Custódio de Oliveira Monte-Raso</strong>, que, sensibilizado pela distância que os moradores tinham que percorrer até a freguesia de Pouso Alto, sugeriu a construção de uma capela.
                     </p>
-                    <p class="mb-4 text-lg leading-relaxed">
+                    <p class="mb-4 text-lg leading-relaxed text-gray-300">
                         Em um ato de profunda devoção, os fazendeiros Diogo José Labat Uchôas e Francisco Ribeiro Pires doaram terras para a edificação do templo. A capela foi dedicada à <strong class="text-parish-gold">Nossa Senhora da Conceição</strong>, e a nova povoação recebeu o nome de **"Virgínea"** (que mais tarde se tornou Virgínia), uma homenagem à Virgem Santíssima e em alusão à mata virgem que cobria o local.
                     </p>
-                    <p class="text-lg font-semibold text-gray-600">
+                    <p class="text-lg font-semibold text-parish-blue mt-4">
                         Somos uma comunidade de fé com mais de 150 anos de história, filiada à Diocese de Campanha.
                     </p>
                 </div>
@@ -136,92 +208,55 @@
             </div>
         </section>
 
-        <!-- Seção 2: Horários de Missas e Agenda -->
-        <section id="missas" class="mb-20">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-blue mb-10">Horários de Missa e Celebrações</h2>
-
-            <div class="flex flex-wrap justify-center gap-8">
-                <!-- Card Horários Matriz -->
-                <div class="bg-white p-6 md:p-8 rounded-xl shadow-2xl border-t-4 border-parish-gold w-full max-w-md">
-                    <h3 class="text-2xl font-bold text-parish-blue mb-4 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-parish-gold" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-church"><path d="M18 7c0-2.76-2.01-5-4.5-5S9 4.24 9 7v1h-2v4h2v8h6v-8h2V7z"/><line x1="12" x2="12" y1="22" y2="15"/><path d="M7 15h10"/></svg>
-                        Igreja Matriz
-                    </h3>
-                    <p class="text-lg text-gray-600 mb-6 italic">Nossa Senhora da Conceição</p>
-                    
-                    <ul class="space-y-3">
-                        <li class="flex justify-between items-center text-lg border-b pb-2">
-                            <span class="font-semibold text-gray-700">Sábado:</span>
-                            <span class="text-parish-blue font-bold">16:00h e 19:00h</span>
-                        </li>
-                        <li class="flex justify-between items-center text-lg border-b pb-2">
-                            <span class="font-semibold text-gray-700">Domingo:</span>
-                            <span class="text-parish-blue font-bold">07:00h, 09:00h e 19:00h</span>
-                        </li>
-                        <li class="flex justify-between items-center text-lg pt-2">
-                            <span class="font-semibold text-gray-700">Outras:</span>
-                            <span class="text-sm text-gray-500 italic">Consultar avisos paroquiais (Novena, etc.)</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Card Avisos Paroquiais -->
-                <div class="bg-parish-blue text-white p-6 md:p-8 rounded-xl shadow-2xl border-t-4 border-parish-gold w-full max-w-md">
-                    <h3 class="text-2xl font-bold mb-4 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-parish-gold" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-megaphone"><path d="m3 11 18-5v12l-18 5z"/><path d="M7 11v11"/><path d="M14 6v12"/></svg>
-                        Avisos Importantes
-                    </h3>
-                    <ul class="space-y-3 list-disc list-inside text-lg">
-                        <li>Festa da Padroeira: <strong class="text-parish-gold">08 de Dezembro</strong> (Imaculada Conceição).</li>
-                        <li>Procure a secretaria para batizados e casamentos.</li>
-                        <li>Visitas aos enfermos devem ser agendadas.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seção 3: Contato e Localização -->
-        <section id="contato" class="mb-16 bg-white p-8 rounded-xl shadow-2xl">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-blue mb-10">Secretaria Paroquial e Contato</h2>
+        <!-- ========================================================= -->
+        <!-- SEÇÃO 3: CONTATO (OCULTA POR PADRÃO) -->
+        <!-- ========================================================= -->
+        <section id="content-contato" class="content-section mb-16 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Secretaria Paroquial e Contato</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Informações de Contato -->
                 <div>
-                    <h3 class="text-2xl font-semibold mb-4 text-gray-700">Fale Conosco</h3>
+                    <h3 class="text-2xl font-semibold mb-4 text-parish-blue">Fale Conosco</h3>
                     <div class="space-y-4">
-                        <p class="flex items-center text-lg">
+                        <p class="flex items-center text-lg text-gray-300">
                             <!-- Ícone Lucide Map Pin -->
                             <svg class="w-5 h-5 mr-3 text-parish-gold" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                             <strong class="font-bold">Endereço:</strong> Praça Cônego Monte Raso, nº 304, Virgínia/MG
                         </p>
-                        <p class="flex items-center text-lg">
+                        <p class="flex items-center text-lg text-gray-300">
                             <!-- Ícone Lucide Phone -->
                             <svg class="w-5 h-5 mr-3 text-parish-gold" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-4.7-5.74A19.5 19.5 0 0 1 2 12.18V8a2 2 0 0 1 2-2h3.92a2 2 0 0 1 1.84 1.18l.7 1.4a2 2 0 0 0 1.5 1.18h.61a2 2 0 0 0 1.5-1.18l.7-1.4A2 2 0 0 1 18.08 6H22a2 2 0 0 1 2 2v3.92"/></svg>
                             <strong class="font-bold">Telefone:</strong> (35) 3373-1397
                         </p>
-                        <p class="flex items-center text-lg">
+                        <p class="flex items-center text-lg text-gray-300">
                             <!-- Ícone Lucide Mail -->
                             <svg class="w-5 h-5 mr-3 text-parish-gold" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                             <strong class="font-bold">E-mail:</strong> <a href="mailto:paroquiavirginia@yahoo.com.br" class="text-parish-blue hover:underline">paroquiavirginia@yahoo.com.br</a>
                         </p>
-                        <p class="flex items-center text-lg">
+                        
+                        <!-- DADOS DO CLERO -->
+                        <p class="flex items-center text-lg text-gray-300">
                             <!-- Ícone Lucide User -->
                             <svg class="w-5 h-5 mr-3 text-parish-gold" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            <strong class="font-bold">Administrador Paroquial:</strong> Pe. Saymont Aloísio Resende
+                            <strong class="font-bold text-parish-gold">Administrador Paroquial:</strong> Pe. Érick de Oliveira e Silva
                         </p>
-                        <!-- NOVO DADO: Vigário Paroquial -->
-                        <p class="flex items-center text-lg">
+                        <p class="flex items-center text-lg text-gray-300">
                             <!-- Ícone Lucide Users (para a equipe de padres) -->
                             <svg class="w-5 h-5 mr-3 text-parish-gold" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            <strong class="font-bold">Vigário Paroquial:</strong> Pe. Érick de Oliveira e Silva
+                            <strong class="font-bold text-parish-gold">Vigário Paroquial:</strong> Pe. Edimilson Luiz Ribeiro, SF
                         </p>
+                        <!-- AVISO DE ATUALIZAÇÃO -->
+                        <div class="mt-4 p-2 bg-parish-red/20 text-parish-red rounded-lg text-sm font-semibold">
+                            <p>⚠️ Se os nomes dos Padres estiverem desatualizados para 2025, por favor, edite as linhas acima para a correção.</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Mapa / Iframe Placeholder -->
                 <div class="rounded-xl overflow-hidden shadow-xl">
-                    <h3 class="text-2xl font-semibold mb-4 text-gray-700">Localização</h3>
-                    <!-- Placeholder de mapa (você pode substituir por um iframe do Google Maps) -->
+                    <h3 class="text-2xl font-semibold mb-4 text-parish-blue">Localização</h3>
+                    <!-- Mapa do Google Maps -->
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14820.751688647575!2d-45.05068225!3d-22.3804812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c9794d216d7a4b%3A0x8670c53d6199f1a0!2sVirg%C3%ADnia%2C%20MG%2C%2037465-000!5e0!3m2!1spt-BR!2sbr!4v1700684200000!5m2!1spt-BR!2sbr" 
                         width="100%" 
@@ -239,30 +274,511 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8">
+    <footer class="bg-gray-900 text-gray-400 py-8">
         <div class="container mx-auto px-4 text-center">
-            <p class="mb-2">&copy; 2024 Paróquia Nossa Senhora da Conceição, Virgínia/MG. Todos os direitos reservados.</p>
-            <p class="text-sm text-gray-400">Desenvolvido para GitHub Pages | Diocese de Campanha.</p>
+            <p class="mb-2">&copy; 2025 Paróquia Nossa Senhora da Conceição, Virgínia/MG. Todos os direitos reservados.</p>
+            <p class="text-sm">Desenvolvido para GitHub Pages | Diocese de Campanha.</p>
         </div>
     </footer>
 
-    <!-- Script para o Menu Mobile -->
+    <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica -->
     <script>
+        // Mapeamento da agenda mensal para demonstração (Novembro/2025)
+        // Os dados foram consolidados das imagens enviadas pelo Senhor Supremo.
+        const dailyAgendaData = {
+            '1': {
+                dayName: 'SÁBADO',
+                dateStr: '01/Nov (Todos os Santos)',
+                events: [
+                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '09:00', color: 'parish-blue' },
+                    { title: 'Benção', subtitle: 'Bairro Marques', time: '11:00', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '14:00', color: 'parish-blue' },
+                    { title: 'Catequese', subtitle: 'Igreja Matriz', time: '16:00', color: 'parish-gold' },
+                    { title: 'Vigília', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '2': {
+                dayName: 'DOMINGO',
+                dateStr: '02/Nov (Finados)',
+                events: [
+                    { title: 'Santa Missa', subtitle: 'Cemitério', time: '05:00', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro São José da Mantiqueira', time: '08:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Mendes', time: '11:00', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Corrêas', time: '17:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '3': {
+                dayName: 'SEGUNDA-FEIRA',
+                dateStr: '03/Nov',
+                events: [
+                    { title: 'FOLGA SEMANAL', subtitle: 'Sem Missa na Matriz', time: '--', color: 'text-gray-500' },
+                    { title: 'Visita às obras', subtitle: 'Agendamento', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Nossa Senhora Aparecida', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '4': {
+                dayName: 'TERÇA-FEIRA',
+                dateStr: '04/Nov',
+                events: [
+                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Confissões', time: '--', color: 'text-gray-500' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial (Tarde)', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Morangal', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '5': {
+                dayName: 'QUARTA-FEIRA',
+                dateStr: '05/Nov',
+                events: [
+                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Visitas', time: '--', color: 'text-gray-500' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '10:00', color: 'text-gray-300' },
+                    { title: 'Visita aos enfermos', subtitle: 'Agendamento Prévio', time: '16:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '6': {
+                dayName: 'QUINTA-FEIRA',
+                dateStr: '06/Nov',
+                events: [
+                    { title: 'Atendimento / Visita às obras', subtitle: 'Agendamento', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Visita aos enfermos', subtitle: 'Agendamento Prévio', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
+                    { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Porto', time: '19:00', color: 'parish-blue' },
+                    { title: 'Reunião Irmandade do Santíssimo', subtitle: 'Salão Paroquial', time: '20:00', color: 'parish-blue' },
+                ]
+            },
+            '7': {
+                dayName: 'SEXTA-FEIRA',
+                dateStr: '07/Nov',
+                events: [
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial (Manhã)', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento / Visita Abrigo S. Camilo', subtitle: 'Agendamento', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '8': {
+                dayName: 'SÁBADO',
+                dateStr: '08/Nov',
+                events: [
+                    { title: 'Casamento', subtitle: 'Igreja São José', time: '09:00', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '9': {
+                dayName: 'DOMINGO',
+                dateStr: '09/Nov',
+                events: [
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mogiano', time: '09:00', color: 'parish-blue' },
+                    { title: 'Batizado', subtitle: 'Igreja Matriz', time: '10:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Retirinho', time: '18:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '10': {
+                dayName: 'SEGUNDA-FEIRA',
+                dateStr: '10/Nov',
+                events: [
+                    { title: 'FOLGA SEMANAL', subtitle: 'Sem Missa na Matriz', time: '--', color: 'text-gray-500' },
+                    { title: 'Visita às obras', subtitle: 'Agendamento', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Vargem Alegre e Retiro dos Marins', time: '16:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Pouso Frio', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '11': {
+                dayName: 'TERÇA-FEIRA',
+                dateStr: '11/Nov',
+                events: [
+                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Confissões', time: '--', color: 'text-gray-500' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Serra Verde e Rio Acima II', time: '16:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '19:00', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '12': {
+                dayName: 'QUARTA-FEIRA',
+                dateStr: '12/Nov',
+                events: [
+                    { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', color: 'parish-blue' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Bairro Marques', time: '16:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 8', subtitle: 'Serra dos Fernandes', time: '19:00', color: 'parish-blue' },
+                    { title: 'Formação MESC', subtitle: 'Salão Paroquial', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '13': {
+                dayName: 'QUINTA-FEIRA',
+                dateStr: '13/Nov',
+                events: [
+                    { title: 'Atendimento / Visita às obras', subtitle: 'Agendamento', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
+                    { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
+                    { title: 'Confissão (Eucaristia)', subtitle: 'Bairro Palmeiras (Retirinho e Lavras)', time: '18:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '19:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '14': {
+                dayName: 'SEXTA-FEIRA',
+                dateStr: '14/Nov',
+                events: [
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Confissão Primeira Eucaristia', subtitle: 'Bairro Moreiras', time: '15:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Mato Dentro', time: '19:00', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '15': {
+                dayName: 'SÁBADO',
+                dateStr: '15/Nov (Abertura Ano Jubilar)',
+                events: [
+                    { title: 'Abertura Ano Jubilar', subtitle: 'Pouso Alto', time: '08:00', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '09:00', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Igreja São José', time: '11:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro S. José da Mantiqueira', time: '19:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '16': {
+                dayName: 'DOMINGO',
+                dateStr: '16/Nov',
+                events: [
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '08:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Retiro dos Marins', time: '10:30', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '18:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '17': {
+                dayName: 'SEGUNDA-FEIRA',
+                dateStr: '17/Nov',
+                events: [
+                    { title: 'FOLGA SEMANAL', subtitle: 'Sem Missa na Matriz', time: '--', color: 'text-gray-500' },
+                    { title: 'Atendimento / Confissão (Eucaristia)', subtitle: 'Cidade', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '18': {
+                dayName: 'TERÇA-FEIRA',
+                dateStr: '18/Nov',
+                events: [
+                    { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', color: 'parish-blue' },
+                    { title: 'Atendimento / Visita às obras', subtitle: 'Agendamento', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '19': {
+                dayName: 'QUARTA-FEIRA',
+                dateStr: '19/Nov',
+                events: [
+                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Visitas', time: '--', color: 'text-gray-500' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Visita aos enfermos', subtitle: 'Agendamento Prévio', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '20': {
+                dayName: 'QUINTA-FEIRA',
+                dateStr: '20/Nov',
+                events: [
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
+                    { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Gonçalves', time: '19:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '21': {
+                dayName: 'SEXTA-FEIRA',
+                dateStr: '21/Nov',
+                events: [
+                    { title: 'Atendimento / Visita aos enfermos', subtitle: 'Agendamento', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro Torres', time: '19:00', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 8', subtitle: 'Bairro Caeté', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '22': {
+                dayName: 'SÁBADO',
+                dateStr: '22/Nov',
+                events: [
+                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Bairro Retirinho', time: '16:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Hotel ou Comunidade Rural', time: '18:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            // Dados Mockados para o final do mês, mantendo o padrão do senhor
+            '23': {
+                dayName: 'DOMINGO',
+                dateStr: '23/Nov (Cristo Rei)',
+                events: [
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', color: 'parish-gold' },
+                    { title: 'Primeira Eucaristia', subtitle: 'Igreja Matriz', time: '15:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Retirinho', time: '18:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '24': {
+                dayName: 'SEGUNDA-FEIRA',
+                dateStr: '24/Nov',
+                events: [
+                    { title: 'FOLGA SEMANAL', subtitle: 'Sem Missa na Matriz', time: '--', color: 'text-gray-500' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Visita às obras', subtitle: 'Agendamento', time: '16:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+             '25': {
+                dayName: 'TERÇA-FEIRA',
+                dateStr: '25/Nov',
+                events: [
+                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Confissões', time: '--', color: 'text-gray-500' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial (Manhã)', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '26': {
+                dayName: 'QUARTA-FEIRA',
+                dateStr: '26/Nov',
+                events: [
+                    { title: 'FOLGA DE MISSA', subtitle: 'Atendimento e Visitas', time: '--', color: 'text-gray-500' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Visita aos enfermos', subtitle: 'Agendamento Prévio', time: '16:00', color: 'text-gray-300' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', color: 'parish-blue' },
+                ]
+            },
+            '27': {
+                dayName: 'QUINTA-FEIRA',
+                dateStr: '27/Nov',
+                events: [
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
+                    { title: 'Adoração ao Santíssimo', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '28': {
+                dayName: 'SEXTA-FEIRA',
+                dateStr: '28/Nov',
+                events: [
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', color: 'text-gray-300' },
+                    { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '29': {
+                dayName: 'SÁBADO',
+                dateStr: '29/Nov',
+                events: [
+                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', color: 'parish-blue' },
+                    { title: 'Catequese', subtitle: 'Igreja Matriz', time: '16:00', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            },
+            '30': {
+                dayName: 'DOMINGO',
+                dateStr: '30/Nov (1º Adv. - Mock)',
+                events: [
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '08:30', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '10:00', color: 'parish-gold' },
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '17:00', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
+                ]
+            }
+        };
+
+        // Arrays para nomes de dias e meses (em português)
+        const dayNamesFull = ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO'];
+        const dayNamesShort = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
+        const monthNamesShort = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+        
+        // Retorna o dia da semana completo e curto
+        function getDayNames(date) {
+            const dayIndex = date.getDay();
+            return {
+                full: dayNamesFull[dayIndex],
+                short: dayNamesShort[dayIndex]
+            };
+        }
+
+        // Função principal para carregar a agenda diária
+        function loadDailyAgenda(day) {
+            const data = dailyAgendaData[day];
+            const listContainer = document.getElementById('daily-agenda-list');
+            const dayTitle = document.getElementById('current-day-title');
+            
+            // Limpa o conteúdo anterior
+            listContainer.innerHTML = '';
+            
+            if (!data) {
+                dayTitle.innerHTML = `Dia ${day}/Nov - Sem Agenda Detalhada`;
+                listContainer.innerHTML = `<p class="text-center text-gray-400 py-8">Nenhuma programação detalhada encontrada para este dia.</p>`;
+                
+            } else {
+                dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span><br>${data.dateStr}`;
+
+                data.events.forEach((event, index) => {
+                    // Determina as cores com base no campo 'color'
+                    const timeColorClass = event.color.startsWith('text-') ? event.color : `text-${event.color}`;
+                    const titleColorClass = event.color.startsWith('text-') ? 'text-white' : `text-${event.color}`;
+                    
+                    // Cria o elemento do item da agenda
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = `flex justify-between items-start py-4 ${index < data.events.length - 1 ? 'border-b border-gray-700' : ''}`;
+                    
+                    itemDiv.innerHTML = `
+                        <div class="flex-grow pr-4">
+                            <p class="text-xl font-bold ${titleColorClass}">${event.title}</p>
+                            <p class="text-sm text-gray-400 italic">${event.subtitle}</p>
+                        </div>
+                        <span class="text-3xl font-extrabold ${timeColorClass}">${event.time}</span>
+                    `;
+                    
+                    listContainer.appendChild(itemDiv);
+                });
+            }
+            
+            // Atualiza o carrossel de dias (ativa o botão clicado)
+            document.querySelectorAll('.day-button-date').forEach(btn => {
+                btn.classList.remove('day-active');
+            });
+            const activeDayButton = document.getElementById(`day-${day}`);
+            if(activeDayButton) {
+                activeDayButton.classList.add('day-active');
+            }
+        }
+
+        // Função para construir o carrossel de dias
+        function buildDayCarousel(currentDay) {
+            const carouselContainer = document.getElementById('day-carousel');
+            carouselContainer.innerHTML = ''; // Limpa o carrossel
+            
+            // Simula o mês de Novembro de 2025 para a agenda mockada (30 dias)
+            const daysInMonth = 30;
+            const startDay = 1;
+            
+            // Data mockada para 01 de Novembro de 2025
+            const mockDate = new Date(2025, 10, 1); 
+
+            for (let i = startDay; i <= daysInMonth; i++) {
+                mockDate.setDate(i);
+                const day = i.toString();
+                const dayNames = getDayNames(mockDate);
+
+                const button = document.createElement('button');
+                button.id = `day-${day}`;
+                button.className = 'day-button day-button-date text-center p-3 sm:p-4 rounded-xl bg-parish-card text-gray-400 font-semibold hover:bg-parish-card/70 transition duration-200';
+                button.setAttribute('onclick', `loadDailyAgenda('${day}')`);
+                
+                button.innerHTML = `
+                    <span class="block text-xl">${day}</span>
+                    <span class="block text-xs">${dayNames.short}</span>
+                `;
+                
+                carouselContainer.appendChild(button);
+            }
+            
+            // Rola para o dia atual no carrossel
+            const activeDayButton = document.getElementById(`day-${currentDay}`);
+            if(activeDayButton && carouselContainer.scroll) {
+                // Rola para centralizar o botão ativo (ajustado para ser visível)
+                setTimeout(() => {
+                    const offset = activeDayButton.offsetLeft - (carouselContainer.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
+                    carouselContainer.scroll({
+                        left: offset,
+                        behavior: 'smooth'
+                    });
+                }, 100); 
+            }
+        }
+
+
+        // Função para mostrar a seção de conteúdo desejada
+        function showSection(targetId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('nav-active', 'border-b-2', 'border-parish-gold', 'bg-parish-card/70', 'text-parish-gold');
+                button.classList.add('text-white');
+                
+                if(button.parentElement.id === 'mobile-menu') {
+                     button.classList.remove('border-l-4');
+                }
+            });
+
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            document.querySelectorAll(`[data-target="${targetId}"]`).forEach(button => {
+                button.classList.add('nav-active', 'text-parish-gold');
+                button.classList.remove('text-white');
+
+                if (button.parentElement.id === 'desktop-nav') {
+                    button.classList.add('border-b-2', 'border-parish-gold');
+                }
+                
+                if (button.parentElement.id === 'mobile-menu') {
+                    button.classList.add('border-l-4', 'border-parish-gold', 'bg-parish-card/70');
+                }
+            });
+        }
+        
         document.addEventListener('DOMContentLoaded', () => {
             const menuButton = document.getElementById('menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-
-            // Toggle do menu ao clicar no botão
+            
+            // MOCK: Dia atual para demonstração (23 de Novembro)
+            const currentDayNumber = 23; 
+            
+            // 1. Toggle do menu mobile
             menuButton.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
             });
 
-            // Oculta o menu ao clicar em um link (para navegação suave)
-            mobileMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
+            // 2. Lógica de Navegação por Abas
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = button.getAttribute('data-target');
+                    showSection(targetId);
+                    
+                    if(mobileMenu.classList.contains('flex')) { 
+                        mobileMenu.classList.add('hidden');
+                    }
                 });
             });
+
+            // 3. Monta o carrossel e carrega a agenda do dia atual
+            buildDayCarousel(currentDayNumber);
+            loadDailyAgenda(currentDayNumber.toString());
+            showSection('content-agenda'); 
         });
     </script>
 </body>
