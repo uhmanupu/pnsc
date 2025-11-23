@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- NOME PRINCIPAL DO SITE/APP -->
     <title>Aparóquia</title>
+    <!-- Cor da Barra de Status (Padrão Dark Mode) - Alterada dinamicamente pelo JS -->
     <meta name="theme-color" content="#1e293b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -182,6 +183,62 @@
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #1e293b; }
         ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; }
+
+        /* FAB (Floating Action Button) Styles */
+        #fab-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 30; /* Acima do conteúdo principal, mas abaixo do menu overlay */
+        }
+        .fab-button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+        #main-fab {
+            background-color: #f59e0b; /* Amber Gold */
+            color: #1e293b; /* Dark Navy Text */
+        }
+        #sub-fabs {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            display: flex;
+            flex-direction: column-reverse; /* Coloca o WhatsApp acima do Telefone */
+            gap: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+        #sub-fabs.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .sub-fab {
+            background-color: #1e293b; /* Card Dark */
+            color: #f59e0b; /* Amber Gold */
+            width: 48px;
+            height: 48px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .light-mode #main-fab {
+            background-color: #d97706; /* Darker Amber for contrast */
+            color: #ffffff;
+        }
+        .light-mode .sub-fab {
+            background-color: #ffffff;
+            color: #d97706;
+            border: 1px solid #e2e8f0;
+        }
+
     </style>
 
     <script>
@@ -381,6 +438,7 @@
         let isMenuOpen = false; // Estado do menu móvel
         let isHinoOpen = false;
         let isOracaoOpen = false;
+        let isFabOpen = false; // Estado do FAB
 
         // --- GESTURE LOGIC START (Swipe & Pull-to-Refresh) ---
         let touchstartX = 0;
@@ -448,24 +506,28 @@
         function applyTheme(theme) {
             const body = document.body;
             const themeToggleBtn = document.getElementById('theme-toggle');
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
             
             if (theme === 'light') {
                 body.classList.add('light-mode');
                 if (themeToggleBtn) {
                     themeToggleBtn.innerHTML = '<i data-lucide="moon" class="w-6 h-6 text-amber-500"></i>';
                 }
+                // Corrigido: Mudar a cor da barra de status para branco no light mode
+                if (metaTheme) {
+                     metaTheme.setAttribute('content', '#ffffff');
+                }
             } else {
                 body.classList.remove('light-mode');
                 if (themeToggleBtn) {
                     themeToggleBtn.innerHTML = '<i data-lucide="sun" class="w-6 h-6 text-amber-400"></i>';
                 }
+                // Mudar a cor da barra de status para o tema escuro
+                if (metaTheme) {
+                     metaTheme.setAttribute('content', '#1e293b');
+                }
             }
             lucide.createIcons();
-            // Atualizar cor da barra de status (meta tag theme-color)
-            const metaTheme = document.querySelector('meta[name="theme-color"]');
-            if (metaTheme) {
-                 metaTheme.setAttribute('content', theme === 'light' ? '#ffffff' : '#1e293b');
-            }
             currentTheme = theme;
         }
 
@@ -473,6 +535,34 @@
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             localStorage.setItem('theme', newTheme);
             applyTheme(newTheme);
+        }
+
+        // --- Lógica do FAB (Floating Action Button) ---
+        function toggleFab() {
+            isFabOpen = !isFabOpen;
+            const subFabs = document.getElementById('sub-fabs');
+            const mainIcon = document.getElementById('main-fab-icon');
+
+            if (isFabOpen) {
+                subFabs.classList.add('open');
+                mainIcon.innerHTML = `<i data-lucide="x" class="w-6 h-6"></i>`;
+            } else {
+                subFabs.classList.remove('open');
+                mainIcon.innerHTML = `<i data-lucide="message-square" class="w-6 h-6"></i>`;
+            }
+            lucide.createIcons();
+        }
+
+        function openContact(type) {
+            // Fecha o FAB
+            toggleFab(); 
+
+            // Implementação de links de contato
+            if (type === 'whatsapp') {
+                window.open('https://wa.me/553533731397', '_blank');
+            } else if (type === 'phone') {
+                window.open('tel:+553532611217,8007', '_self');
+            }
         }
         
         // Função para encontrar as datas únicas e inicializar a data selecionada
@@ -595,6 +685,10 @@
             // Fecha o menu móvel se estiver aberto
             if (isMenuOpen) {
                 toggleMobileMenu();
+            }
+            // Fecha o FAB se estiver aberto
+            if (isFabOpen) {
+                 toggleFab();
             }
 
             // Gerenciar Visibilidade
@@ -953,5 +1047,25 @@
     <footer class="text-center py-4 text-xs text-gray-500 border-t border-gray-700 mt-auto header-bg">
         Desenvolvido por Emanuel Uchôas
     </footer>
+
+    <!-- FAB (Floating Action Button) Container -->
+    <div id="fab-container" class="sm:hidden">
+        <!-- Sub-botões (escondidos) -->
+        <div id="sub-fabs" class="flex flex-col space-y-2">
+            <!-- WhatsApp -->
+            <button onclick="openContact('whatsapp')" class="fab-button sub-fab bg-amber-500/10 hover:bg-amber-300/10" aria-label="WhatsApp">
+                <i data-lucide="message-square" class="w-5 h-5"></i>
+            </button>
+            <!-- Telefone -->
+            <button onclick="openContact('phone')" class="fab-button sub-fab bg-amber-500/10 hover:bg-amber-300/10" aria-label="Telefone">
+                <i data-lucide="phone" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <!-- Botão Principal (Abre/Fecha) -->
+        <button id="main-fab" onclick="toggleFab()" class="fab-button mt-4" aria-label="Abrir Opções de Contato">
+            <span id="main-fab-icon"><i data-lucide="message-square" class="w-6 h-6"></i></span>
+        </button>
+    </div>
+    
 </body>
 </html>
