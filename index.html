@@ -284,7 +284,7 @@
     <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica -->
     <script>
         // Mapeamento da agenda mensal para demonstração (Novembro/2025)
-        // Apenas eventos específicos e Missas foram mantidos, removendo "FOLGA", "Atendimento" genérico e "Visita às obras"
+        // Compromissos essenciais (Atendimento e Visita às Obras) foram mantidos.
         const dailyAgendaData = {
             '1': {
                 dayName: 'SÁBADO',
@@ -314,6 +314,7 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '03/Nov',
                 events: [
+                    { title: 'Visita às obras', subtitle: '', time: '14:00', color: 'text-gray-300' }, 
                     { title: 'Santa Missa', subtitle: 'Igreja Nossa Senhora Aparecida', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -321,6 +322,7 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '04/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, 
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Morangal', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -328,6 +330,8 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '05/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '10:00', color: 'text-gray-300' }, 
+                    { title: 'Visita aos enfermos', subtitle: '', time: '16:00', color: 'text-gray-300' }, 
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -335,6 +339,8 @@
                 dayName: 'QUINTA-FEIRA',
                 dateStr: '06/Nov',
                 events: [
+                    { title: 'Atendimento / Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Visita aos enfermos', subtitle: '', time: '14:00', color: 'text-gray-300' }, 
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
@@ -346,6 +352,8 @@
                 dayName: 'SEXTA-FEIRA',
                 dateStr: '07/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento / Visita Abrigo S. Camilo', subtitle: '', time: '14:00', color: 'text-gray-300' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '19:00', color: 'parish-blue' },
@@ -378,6 +386,7 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '10/Nov',
                 events: [
+                    { title: 'Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' },
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Vargem Alegre e Retiro dos Marins', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Pouso Frio', time: '19:00', color: 'parish-blue' },
                 ]
@@ -386,6 +395,7 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '11/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Serra Verde e Rio Acima II', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '19:00', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '19:00', color: 'parish-blue' },
@@ -396,6 +406,7 @@
                 dateStr: '12/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', color: 'parish-blue' },
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Bairro Marques', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 8', subtitle: 'Serra dos Fernandes', time: '19:00', color: 'parish-blue' },
                     { title: 'Formação MESC', subtitle: 'Salão Paroquial', time: '19:00', color: 'parish-blue' },
@@ -405,6 +416,8 @@
                 dayName: 'QUINTA-FEIRA',
                 dateStr: '13/Nov',
                 events: [
+                    { title: 'Atendimento / Visita às obras', subtitle: '', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' },
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Confissão (Eucaristia)', subtitle: 'Bairro Palmeiras (Retirinho e Lavras)', time: '18:00', color: 'text-gray-300' },
@@ -416,6 +429,7 @@
                 dayName: 'SEXTA-FEIRA',
                 dateStr: '14/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '09:00', color: 'text-gray-300' },
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Bairro Moreiras', time: '15:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Mato Dentro', time: '19:00', color: 'parish-blue' },
@@ -459,6 +473,7 @@
                 dateStr: '18/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', color: 'parish-blue' },
+                    { title: 'Atendimento / Visita às obras', subtitle: '', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -466,6 +481,8 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '19/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Visita aos enfermos', subtitle: '', time: '14:00', color: 'text-gray-300' }, 
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -473,6 +490,7 @@
                 dayName: 'QUINTA-FEIRA',
                 dateStr: '20/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Gonçalves', time: '19:00', color: 'parish-blue' },
@@ -483,6 +501,8 @@
                 dayName: 'SEXTA-FEIRA',
                 dateStr: '21/Nov',
                 events: [
+                    { title: 'Atendimento / Visita aos enfermos', subtitle: '', time: '09:00', color: 'text-gray-300' },
+                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 6', subtitle: 'Bairro Torres', time: '19:00', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 8', subtitle: 'Bairro Caeté', time: '19:00', color: 'parish-blue' },
                 ]
@@ -497,7 +517,7 @@
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
                 ]
             },
-            // Dados Mockados para o final do mês, limpos e sem folgas
+            // Dados Mockados para o final do mês, com Atendimentos e Visitas mantidos
             '23': {
                 dayName: 'DOMINGO',
                 dateStr: '23/Nov (Cristo Rei)',
@@ -514,6 +534,8 @@
                 dayName: 'SEGUNDA-FEIRA',
                 dateStr: '24/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' }, 
+                    { title: 'Visita às obras', subtitle: '', time: '16:00', color: 'text-gray-300' }, 
                     { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -521,6 +543,7 @@
                 dayName: 'TERÇA-FEIRA',
                 dateStr: '25/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '14:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', color: 'parish-blue' },
                 ]
@@ -529,6 +552,8 @@
                 dayName: 'QUARTA-FEIRA',
                 dateStr: '26/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, 
+                    { title: 'Visita aos enfermos', subtitle: '', time: '16:00', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', color: 'parish-blue' },
                 ]
             },
@@ -536,6 +561,7 @@
                 dayName: 'QUINTA-FEIRA',
                 dateStr: '27/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' },
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', color: 'parish-gold' },
                     { title: 'Adoração ao Santíssimo', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
@@ -545,6 +571,8 @@
                 dayName: 'SEXTA-FEIRA',
                 dateStr: '28/Nov',
                 events: [
+                    { title: 'Atendimento', subtitle: '', time: '09:00', color: 'text-gray-300' }, 
+                    { title: 'Atendimento', subtitle: '', time: '14:00', color: 'text-gray-300' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', color: 'parish-gold' },
                 ]
@@ -584,7 +612,10 @@
         const allDays = Object.keys(dailyAgendaData);
 
         function checkDirection() {
-            const currentDay = document.querySelector('.day-active').id.replace('day-', '');
+            const currentDayElement = document.querySelector('.day-active');
+            if (!currentDayElement) return;
+
+            const currentDay = currentDayElement.id.replace('day-', '');
             const currentIndex = allDays.indexOf(currentDay);
             
             // 1. SWIPE HORIZONTAL (Troca de Dia na Agenda)
