@@ -7,7 +7,7 @@
     <!-- NOME PRINCIPAL DO SITE/APP -->
     <title>aparoquia</title>
     <!-- Cor da Barra de Status (Padrão Dark Mode) - Alterada dinamicamente pelo JS -->
-    <meta name="theme-color" content="#1e293b">
+    <meta name="theme-color" content="#fffdf0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <!-- NOME CORRIGIDO PARA A INSTALAÇÃO NA TELA INICIAL (iOS e Android) -->
@@ -26,37 +26,46 @@
     <!-- Fonte Clássica -->
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* TEMA BASE ESCURO (DARK MODE) */
+        /* DEFINIÇÕES DE CORES NOVAS */
+        :root {
+            --bg-light-yellow: #fffdf0; /* Amarelo muito claro (Amber 50 custom) */
+            --text-dark-blue: #1e3a8a; /* Azul Marinho Escuro (Blue 900) */
+            --card-light-cream: #fffff5; /* Branco Creme */
+            --border-light-yellow: #fde68a; /* Borda Amarela Suave (Yellow 200) */
+            --text-dark-slate: #374151; /* Para texto secundário/botões (Slate 700) */
+        }
+        
+        /* TEMA BASE (AGORA É O "LIGHT MODE VISUAL" - Amarelo/Azul) */
         body { 
             font-family: 'Merriweather', serif;
-            background-color: #0f172a; /* darkNavy */
-            color: #e2e8f0; /* primaryText */
+            background-color: var(--bg-light-yellow); 
+            color: var(--text-dark-blue); 
             transition: background-color 0.3s, color 0.3s; 
         }
         .card { 
-            background-color: #1e293b; /* cardDark */
-            border: 1px solid #334155; /* cardBorder */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+            background-color: var(--card-light-cream); 
+            border: 1px solid var(--border-light-yellow); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
             transition: background-color 0.3s, border-color 0.3s; 
         }
         .header-bg { 
-            background-color: #1e293b; /* cardDark */
-            border-color: #334155;
+            background-color: var(--card-light-cream); 
+            border-color: var(--border-light-yellow);
         }
         
-        /* TEMA CLARO (LIGHT MODE) - Classes que sobrepõem o tema escuro */
-        body.light-mode {
-            background-color: #f8fafc; /* slate-50 */
-            color: #0f172a; /* slate-900 */
+        /* TEMA CLARO (.light-mode) (AGORA É O "DARK MODE VISUAL" - Azul/Amarelo) */
+        body.light-mode { /* Fundo escuro */
+            background-color: #0f172a; /* darkNavy */
+            color: #e2e8f0; /* primaryText (Light Slate) */
         }
         .light-mode .card {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0; /* slate-200 */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: #1e293b; /* cardDark */
+            border: 1px solid #334155; /* cardBorder */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2); 
         }
         .light-mode .header-bg {
-            background-color: #ffffff;
-            border-color: #e2e8f0;
+            background-color: #1e293b; /* cardDark */
+            border-color: #334155;
         }
         
         /* ELEMENTOS GERAIS */
@@ -64,33 +73,28 @@
             transition: all 0.3s ease; 
             border-bottom: 3px solid transparent; 
             padding-bottom: 8px; 
-            color: #94a3b8; /* secondaryText */
+            color: var(--text-dark-slate); /* slate-700 */
         }
         .tab-button.active { 
             border-color: #f59e0b; /* amberGold */
             font-weight: 700; 
             color: #f59e0b;
         }
-        
-        /* NOVIDADES BADGE */
-        .tab-with-badge {
-            position: relative;
-        }
-        .news-badge {
-            position: absolute;
-            top: 2px;
-            right: -2px;
-            background-color: #ef4444; /* Vermelho/Ouro */
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            border: 1px solid #1e293b; /* Garante visibilidade no dark mode */
-        }
-        .light-mode .news-badge {
-             border: 1px solid #ffffff; 
+        /* Cor dos botões de aba no modo escuro (.light-mode) */
+        .light-mode .tab-button {
+             color: #94a3b8; /* secondaryText */
         }
 
-        /* Estilo para a Barra de Dias (Picker) */
+        /* NOVIDADES BADGE - Invertido */
+        .news-badge {
+            background-color: #ef4444; 
+            border: 1px solid var(--card-light-cream); 
+        }
+        .light-mode .news-badge {
+             border: 1px solid #1e293b; 
+        }
+
+        /* Estilo para a Barra de Dias (Picker) - Invertido */
         .date-picker-scroll { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
         .date-picker-scroll::-webkit-scrollbar { display: none; }
         .date-button { 
@@ -99,31 +103,30 @@
             border-radius: 9999px; 
             font-weight: 700; 
             border: 2px solid transparent; 
-            background-color: #334155; /* cardBorder */
-            color: #cbd5e1;
+            background-color: #fcd34d; /* Amarelo 300 - para destaque */
+            color: var(--text-dark-blue); 
         }
         .date-button.active { 
-            background-color: #f59e0b; /* amberGold */
-            color: #1e293b; /* cardDark */
-        }
-        .light-mode .date-button {
-            background-color: #e2e8f0; /* light slate */
-            color: #334155; /* dark slate */
-        }
-        /* Corrigir a cor do botão ativo no Light Mode */
-        .light-mode .date-button.active {
             background-color: #d97706; /* Darker Amber/Orange */
             color: #ffffff; /* White text */
         }
+        .light-mode .date-button { /* DARK VISUAL */
+            background-color: #334155; /* cardBorder */
+            color: #cbd5e1;
+        }
+        .light-mode .date-button.active { /* DARK VISUAL */
+            background-color: #f59e0b; /* amberGold */
+            color: #1e293b; /* cardDark */
+        }
 
-        /* MENU HAMBÚRGUER CORREÇÃO FINAL: */
+        /* MENU HAMBÚRGUER CORREÇÃO FINAL: - Invertido */
         #mobile-menu-overlay {
             position: fixed; 
             top: 64px; 
             left: 0;
             width: 100%;
             height: calc(100vh - 64px); 
-            background-color: rgba(15, 23, 42, 0.95);
+            background-color: rgba(255, 255, 255, 0.95); /* Light translucent */
             z-index: 55; 
             transition: transform 0.3s ease-in-out;
             transform: translateX(100%); 
@@ -133,97 +136,67 @@
         #mobile-menu-overlay.open {
             transform: translateX(0); 
         }
-
-        .light-mode #mobile-menu-overlay {
-            background-color: rgba(241, 245, 249, 0.95); 
+        .light-mode #mobile-menu-overlay { /* NOVO DARK VISUAL */
+            background-color: rgba(15, 23, 42, 0.95); 
         }
         
         .menu-item {
-            color: #fef3c7;
+            color: var(--text-dark-blue); /* NOVO LIGHT VISUAL - Azul Escuro */
             width: 100%; 
             padding: 12px;
             text-align: left;
         }
-        /* CORREÇÃO DO TEXTO DO MENU NO LIGHT MODE */
-        .light-mode .menu-item {
-            color: #0f172a; /* Garante texto escuro sobre fundo claro */
+        .light-mode .menu-item { /* NOVO DARK VISUAL */
+            color: #fef3c7; 
         }
-        .light-mode .menu-item:hover {
-            color: #d97706;
-            background-color: #e2e8f0;
+        /* Hover item menu no light visual */
+        .menu-item:hover {
+             background-color: #fefce8;
+             color: #f59e0b;
         }
 
-        /* Corrigido: Oculta o menu de abas no mobile e mostra o Hambúrguer, como era antes */
+        /* Estilo para Conteúdo Estático (Hino/Oração/Contatos) - Invertido */
+        .hino-content-bg {
+            background-color: #fefce8; /* Yellow 100 */
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .hino-content-bg { /* NOVO DARK VISUAL */
+            background-color: #1f2937; 
+            color: #e2e8f0; 
+        }
+
+        /* Estilo do Alerta Especial - Invertido */
+        .bg-red-800\/20 {
+             /* LIGHT VISUAL */
+             background-color: #fecaca; /* bg-red-200 */
+             border-color: #ef4444; 
+        }
+        .text-red-100 {
+            /* LIGHT VISUAL TEXT */
+            color: #7f1d1d; /* text-red-900 */
+        }
+        .light-mode .bg-red-800\/20 { /* NOVO DARK VISUAL */
+            background-color: rgba(154, 52, 52, 0.2); 
+            border-color: #ef4444; 
+        }
+        .light-mode .text-red-100 { /* NOVO DARK VISUAL TEXT */
+            color: #fef2f2; 
+        }
+
+        /* Estilos de layout móvel (manter) */
         @media (max-width: 640px) { 
             #desktop-tab-bar { 
                 display: none; 
             }
         }
-
-        /* Corrigido: Oculta o Hambúrguer no desktop */
         @media (min-width: 641px) { 
             #mobile-menu-button { 
                 display: none; 
             }
         }
         
-        /* ESTILO DA BARRA DE INSTALAÇÃO PWA */
-        #install-prompt-bar {
-            padding-bottom: 24px; 
-            z-index: 40; /* Acima do FAB (z-index 30) */
-        }
-
-        /* Estilo para o Modal de Instruções (Para evitar alert()) */
-        #instruction-modal-overlay {
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 60;
-            display: none; /* Escondido por padrão */
-        }
-        #instruction-modal-overlay.open {
-            display: flex;
-        }
-        .instruction-modal-content {
-            background-color: #1e293b; /* cardDark */
-            border: 2px solid #f59e0b; /* amberGold */
-            max-width: 90%;
-            padding: 24px;
-        }
-        .light-mode .instruction-modal-content {
-            background-color: #ffffff;
-        }
-
-        /* Ajuste do FAB para não sobrepor a nova barra */
-        #fab-container {
-             bottom: 80px; /* Eleva o FAB para acima da barra de instalação */
-             right: 20px;
-        }
-
-        /* Estilo para Conteúdo Estático (Hino/Oração/Contatos) */
-        .hino-content-bg {
-            background-color: #1f2937;
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .light-mode .hino-content-bg {
-            background-color: #f1f5f9; 
-            color: #0f172a; /* Garante texto escuro no Hino/Oração Light Mode */
-        }
-
-        /* Estilo do Alerta Especial */
-        .bg-red-800\/20 {
-            background-color: rgba(154, 52, 52, 0.2); /* Vermelho Escuro Transparente */
-        }
-        .border-red-500 {
-            border-color: #ef4444; 
-        }
-        .light-mode .bg-red-200 {
-            background-color: #fecaca;
-        }
-        .light-mode .text-red-900 {
-            color: #7f1d1d; /* Garante alto contraste no alerta */
-        }
-
     </style>
 
     <script>
@@ -451,51 +424,8 @@
         let isHinoOpen = false;
         let isOracaoOpen = false;
 
-        // --- LÓGICA DO PWA INSTALL PROMPT ---
-        const INSTALL_PROMPT_KEY = 'pwa_install_dismissed';
-
-        function checkInstallationStatus() {
-            const bar = document.getElementById('install-prompt-bar');
-            if (!bar) return;
-
-            // Se o utilizador dispensou ANTES, não mostrar.
-            if (localStorage.getItem(INSTALL_PROMPT_KEY) === 'true') {
-                bar.classList.add('hidden');
-                return;
-            }
-
-            // Ocultar em telas maiores que mobile
-            if (window.innerWidth > 640) {
-                 bar.classList.add('hidden');
-                 return;
-            }
-
-            bar.classList.remove('hidden');
-        }
-
-        function dismissInstallPrompt() {
-            localStorage.setItem(INSTALL_PROMPT_KEY, 'true');
-            const bar = document.getElementById('install-prompt-bar');
-            if (bar) bar.classList.add('hidden');
-            closeInstructionModal();
-        }
-
-        function showInstructionModal() {
-            document.getElementById('instruction-modal-overlay').classList.add('open');
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        function closeInstructionModal() {
-            document.getElementById('instruction-modal-overlay').classList.remove('open');
-            document.body.style.overflow = 'auto'; 
-        }
-
-        function showInstallInstructions() {
-             showInstructionModal();
-             if (window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(100); 
-            }
-        }
+        // --- LÓGICA DO PWA INSTALL PROMPT (REMOVIDA) ---
+        
         // --- FIM LÓGICA DO PWA INSTALL PROMPT ---
 
 
@@ -551,26 +481,32 @@
 
         let currentTheme = localStorage.getItem('theme') || 'dark'; 
 
+        // LÓGICA DE TEMA AGORA INVERTIDA
         function applyTheme(theme) {
             const body = document.body;
             const themeToggleBtn = document.getElementById('theme-toggle');
             const metaTheme = document.querySelector('meta[name="theme-color"]');
             
-            if (theme === 'light') {
-                body.classList.add('light-mode');
+            // SE TEMA É 'DARK' (VARIÁVEL) -> APLICAR VISUAL CLARO (Amarelo/Azul)
+            if (theme === 'dark') {
+                body.classList.remove('light-mode'); 
                 if (themeToggleBtn) {
-                    themeToggleBtn.innerHTML = '<i data-lucide="moon" class="w-6 h-6 text-amber-500"></i>';
+                    // Mostrar Lua (Sugere ir para o modo ESCURO)
+                    themeToggleBtn.innerHTML = '<i data-lucide="moon" class="w-6 h-6 text-amber-500"></i>'; 
                 }
                 if (metaTheme) {
-                     metaTheme.setAttribute('content', '#ffffff');
+                     // Obtém o valor da variável CSS --bg-light-yellow
+                     const lightBg = getComputedStyle(document.documentElement).getPropertyValue('--bg-light-yellow').trim();
+                     metaTheme.setAttribute('content', lightBg); 
                 }
-            } else {
-                body.classList.remove('light-mode');
+            } else { // SE TEMA É 'LIGHT' (VARIÁVEL) -> APLICAR VISUAL ESCURO (Azul/Amarelo)
+                body.classList.add('light-mode'); 
                 if (themeToggleBtn) {
-                    themeToggleBtn.innerHTML = '<i data-lucide="sun" class="w-6 h-6 text-amber-400"></i>';
+                    // Mostrar Sol (Sugere ir para o modo CLARO)
+                    themeToggleBtn.innerHTML = '<i data-lucide="sun" class="w-6 h-6 text-amber-400"></i>'; 
                 }
                 if (metaTheme) {
-                     metaTheme.setAttribute('content', '#1e293b');
+                     metaTheme.setAttribute('content', '#1e293b'); // Barra de Status Escura
                 }
             }
             lucide.createIcons();
@@ -581,10 +517,6 @@
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             localStorage.setItem('theme', newTheme);
             applyTheme(newTheme);
-        }
-
-        function openWhatsApp() {
-            window.open('https://wa.me/553533731397', '_blank');
         }
         
         function getUniqueDates() {
@@ -696,9 +628,15 @@
                 // Texto do Alerta
                 const alertText = `Lembrete! ${dayOfWeek}, ${dayOnly} tem ${title} às ${event.time} (${location}).`;
 
-                return `<div id="special-alert" class="card rounded-lg shadow-md p-3 mb-4 border-l-4 bg-red-800/20 border-red-500 light-mode:bg-red-200 light-mode:border-red-600 text-sm flex items-center gap-3">
-                    <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400 flex-shrink-0"></i>
-                    <p class="font-bold text-red-100 light-mode:text-red-900">
+                // Classes invertidas: Base usa o visual claro (bg-red-200, text-red-900)
+                // Usando classes CSS hardcoded para garantir a inversão:
+                const alertBgClass = currentTheme === 'dark' ? 'bg-red-200 light-mode:bg-red-800/20' : 'bg-red-800/20 light-mode:bg-red-200';
+                const alertTextClass = currentTheme === 'dark' ? 'text-red-900 light-mode:text-red-100' : 'text-red-100 light-mode:text-red-900';
+                const alertBorderClass = 'border-red-500';
+
+                return `<div id="special-alert" class="card rounded-lg shadow-md p-3 mb-4 border-l-4 ${alertBgClass} ${alertBorderClass} text-sm flex items-center gap-3">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600 flex-shrink-0"></i>
+                    <p class="font-bold ${alertTextClass}">
                         ${alertText}
                     </p>
                 </div>`;
@@ -724,7 +662,8 @@
 
             if (filteredData.length === 0) {
                 if (!specialAlertHTML) {
-                    container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-gray-500">
+                    // Texto no Light Mode agora usa a variável escura para contraste.
+                    container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-[var(--text-dark-blue)] light-mode:text-gray-500">
                         <p>Nenhum evento agendado para esta data.</p>
                     </div>`;
                 }
@@ -736,9 +675,13 @@
             const dayOfWeek = currentSelectedDate.split('(')[1].replace(')', '');
             const dateOnly = currentSelectedDate.split(' ')[0];
             
-            // CORREÇÃO: Garante alto contraste no Light Mode
-            const headerClasses = currentTheme === 'light' ? 'text-xl font-bold text-gray-800' : 'text-xl font-bold text-amber-100';
-            const dateClasses = currentTheme === 'light' ? 'text-3xl font-extrabold text-gray-900' : 'text-3xl font-extrabold text-amber-200';
+            // TÍTULOS E DATAS AGORA COM NOVAS CORES (Azul no Light, Âmbar no Dark)
+            const headerClasses = currentTheme === 'light' 
+                ? 'text-xl font-bold text-amber-100' // Dark Visual: light amber
+                : 'text-xl font-bold text-blue-700'; // Light Visual: dark blue
+            const dateClasses = currentTheme === 'light' 
+                ? 'text-3xl font-extrabold text-amber-200' // Dark Visual: lighter amber
+                : 'text-3xl font-extrabold text-[var(--text-dark-blue)]'; // Light Visual: deep blue var
 
             headerDiv.innerHTML = `
                 <p class="${headerClasses}">${dayOfWeek}</p>
@@ -751,14 +694,21 @@
 
             filteredData.forEach(event => {
                 const eventDiv = document.createElement('div');
-                eventDiv.className = 'flex justify-between items-center py-3 border-b border-gray-700 last:border-b-0 light-mode:border-gray-200';
+                // BORDER: Invertido
+                eventDiv.className = 'flex justify-between items-center py-3 border-b border-yellow-200 last:border-b-0 light-mode:border-gray-700';
                 
                 const isMatriz = event.title.includes("Igreja Matriz") || event.location.includes("Igreja Matriz");
-                const titleColor = isMatriz ? 'text-amber-400 light-mode:text-amber-700' : 'text-amber-100 light-mode:text-gray-900';
-                const timeColor = 'text-amber-500 light-mode:text-amber-800';
                 
-                // CORREÇÃO DE CONTRASTE: Usando text-gray-700 no light-mode para a localização
-                const locationColor = 'text-gray-500 light-mode:text-gray-700';
+                // TITULO: Invertido - Agora usa o novo Azul Escuro no Light Mode
+                const titleColor = isMatriz 
+                    ? 'text-amber-700 light-mode:text-amber-400' 
+                    : 'text-[var(--text-dark-blue)] light-mode:text-amber-100';
+                
+                // HORA: Invertido
+                const timeColor = 'text-amber-800 light-mode:text-amber-500';
+                
+                // LOCALIZAÇÃO: CORRIGIDO! Usa dark-slate no light mode, e CINZA CLARO no dark mode.
+                const locationColor = 'text-[var(--text-dark-slate)] light-mode:text-gray-300';
 
                 eventDiv.innerHTML = `
                     <div class="flex-1">
@@ -782,13 +732,15 @@
             const header = document.createElement('div');
             header.className = 'news-header text-center mb-6';
             
-            const headerColor = currentTheme === 'light' ? 'text-gray-900' : 'text-amber-100';
-            const iconColor = currentTheme === 'light' ? 'text-amber-700' : 'text-amber-400';
+            // Invertido: Base é light visual (Amarelo/Azul), light-mode é dark visual (Azul/Amarelo)
+            const headerColor = currentTheme === 'light' ? 'text-amber-100' : 'text-[var(--text-dark-blue)]';
+            const iconColor = currentTheme === 'light' ? 'text-amber-400' : 'text-amber-700';
 
             header.innerHTML = `
                 <i data-lucide="megaphone" class="w-8 h-8 mx-auto ${iconColor} mb-2"></i>
                 <h2 class="text-3xl font-bold ${headerColor}">Novidades da Paróquia</h2>
-                <p class="text-sm text-gray-500">Eventos de destaque e comunicados urgentes.</p>
+                <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
+                <p class="text-sm text-[var(--text-dark-slate)] light-mode:text-gray-300">Eventos de destaque e comunicados urgentes.</p>
             `;
             container.appendChild(header);
 
@@ -797,15 +749,18 @@
                 newsCard.className = 'card rounded-xl shadow-lg p-5 space-y-4';
 
                 const titleDiv = document.createElement('div');
-                titleDiv.className = 'flex items-center gap-3 border-b border-gray-700 pb-3 mb-3 light-mode:border-gray-300';
+                // BORDER: Invertido
+                titleDiv.className = 'flex items-center gap-3 border-b border-yellow-300 pb-3 mb-3 light-mode:border-gray-700';
                 
-                const titleTextColor = currentTheme === 'light' ? 'text-amber-700' : 'text-amber-400';
+                // TITULO: Invertido
+                const titleTextColor = currentTheme === 'light' ? 'text-amber-400' : 'text-amber-700';
 
                 titleDiv.innerHTML = `
                     <i data-lucide="bell" class="w-6 h-6 text-red-500"></i>
                     <div>
                         <p class="font-bold text-xl ${titleTextColor}">${news.title}</p>
-                        <p class="text-sm text-gray-500">Período: ${news.date}</p>
+                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
+                        <p class="text-sm text-[var(--text-dark-slate)] light-mode:text-gray-300">Período: ${news.date}</p>
                     </div>
                 `;
                 newsCard.appendChild(titleDiv);
@@ -815,11 +770,12 @@
 
                 news.events.forEach(event => {
                     const eventItem = document.createElement('div');
-                    // NOVO ESTILO CORRIGIDO
-                    eventItem.className = 'news-item bg-amber-500/10 light-mode:bg-amber-100 border-l-4 border-amber-500 light-mode:border-amber-700 p-3 rounded-md';
+                    // Background e Border Invertidos (Amarelo claro vs Dark)
+                    eventItem.className = 'news-item bg-amber-100 light-mode:bg-amber-500/10 border-l-4 border-amber-700 light-mode:border-amber-500 p-3 rounded-md';
                     
-                    const descColor = currentTheme === 'light' ? 'text-gray-800' : 'text-amber-100';
-                    const timeColor = currentTheme === 'light' ? 'text-amber-800' : 'text-amber-500';
+                    // Texto Invertido
+                    const descColor = currentTheme === 'light' ? 'text-amber-100' : 'text-[var(--text-dark-blue)]';
+                    const timeColor = currentTheme === 'light' ? 'text-amber-500' : 'text-amber-800';
 
                     eventItem.innerHTML = `
                         <p class="font-bold text-base ${descColor}">${event.description}</p>
@@ -852,8 +808,6 @@
         function switchTab(tabName) {
             currentTab = tabName;
             
-            // NOTE: A função switchTabAndClose agora é responsável por fechar o menu.
-
             document.getElementById('agenda-section').classList.add('hidden');
             document.getElementById('noticias-section').classList.add('hidden'); 
             document.getElementById('jubileu-section').classList.add('hidden'); 
@@ -886,10 +840,15 @@
             if (isMenuOpen) {
                 menuOverlay.classList.add('open');
                 document.body.style.overflow = 'hidden'; 
-                menuIconContainer.innerHTML = `<i data-lucide="x" class="w-6 h-6 text-amber-400"></i>`; 
+                // Ícone mantém a cor do modo visual.
+                menuIconContainer.innerHTML = currentTheme === 'dark' 
+                    ? `<i data-lucide="x" class="w-6 h-6 text-amber-700"></i>` // Light visual: Dark text color (amber 700 is dark enough)
+                    : `<i data-lucide="x" class="w-6 h-6 text-amber-400"></i>`; // Dark visual: Light text color
             } else {
                 document.body.style.overflow = 'auto'; 
-                menuIconContainer.innerHTML = `<i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>`; 
+                menuIconContainer.innerHTML = currentTheme === 'dark' 
+                    ? `<i data-lucide="menu" class="w-6 h-6 text-amber-700"></i>`
+                    : `<i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>`; 
                 menuOverlay.classList.remove('open');
             }
             lucide.createIcons();
@@ -901,28 +860,29 @@
             const hinoBtn = document.getElementById('toggle-hino');
             const oracaoBtn = document.getElementById('toggle-oracao');
             
+
             if (type === 'hino') {
                 isHinoOpen = !isHinoOpen;
-                hinoContent.classList.toggle('hidden', !isHinoOpen);
                 oracaoContent.classList.add('hidden'); 
                 isOracaoOpen = false;
-                
-                hinoBtn.innerHTML = isHinoOpen 
-                    ? '<i data-lucide="chevron-up" class="w-5 h-5"></i> Ocultar Hino'
-                    : '<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu';
+                hinoContent.classList.toggle('hidden', !isHinoOpen);
 
-                oracaoBtn.innerHTML = '<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu';
+                hinoBtn.innerHTML = isHinoOpen 
+                    ? `<i data-lucide="chevron-up" class="w-5 h-5"></i> Ocultar Hino`
+                    : `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu`;
+
+                oracaoBtn.innerHTML = `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu`;
             } else if (type === 'oracao') {
                 isOracaoOpen = !isOracaoOpen;
-                oracaoContent.classList.toggle('hidden', !isOracaoOpen);
                 hinoContent.classList.add('hidden'); 
                 isHinoOpen = false;
+                oracaoContent.classList.toggle('hidden', !isOracaoOpen);
 
                 oracaoBtn.innerHTML = isOracaoOpen 
-                    ? '<i data-lucide="chevron-up" class="w-5 h-5"></i> Ocultar Oração'
-                    : '<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu';
+                    ? `<i data-lucide="chevron-up" class="w-5 h-5"></i> Ocultar Oração`
+                    : `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu`;
                     
-                hinoBtn.innerHTML = '<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu';
+                hinoBtn.innerHTML = `<i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu`;
             }
             lucide.createIcons();
         }
@@ -950,7 +910,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             applyTheme(currentTheme); 
             getUniqueDates(); 
-            checkInstallationStatus(); 
             checkNewsBadge(); 
             switchTab('agenda'); 
             lucide.createIcons();
@@ -959,73 +918,62 @@
     </script>
 </head>
 <body class="min-h-screen flex flex-col">
-    <!-- MODAL DE INSTRUÇÕES DE INSTALAÇÃO (Para evitar alert() ) -->
-    <div id="instruction-modal-overlay" class="fixed inset-0 flex items-center justify-center p-4" onclick="closeInstructionModal()">
-        <div class="instruction-modal-content rounded-xl shadow-2xl space-y-4" onclick="event.stopPropagation()">
-            <h3 class="text-xl font-bold text-amber-400 flex items-center gap-2"><i data-lucide="smartphone" class="w-5 h-5"></i> Instalar App na Tela Inicial</h3>
-            
-            <p class="text-sm text-gray-300 light-mode:text-gray-700">Para ter o App em ecrã inteiro e funcionando offline, siga estes 3 passos no seu navegador (Chrome ou Safari):</p>
-            
-            <ol class="list-decimal list-inside text-sm text-gray-200 light-mode:text-gray-800 space-y-2">
-                <li>Toque no **Menu** do Navegador (os **3 pontinhos** `⋮` ou o **ícone de Partilha** `⇧` ).</li>
-                <li>Procure a opção **"Instalar Aplicativo"** ou **"Adicionar à Tela Inicial"**.</li>
-                <li>Confirme a instalação para ter o ícone da **aparoquia** na sua tela!</li>
-            </ol>
+    <!-- O MODAL DE INSTRUÇÕES DE INSTALAÇÃO FOI REMOVIDO A PEDIDO DO SENHOR SUPREMO -->
 
-            <button onclick="dismissInstallPrompt()" class="w-full bg-amber-500 text-white font-bold p-3 rounded-lg hover:bg-amber-600 transition-colors">
-                Entendido! Fechar Instruções
-            </button>
-        </div>
-    </div>
-
-    <!-- Menu Hambúrguer Overlay (Mobile) -->
+    <!-- Menu Hambúrguer Overlay (Mobile) - INVERTIDO -->
     <div id="mobile-menu-overlay" class="fixed inset-0 w-full h-full sm:hidden p-4 transition-transform duration-300 transform -translate-x-full">
         <div class="hino-content-bg rounded-xl shadow-2xl p-6 flex flex-col items-start space-y-2 mt-0">
-            <h3 class="text-lg font-bold text-amber-400 mb-2">Navegação Principal</h3>
-            <!-- CORREÇÃO: Usando switchTabAndClose -->
-            <button onclick="switchTabAndClose('agenda')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="calendar-days" class="w-5 h-5"></i> Agenda</button>
-            <button onclick="switchTabAndClose('noticias')" class="menu-item flex items-center justify-start gap-3 rounded-lg tab-with-badge">
+            <!-- TÍTULO INVERTIDO -->
+            <h3 class="text-lg font-bold text-amber-700 light-mode:text-amber-400 mb-2">Navegação Principal</h3>
+            
+            <!-- CORES DOS BOTÕES INVERTIDAS - AGORA USA O NOVO AZUL/AMARELO -->
+            <button onclick="switchTabAndClose('agenda')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="calendar-days" class="w-5 h-5"></i> Agenda</button>
+            <button onclick="switchTabAndClose('noticias')" class="menu-item flex items-center justify-start gap-3 rounded-lg tab-with-badge hover:bg-yellow-100 light-mode:hover:bg-gray-700">
                 <i data-lucide="bell" class="w-5 h-5"></i> Notícias
                 <span id="noticias-badge-mobile" class="news-badge hidden"></span>
             </button>
-            <button onclick="switchTabAndClose('jubileu')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="crown" class="w-5 h-5"></i> Jubileu 160</button>
-            <button onclick="switchTabAndClose('info')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="info" class="w-5 h-5"></i> Informações</button>
-            <button onclick="switchTabAndClose('contatos')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="phone" class="w-5 h-5"></i> Contatos</button>
+            <button onclick="switchTabAndClose('jubileu')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="crown" class="w-5 h-5"></i> Jubileu 160</button>
+            <button onclick="switchTabAndClose('info')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="info" class="w-5 h-5"></i> Informações</button>
+            <button onclick="switchTabAndClose('contatos')" class="menu-item flex items-center justify-start gap-3 rounded-lg hover:bg-yellow-100 light-mode:hover:bg-gray-700"><i data-lucide="phone" class="w-5 h-5"></i> Contatos</button>
         </div>
     </div>
     
-    <header class="border-b border-gray-700 sticky top-0 z-20 shadow-lg header-bg light-mode:border-gray-200">
+    <!-- HEADER INVERTIDO -->
+    <header class="border-b border-yellow-200 sticky top-0 z-20 shadow-lg header-bg light-mode:border-gray-700">
         <div class="max-w-xl mx-auto px-4 py-4 flex justify-between items-center">
-            <!-- BLOCO ESQUERDO: NOME E LOGÓTIPO -->
+            <!-- BLOCO ESQUERDO: NOME E LOGÓTIPO (AGORA COM O NOME COMPLETO DA PARÓQUIA) -->
             <div class="flex items-center gap-3">
-                <i data-lucide="church" class="w-8 h-8 text-amber-400 light-mode:text-amber-700"></i>
+                <!-- ÍCONE INVERTIDO -->
+                <i data-lucide="church" class="w-8 h-8 text-amber-700 light-mode:text-amber-400"></i>
                 <div>
-                    <!-- NOME PRINCIPAL DO APP: aparoquia -->
-                    <h1 class="text-xl font-bold text-amber-100 light-mode:text-gray-900">aparoquia</h1>
-                    <p class="text-xs text-amber-400 light-mode:text-amber-700">Nossa Senhora da Conceição</p>
+                    <!-- TEXTO PRINCIPAL: APARÓQUIA -->
+                    <h1 class="text-xl font-bold text-[var(--text-dark-blue)] light-mode:text-amber-100">aparoquia</h1>
+                    <!-- SUBTÍTULO: NOME COMPLETO DA PARÓQUIA E CIDADE -->
+                    <p class="text-xs text-amber-700 light-mode:text-amber-400">Nossa Senhora da Conceição - Virgínia-MG</p>
                 </div>
             </div>
             
             <!-- BLOCO DIREITO: JUBILEU EM DESTAQUE E MENU/TEMA MÓVEL -->
             <div class="flex items-center gap-4">
-                <!-- TEMA TOGGLE BUTTON (VISÍVEL SEMPRE) -->
-                <button id="theme-toggle" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-gray-700 light-mode:hover:bg-gray-200 transition-colors">
+                <!-- TEMA TOGGLE BUTTON -->
+                <button id="theme-toggle" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-yellow-100 light-mode:hover:bg-gray-700 transition-colors">
                     <!-- Ícone injetado pelo JavaScript (sun/moon) -->
                 </button>
                 
                 <div class="text-right hidden sm:block">
-                    <p class="text-xs font-bold text-amber-400 light-mode:text-amber-700">Ano Jubilar</p>
-                    <p class="text-lg font-bold text-amber-200 light-mode:text-gray-900">1866 – 2026</p>
+                    <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                    <p class="text-xs font-bold text-amber-700 light-mode:text-amber-400">Ano Jubilar</p>
+                    <p class="text-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200">1866 – 2026</p>
                 </div>
                  <!-- Botão Menu Hambúrguer (APENAS em Mobile) -->
-                <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-gray-700 light-mode:hover:bg-gray-200 transition-colors z-50">
-                    <i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>
+                <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-yellow-100 light-mode:hover:bg-gray-700 transition-colors z-50">
+                    <i data-lucide="menu" class="w-6 h-6 text-amber-700"></i>
                 </button>
             </div>
         </div>
         
-        <!-- BARRA DE NAVEGAÇÃO POR ABAS (Apenas em Desktop) -->
-        <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-gray-700 light-mode:border-gray-200 overflow-x-auto whitespace-nowrap hidden sm:flex">
+        <!-- BARRA DE NAVEGAÇÃO POR ABAS (Apenas em Desktop) - INVERTIDA -->
+        <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-yellow-200 light-mode:border-gray-700 overflow-x-auto whitespace-nowrap hidden sm:flex">
             <button id="agenda-btn" onclick="switchTab('agenda')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
                 <i data-lucide="calendar-days" class="w-4 h-4"></i> Agenda
             </button>
@@ -1045,7 +993,9 @@
         </div>
     </header>
 
-    <main class="flex-1 max-w-xl mx-auto px-4 py-6 w-full mb-[72px]">
+    <main class="flex-1 max-w-xl mx-auto px-4 py-6 w-full">
+        <!-- Removida a classe mb-[72px] do main, pois o FAB e a barra de instalação sumiram. -->
+        
         <!-- SEÇÃO 1: AGENDA -->
         <div id="agenda-section">
             <!-- BARRA DE SELEÇÃO DE DIAS (CALENDÁRIO) -->
@@ -1071,17 +1021,19 @@
         <!-- SEÇÃO 3: JUBILEU 160 (Hino e Oração) -->
         <div id="jubileu-section" class="hidden space-y-6">
             <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <h2 class="text-2xl font-bold mb-4 text-amber-400 light-mode:text-amber-700 text-center">Celebração de 160 Anos</h2>
+                <!-- TEXTO INVERTIDO -->
+                <h2 class="text-2xl font-bold mb-4 text-amber-700 light-mode:text-amber-400 text-center">Celebração de 160 Anos</h2>
                 
-                <!-- Botão Hino -->
-                <button id="toggle-hino" onclick="toggleContent('hino')" class="w-full card bg-amber-500/10 hover:bg-amber-500/20 p-4 rounded-lg font-bold text-amber-200 light-mode:text-gray-900 flex items-center justify-between transition-colors">
+                <!-- Botão Hino - INVERTIDO -->
+                <button id="toggle-hino" onclick="toggleContent('hino')" class="w-full card bg-yellow-100 hover:bg-yellow-200 p-4 rounded-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200 light-mode:bg-amber-500/10 light-mode:hover:bg-amber-500/20 flex items-center justify-between transition-colors">
                     <i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Hino do Jubileu
                 </button>
                 
-                <!-- Conteúdo do Hino (Inicialmente Escondido) -->
+                <!-- Conteúdo do Hino (Inicialmente Escondido) - INVERTIDO -->
                 <div id="content-hino" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
-                    <h3 class="text-xl font-bold mb-3 text-amber-200 light-mode:text-gray-900 text-center">Hino do Jubileu</h3>
-                    <div class="text-sm text-gray-300 light-mode:text-gray-800">
+                    <h3 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-200 text-center">Hino do Jubileu</h3>
+                    <!-- TEXTO INVERTIDO -->
+                    <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300">
                         <p class="verse-block">
                             Aqui nesta terra, ornada de serra,<br>
                             Coberta pelo céu azul anil,<br>
@@ -1139,15 +1091,16 @@
                     </div>
                 </div>
 
-                <!-- Botão Oração -->
-                <button id="toggle-oracao" onclick="toggleContent('oracao')" class="w-full card bg-amber-500/10 hover:bg-amber-500/20 p-4 rounded-lg font-bold text-amber-200 light-mode:text-gray-900 flex items-center justify-between transition-colors">
+                <!-- Botão Oração - INVERTIDO -->
+                <button id="toggle-oracao" onclick="toggleContent('oracao')" class="w-full card bg-yellow-100 hover:bg-yellow-200 p-4 rounded-lg font-bold text-[var(--text-dark-blue)] light-mode:text-amber-200 light-mode:bg-amber-500/10 light-mode:hover:bg-amber-500/20 flex items-center justify-between transition-colors">
                     <i data-lucide="chevron-down" class="w-5 h-5"></i> Ver Oração do Jubileu
                 </button>
                 
-                <!-- Conteúdo da Oração (Inicialmente Escondido) -->
+                <!-- Conteúdo da Oração (Inicialmente Escondido) - INVERTIDO -->
                 <div id="content-oracao" class="hidden hino-content-bg rounded-xl shadow-inner p-5 mt-4">
-                    <h3 class="text-xl font-bold mb-3 text-amber-200 light-mode:text-gray-900 text-center">Oração do Jubileu</h3>
-                    <div class="text-sm text-gray-300 light-mode:text-gray-800 space-y-4">
+                    <h3 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-200 text-center">Oração do Jubileu</h3>
+                    <!-- TEXTO INVERTIDO -->
+                    <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-4">
                         <p class="pt-2">Deus Todo-poderoso, Senhor do Tempo e da História, a Ti elevamos nossa voz neste Ano de Graça. Somos herdeiros de 160 anos de fé que não se dobrou, e Te bendizemos por cada vida iluminada, por cada Sacramento que fez este Templo pulsar com a força do Teu Reino.</p>
                         
                         <p class="pt-2">Senhor Jesus Cristo, Fonte Eterna de Misericórdia, concede-nos viver este Jubileu com coração renovado.</p>
@@ -1170,41 +1123,48 @@
 
         <!-- SEÇÃO 4: INFORMAÇÕES -->
         <div id="info-section" class="hidden space-y-6">
-             <!-- Horários de Missa (Matriz) -->
+             <!-- Horários de Missa (Matriz) - INVERTIDO -->
             <div class="card rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-bold mb-3 text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="church" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Horários de Missa (Matriz)</h2>
-                <div class="text-sm text-gray-300 light-mode:text-gray-800 space-y-2">
-                    <div class="flex justify-between border-b border-gray-700 light-mode:border-gray-200 pb-1"><span class="font-bold text-amber-200 light-mode:text-gray-700">Quinta-feira:</span><span class="text-amber-500 light-mode:text-amber-700">19:00h</span></div>
-                    <div class="flex justify-between border-b border-gray-700 light-mode:border-gray-200 pb-1"><span class="font-bold text-amber-200 light-mode:text-gray-700">Sábado:</span><span class="text-amber-500 light-mode:text-amber-700">16:00h e 19:00h</span></div>
-                    <div class="flex justify-between"><span class="font-bold text-amber-200 light-mode:text-gray-700">Domingo:</span><span class="text-amber-500 light-mode:text-amber-700">07:00h, 09:00h e 19:00h</span></div>
+                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="church" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Horários de Missa (Matriz)</h2>
+                <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-2">
+                    <!-- CORRIGIDO: Usa dark-slate no light mode para legendas em negrito -->
+                    <div class="flex justify-between border-b border-yellow-200 light-mode:border-gray-700 pb-1"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Quinta-feira:</span><span class="text-amber-700 light-mode:text-amber-500">19:00h</span></div>
+                    <div class="flex justify-between border-b border-yellow-200 light-mode:border-gray-700 pb-1"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Sábado:</span><span class="text-amber-700 light-mode:text-amber-500">16:00h e 19:00h</span></div>
+                    <div class="flex justify-between"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Domingo:</span><span class="text-amber-700 light-mode:text-amber-500">07:00h, 09:00h e 19:00h</span></div>
                 </div>
             </div>
 
-            <!-- Sobre a Paróquia (Otimizado) -->
+            <!-- Sobre a Paróquia (Otimizado) - INVERTIDO -->
             <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <h2 class="text-xl font-bold text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="landmark" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Sobre a Paróquia</h2>
+                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <h2 class="text-xl font-bold text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="landmark" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Sobre a Paróquia</h2>
                 
-                <div class="text-sm text-gray-300 light-mode:text-gray-800 space-y-3">
+                <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-3">
                     <div class="flex gap-3 items-start">
-                        <i data-lucide="calendar-check" class="w-5 h-5 text-amber-400 light-mode:text-amber-700 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-amber-200 light-mode:text-gray-700">Fundação:</span> A Paróquia foi criada em 15 de Novembro de 1866, com raízes em 1856, quando Padre Custódio de Oliveira Monte-Raso ergueu a capela.</p>
+                        <i data-lucide="calendar-check" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Fundação:</span> A Paróquia foi criada em 15 de Novembro de 1866, com raízes em 1856, quando Padre Custódio de Oliveira Monte-Raso ergueu a capela.</p>
                     </div>
                     <div class="flex gap-3 items-start">
-                        <i data-lucide="map" class="w-5 h-5 text-amber-400 light-mode:text-amber-700 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-amber-200 light-mode:text-gray-700">Localização Histórica:</span> Situada em Virgínia/MG, a paróquia é um farol de fé no Sul de Minas, conhecida pela sua devoção a Nossa Senhora da Conceição.</p>
+                        <i data-lucide="map" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Localização Histórica:</span> Situada em Virgínia/MG, a paróquia é um farol de fé no Sul de Minas, conhecida pela sua devoção a Nossa Senhora da Conceição.</p>
                     </div>
                     <div class="flex gap-3 items-start">
-                        <i data-lucide="heart" class="w-5 h-5 text-amber-400 light-mode:text-amber-700 mt-1 flex-shrink-0"></i>
-                        <p class="leading-relaxed"><span class="font-bold text-amber-200 light-mode:text-gray-700">Missão:</span> Evangelizar e acolher a todos com amor fraterno, dando continuidade à tradição centenária de fé e caridade na região.</p>
+                        <i data-lucide="heart" class="w-5 h-5 text-amber-700 light-mode:text-amber-400 mt-1 flex-shrink-0"></i>
+                        <p class="leading-relaxed"><span class="font-bold text-[var(--text-dark-slate)] light-mode:text-amber-200">Missão:</span> Evangelizar e acolher a todos com amor fraterno, dando continuidade à tradição centenária de fé e caridade na região.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Horário do Escritório Paroquial -->
+            <!-- Horário do Escritório Paroquial - INVERTIDO -->
             <div class="card rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-bold mb-3 text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Horário do Escritório Paroquial</h2>
-                <div class="text-sm text-gray-300 light-mode:text-gray-800 space-y-2">
-                    <div class="flex justify-between border-b border-gray-700 light-mode:border-gray-200 pb-1"><span class="font-bold">Segunda a Sexta:</span><span>08:00h – 17:00h</span></div>
+                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="clock" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Horário do Escritório Paroquial</h2>
+                <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <div class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300 space-y-2">
+                    <div class="flex justify-between border-b border-yellow-200 light-mode:border-gray-700 pb-1"><span class="font-bold">Segunda a Sexta:</span><span>08:00h – 17:00h</span></div>
                     <div class="flex justify-between"><span class="font-bold">Sábados e Domingos:</span><span>Fechado</span></div>
                 </div>
             </div>
@@ -1213,80 +1173,69 @@
         <!-- SEÇÃO 5: CONTATOS -->
         <div id="contatos-section" class="hidden space-y-4">
             <div class="card rounded-xl shadow-lg p-5 space-y-4">
-                <h2 class="text-xl font-bold mb-3 text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="phone-call" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Escritório Paroquial</h2>
+                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="phone-call" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Escritório Paroquial</h2>
                 
-                <!-- WHATSAPP (Corrigido para Âmbar) -->
-                <a href="https://wa.me/553533731397" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-amber-400/20 hover:bg-amber-500/30 rounded-lg transition-colors light-mode:bg-amber-100 light-mode:hover:bg-amber-200">
-                    <i data-lucide="message-square" class="w-6 h-6 text-amber-400 light-mode:text-amber-700"></i>
+                <!-- LINKS DE CONTATO - INVERTIDO -->
+                <!-- WHATSAPP -->
+                <a href="https://wa.me/553533731397" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors light-mode:bg-amber-400/20 light-mode:hover:bg-amber-500/30">
+                    <i data-lucide="message-square" class="w-6 h-6 text-amber-700 light-mode:text-amber-400"></i>
                     <div>
-                        <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">WhatsApp Oficial</p>
-                        <!-- CORREÇÃO DE CONTRASTE: text-gray-700 no light-mode -->
-                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-700">(35) 3373-1397</p>
+                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">WhatsApp Oficial</p>
+                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
+                        <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">(35) 3373-1397</p>
                     </div>
                 </a>
                 
                 <!-- INSTAGRAM -->
-                <a href="https://www.instagram.com/aparoquia/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-pink-400/20 hover:bg-pink-500/30 rounded-lg transition-colors light-mode:bg-pink-100 light-mode:hover:bg-pink-200">
-                    <i data-lucide="instagram" class="w-6 h-6 text-pink-400 light-mode:text-pink-700"></i>
+                <a href="https://www.instagram.com/aparoquia/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-3 bg-pink-100 hover:bg-pink-200 rounded-lg transition-colors light-mode:bg-pink-400/20 light-mode:hover:bg-pink-500/30">
+                    <i data-lucide="instagram" class="w-6 h-6 text-pink-700 light-mode:text-pink-400"></i>
                     <div>
-                        <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">Instagram Oficial</p>
-                        <!-- CORREÇÃO DE CONTRASTE: text-gray-700 no light-mode -->
-                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-700">@aparoquia</p>
+                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">Instagram Oficial</p>
+                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
+                        <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">@aparoquia</p>
                     </div>
                 </a>
 
                 <!-- TELEFONE -->
-                <a href="tel:+553532611217,8007" class="flex items-center gap-4 p-3 bg-amber-400/20 hover:bg-amber-500/30 rounded-lg transition-colors light-mode:bg-amber-100 light-mode:hover:bg-amber-200">
-                    <i data-lucide="phone" class="w-6 h-6 text-amber-400 light-mode:text-amber-700"></i>
+                <a href="tel:+553532611217,8007" class="flex items-center gap-4 p-3 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors light-mode:bg-amber-400/20 light-mode:hover:bg-amber-500/30">
+                    <i data-lucide="phone" class="w-6 h-6 text-amber-700 light-mode:text-amber-400"></i>
                     <div>
-                        <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">Telefone com Ramal</p>
-                        <!-- CORREÇÃO DE CONTRASTE: text-gray-700 no light-mode -->
-                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-700">(35) 3261-1217 ramal 8007</p>
+                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">Telefone com Ramal</p>
+                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
+                        <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">(35) 3261-1217 ramal 8007</p>
                     </div>
                 </a>
 
                 <!-- E-MAIL -->
-                <a href="mailto:paroquiavirginia@yahoo.com.br" class="flex items-center gap-4 p-3 bg-red-400/20 hover:bg-red-500/30 rounded-lg transition-colors light-mode:bg-red-100 light-mode:hover:bg-red-200">
-                    <i data-lucide="mail" class="w-6 h-6 text-red-400 light-mode:text-red-700"></i>
+                <a href="mailto:paroquiavirginia@yahoo.com.br" class="flex items-center gap-4 p-3 bg-red-100 hover:bg-red-200 rounded-lg transition-colors light-mode:bg-red-400/20 light-mode:hover:bg-red-500/30">
+                    <i data-lucide="mail" class="w-6 h-6 text-red-700 light-mode:text-red-400"></i>
                     <div>
-                        <p class="font-bold text-sm text-amber-100 light-mode:text-gray-900">E-mail Oficial</p>
-                        <!-- CORREÇÃO DE CONTRASTE: text-gray-700 no light-mode -->
-                        <p class="text-xs text-gray-400 contact-link-text light-mode:text-gray-700">paroquiavirginia@yahoo.com.br</p>
+                        <p class="font-bold text-sm text-[var(--text-dark-blue)] light-mode:text-amber-100">E-mail Oficial</p>
+                        <!-- CORRIGIDO: Usa dark-slate no light mode, e CINZA CLARO no dark mode. -->
+                        <p class="text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300">paroquiavirginia@yahoo.com.br</p>
                     </div>
                 </a>
             </div>
 
+            <!-- LOCALIZAÇÃO - INVERTIDO -->
             <div class="card rounded-xl shadow-lg p-5">
-                <h2 class="text-xl font-bold mb-3 text-amber-100 light-mode:text-gray-900 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-400 light-mode:text-amber-700"></i> Localização</h2>
-                <p class="text-sm text-gray-300 light-mode:text-gray-800">Praça Cônego Monte Raso, nº 304 - Centro<br>37465-000, Virgínia/MG</p>
-                <a href="https://www.google.com/maps/search/?api=1&query=Praça+Cônego+Monte+Raso,+304,+Virgínia+-+MG" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 text-sm font-bold text-amber-500 hover:text-amber-400 light-mode:text-amber-700 light-mode:hover:text-amber-900">
+                <!-- TÍTULO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <h2 class="text-xl font-bold mb-3 text-[var(--text-dark-blue)] light-mode:text-amber-100 flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5 text-amber-700 light-mode:text-amber-400"></i> Localização</h2>
+                <!-- TEXTO INVERTIDO - AGORA USA O NOVO AZUL ESCURO NO LIGHT MODE -->
+                <p class="text-sm text-[var(--text-dark-blue)] light-mode:text-gray-300">Praça Cônego Monte Raso, nº 304 - Centro<br>37465-000, Virgínia/MG</p>
+                <!-- LINK INVERTIDO -->
+                <a href="https://www.google.com/maps/search/?api=1&query=Praça+Cônego+Monte+Raso,+304,+Virgínia+-+MG" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 text-sm font-bold text-amber-700 hover:text-amber-900 light-mode:text-amber-500 light-mode:hover:text-amber-400">
                     Ver no Mapa <i data-lucide="external-link" class="w-4 h-4"></i>
                 </a>
             </div>
         </div>
     </main>
     
-    <footer class="text-center py-4 text-xs text-gray-500 light-mode:text-gray-700 border-t border-gray-700 light-mode:border-gray-200 mt-auto header-bg">
+    <!-- FOOTER INVERTIDO -->
+    <footer class="text-center py-4 text-xs text-[var(--text-dark-slate)] light-mode:text-gray-300 border-t border-yellow-200 light-mode:border-gray-700 mt-auto header-bg">
         Desenvolvido por Emanuel Uchôas
     </footer>
-
-    <!-- FAB (Floating Action Button) Container - APENNAS WHATSAPP -->
-    <div id="fab-container" class="sm:hidden">
-        <!-- Botão Principal (Abre o WhatsApp) -->
-        <button id="main-fab" onclick="openWhatsApp()" class="fab-button mt-4" aria-label="Abrir WhatsApp">
-            <span id="main-fab-icon"><i data-lucide="message-square" class="w-6 h-6"></i></span>
-        </button>
-    </div>
-
-    <!-- Barra de Alerta PWA (Aparece no mobile para quem não instalou) -->
-    <div id="install-prompt-bar" class="fixed bottom-0 left-0 right-0 h-16 bg-amber-500 text-white flex items-center justify-between px-4 sm:hidden transition-transform duration-300 hidden">
-        <p class="text-sm font-bold flex items-center gap-2">
-            <i data-lucide="download" class="w-5 h-5"></i> Instale o App na Tela Inicial!
-        </p>
-        <button onclick="showInstallInstructions()" class="bg-white text-amber-500 font-bold px-3 py-1 rounded-full text-xs shadow-md">
-            Como Instalar?
-        </button>
-    </div>
     
 </body>
 </html>
