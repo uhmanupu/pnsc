@@ -110,75 +110,39 @@
             background-color: #e2e8f0; /* light slate */
             color: #334155; /* dark slate */
         }
-        /* FIX (2) : Corrigir a cor do botão ativo no Light Mode */
+        /* Corrigir a cor do botão ativo no Light Mode */
         .light-mode .date-button.active {
             background-color: #d97706; /* Darker Amber/Orange */
             color: #ffffff; /* White text */
         }
 
-        /* CORES DE TEXTO NO DARK MODE */
-        .text-amber-100 { color: #fef3c7; } /* lightAmber */
-        .text-amber-200 { color: #fef9c3; }
-        .text-amber-400 { color: #fbbf24; } /* Ouro/Âmbar */
-        .text-amber-500 { color: #f59e0b; }
-        .text-gray-500 { color: #94a3b8; }
-        .text-gray-300 { color: #cbd5e1; }
-        .contact-link-text { color: #f1f5f9; }
-
-        /* CORES DE TEXTO NO LIGHT MODE (Sobrescrita) */
-        .light-mode .text-amber-100,
-        .light-mode .text-amber-200,
-        .light-mode .text-gray-300,
-        .light-mode .contact-link-text { color: #0f172a; } /* darkNavy como texto principal */
-
-        .light-mode .text-amber-400,
-        .light-mode .text-amber-500 { color: #d97706; } /* Âmbar Escuro para Destaque */
-        .light-mode .text-gray-500 { color: #64748b; }
-        
-        .hino-content-bg {
-            background-color: #1f2937;
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .light-mode .hino-content-bg {
-            background-color: #f1f5f9; /* Mais claro no tema claro */
-        }
-        
-        .verse-block { 
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-            text-align: center; 
-        }
-        .refrain {
-            font-weight: 700;
-            color: #f59e0b;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            display: block; 
-            text-transform: uppercase;
-            text-align: center;
-        }
-        .light-mode .refrain {
-             color: #d97706; /* Âmbar escuro */
-        }
-
-        #content-oracao .text-amber-200 { color: #f1f5f9 !important; } 
-        #content-oracao .font-bold { font-weight: 400 !important; }
-
-        /* FIX: Z-Index do overlay ajustado para ser o mais alto */
+        /* MENU HAMBÚRGUER CORREÇÃO FINAL: */
         #mobile-menu-overlay {
+            position: fixed; 
+            top: 64px; 
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 64px); 
             background-color: rgba(15, 23, 42, 0.95);
-            z-index: 55; /* FIX (1) */
+            z-index: 55; 
             transition: transform 0.3s ease-in-out;
             transform: translateX(100%); 
+            overflow-y: auto; 
+            padding: 16px; 
         }
+        #mobile-menu-overlay.open {
+            transform: translateX(0); 
+        }
+
         .light-mode #mobile-menu-overlay {
-            background-color: rgba(241, 245, 249, 0.95); /* Light mode overlay */
+            background-color: rgba(241, 245, 249, 0.95); 
         }
         
         .menu-item {
             color: #fef3c7;
+            width: 100%; 
+            padding: 12px;
+            text-align: left;
         }
         .light-mode .menu-item {
             color: #0f172a;
@@ -202,49 +166,58 @@
             }
         }
         
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 4px; }
-
-        /* FAB (Floating Action Button) Styles - SIMPLIFICADO */
-        #fab-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 30; 
+        /* ESTILO DA BARRA DE INSTALAÇÃO PWA */
+        #install-prompt-bar {
+            /* Adiciona espaço para o FAB e garante visibilidade */
+            padding-bottom: 24px; 
+            z-index: 40; /* Acima do FAB (z-index 30) */
         }
-        .fab-button {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
+
+        /* Estilo para o Modal de Instruções (Para evitar alert()) */
+        #instruction-modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 60;
+            display: none; /* Escondido por padrão */
+        }
+        #instruction-modal-overlay.open {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
         }
-        #main-fab {
-            background-color: #25d366; /* WhatsApp Green */
-            color: #ffffff; 
-            transform: scale(1.1); /* Destacar um pouco */
+        .instruction-modal-content {
+            background-color: #1e293b; /* cardDark */
+            border: 2px solid #f59e0b; /* amberGold */
+            max-width: 90%;
+            padding: 24px;
         }
-        .light-mode #main-fab {
-            background-color: #25d366; 
-            color: #ffffff;
+        .light-mode .instruction-modal-content {
+            background-color: #ffffff;
         }
 
-        /* NOTÍCIAS ESTILO */
-        .news-item {
-            border-left: 4px solid #f59e0b; /* Âmbar Destaque */
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background-color: #1f2937; /* Fundo levemente diferente */
-            border-radius: 0.5rem;
-            transition: background-color 0.3s;
+        /* Ajuste do FAB para não sobrepor a nova barra */
+        #fab-container {
+             bottom: 80px; /* Eleva o FAB para acima da barra de instalação */
+             right: 20px;
         }
-        .light-mode .news-item {
-            background-color: #e2e8f0; 
-            border-left: 4px solid #d97706; 
+
+        /* Estilo para Conteúdo Estático (Hino/Oração/Contatos) */
+        .hino-content-bg {
+            background-color: #1f2937;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .hino-content-bg {
+            background-color: #f1f5f9; 
+        }
+
+        /* Estilo do Alerta Especial */
+        .bg-red-800\/20 {
+            background-color: rgba(154, 52, 52, 0.2); /* Vermelho Escuro Transparente */
+        }
+        .border-red-500 {
+            border-color: #ef4444; 
+        }
+        .light-mode .bg-red-200 {
+            background-color: #fecaca;
         }
 
     </style>
@@ -397,7 +370,8 @@
             { "date": "23/Nov (Domingo)", "time": "19:00", "title": "Santa Missa", "location": "Igreja Matriz" },
             
             { "date": "24/Nov (Segunda-feira)", "time": "--", "title": "Folga", "location": "Folga" },
-            { "date": "24/Nov (Segunda-feira)", "time": "18:00", "title": "Santa Missa Sagrado Coração", "location": "Igreja Sagrado Coração" },
+            // Evento de Destaque que acionará o Alerta no dia 23/Nov
+            { "date": "24/Nov (Segunda-feira)", "time": "18:00", "title": "Santa Missa", "location": "Igreja Sagrado Coração" }, 
             { "date": "24/Nov (Segunda-feira)", "time": "19:00", "title": "Formação MESC", "location": "Formação MESC" },
 
             { "date": "25/Nov (Terça-feira)", "time": "09:00", "title": "Atendimento", "location": "Atendimento" },
@@ -441,7 +415,6 @@
         ];
         
         // --- DADOS DA ABA NOTÍCIAS (NOVOS) ---
-        // Usamos o localStorage para saber se a Novena é novidade (new_news_version: '1')
         const NEWS_VERSION = '1';
         const NEWS_DATA = [
             {
@@ -471,17 +444,64 @@
         let uniqueDates = [];
         let currentTab = 'agenda'; 
         let currentSelectedDate = ''; 
-        let isMenuOpen = false; // Estado do menu móvel
+        let isMenuOpen = false; 
         let isHinoOpen = false;
         let isOracaoOpen = false;
 
-        // --- GESTURE LOGIC START (Swipe & Pull-to-Refresh) ---
+        // --- LÓGICA DO PWA INSTALL PROMPT ---
+        const INSTALL_PROMPT_KEY = 'pwa_install_dismissed';
+
+        function checkInstallationStatus() {
+            const bar = document.getElementById('install-prompt-bar');
+            if (!bar) return;
+
+            // Se o utilizador dispensou ANTES, não mostrar.
+            if (localStorage.getItem(INSTALL_PROMPT_KEY) === 'true') {
+                bar.classList.add('hidden');
+                return;
+            }
+
+            // Ocultar em telas maiores que mobile
+            if (window.innerWidth > 640) {
+                 bar.classList.add('hidden');
+                 return;
+            }
+
+            bar.classList.remove('hidden');
+        }
+
+        function dismissInstallPrompt() {
+            localStorage.setItem(INSTALL_PROMPT_KEY, 'true');
+            const bar = document.getElementById('install-prompt-bar');
+            if (bar) bar.classList.add('hidden');
+            closeInstructionModal();
+        }
+
+        function showInstructionModal() {
+            document.getElementById('instruction-modal-overlay').classList.add('open');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeInstructionModal() {
+            document.getElementById('instruction-modal-overlay').classList.remove('open');
+            document.body.style.overflow = 'auto'; 
+        }
+
+        function showInstallInstructions() {
+             showInstructionModal();
+             if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(100); 
+            }
+        }
+        // --- FIM LÓGICA DO PWA INSTALL PROMPT ---
+
+
+        // --- LÓGICA GERAL (Restante do App) ---
         let touchstartX = 0;
         let touchstartY = 0;
-        const SWIPE_THRESHOLD = 80;  // Pixels para deslizar lateralmente
-        const PULL_THRESHOLD = 80;   // Pixels para puxar para atualizar (Pull-to-Refresh)
+        const SWIPE_THRESHOLD = 80;  
+        const PULL_THRESHOLD = 80;   
 
-        // Função para navegar entre os dias
         function navigateDate(direction) {
             const currentIndex = uniqueDates.indexOf(currentSelectedDate);
             const newIndex = currentIndex + direction;
@@ -489,7 +509,6 @@
             if (newIndex >= 0 && newIndex < uniqueDates.length) {
                 selectDate(uniqueDates[newIndex]);
             } else {
-                // Feedback sutil (vibração) quando o limite é atingido
                 if (window.navigator && window.navigator.vibrate) {
                     window.navigator.vibrate(50); 
                 }
@@ -507,7 +526,6 @@
             const diffX = touchendX - touchstartX;
             const diffY = touchendY - touchstartY;
 
-            // 1. Lógica de Pull-to-Refresh
             if (document.documentElement.scrollTop === 0 && diffY > PULL_THRESHOLD && Math.abs(diffY) > Math.abs(diffX)) {
                 if (window.navigator && window.navigator.vibrate) {
                     window.navigator.vibrate(100); 
@@ -516,24 +534,19 @@
                 return;
             }
 
-            // 2. Lógica de Swipe (apenas se estiver na seção Agenda e movimento horizontal dominante)
             if (currentTab === 'agenda' && Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(diffX) > Math.abs(diffY)) {
                 if (diffX < 0) {
-                    navigateDate(1); // Deslizar para a Esquerda (Próximo Dia)
+                    navigateDate(1); 
                 } else {
-                    navigateDate(-1); // Deslizar para a Direita (Dia Anterior)
+                    navigateDate(-1); 
                 }
             }
         }
 
-        // Anexar listeners ao documento para capturar gestos globais (Swipe & P-T-R)
         document.addEventListener('touchstart', handleTouchStart, { passive: true });
         document.addEventListener('touchend', handleTouchEnd, { passive: true });
-        // --- GESTURE LOGIC END ---
 
-
-        // --- Lógica de Tema (Dark/Light) ---
-        let currentTheme = localStorage.getItem('theme') || 'dark'; // Padrão: dark
+        let currentTheme = localStorage.getItem('theme') || 'dark'; 
 
         function applyTheme(theme) {
             const body = document.body;
@@ -545,7 +558,6 @@
                 if (themeToggleBtn) {
                     themeToggleBtn.innerHTML = '<i data-lucide="moon" class="w-6 h-6 text-amber-500"></i>';
                 }
-                // Corrigido: Mudar a cor da barra de status para branco no light mode
                 if (metaTheme) {
                      metaTheme.setAttribute('content', '#ffffff');
                 }
@@ -554,7 +566,6 @@
                 if (themeToggleBtn) {
                     themeToggleBtn.innerHTML = '<i data-lucide="sun" class="w-6 h-6 text-amber-400"></i>';
                 }
-                // Mudar a cor da barra de status para o tema escuro
                 if (metaTheme) {
                      metaTheme.setAttribute('content', '#1e293b');
                 }
@@ -569,13 +580,10 @@
             applyTheme(newTheme);
         }
 
-        // --- Lógica do FAB (Floating Action Button) ---
         function openWhatsApp() {
-            // Abre diretamente o link do WhatsApp
             window.open('https://wa.me/553533731397', '_blank');
         }
         
-        // Função para encontrar as datas únicas e inicializar a data selecionada
         function getUniqueDates() {
              const dates = AGENDA_DATA.map(item => item.date.trim());
              uniqueDates = [...new Set(dates)];
@@ -584,10 +592,8 @@
                  const today = new Date();
                  const todayDay = today.getDate().toString().padStart(2, '0');
                  
-                 // Tenta encontrar a data de hoje ou a mais próxima
                  let closestDate = uniqueDates[0];
                  for (const fullDate of uniqueDates) {
-                     // Verifica se a data do mês é a de hoje
                      if (fullDate.startsWith(todayDay + '/Nov')) {
                          closestDate = fullDate;
                          break;
@@ -600,7 +606,6 @@
              }
         }
         
-        // Renderiza os botões de seleção de dia (Calendário Horizontal)
         function renderDatePicker() {
             getUniqueDates();
             const container = document.getElementById('date-picker-container');
@@ -622,36 +627,93 @@
                 button.onclick = () => selectDate(fullDate);
                 container.appendChild(button);
             });
-            // Rola a barra de dias para o botão ativo (o dia selecionado)
             const activeBtn = container.querySelector('.date-button.active');
             if (activeBtn) {
                 activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
         
-        // Seleciona um novo dia
         function selectDate(fullDate) {
             currentSelectedDate = fullDate;
             renderAgenda(); 
             renderDatePicker(); 
         }
 
-        // Renderiza os eventos da Agenda para a data selecionada
+        // --- NOVO: Lógica de Alerta de Missa Especial ---
+        function getNextDay(currentDateStr) {
+            // A data é "DD/Nov (Dia-da-semana)"
+            const parts = currentDateStr.split('/Nov');
+            const dayPart = parseInt(parts[0], 10);
+            
+            const nextDay = dayPart + 1;
+            // Assumindo que o mês atual é Novembro
+            if (nextDay > 30) return null; 
+
+            // Encontra a data completa do próximo dia
+            const nextDayPadded = nextDay.toString().padStart(2, '0');
+            const fullNextDate = AGENDA_DATA.find(e => e.date.startsWith(nextDayPadded + '/Nov'));
+            
+            if (fullNextDate) {
+                return fullNextDate.date;
+            }
+            return null;
+        }
+
+        function getSpecialAlert(selectedDate) {
+            const nextDateStr = getNextDay(selectedDate);
+            if (!nextDateStr) return '';
+
+            // Filtra eventos para o dia seguinte que sejam Santa Missa OU Missa e não sejam na Matriz/Novena
+            const tomorrowEvents = AGENDA_DATA.filter(event => 
+                event.date.trim() === nextDateStr && 
+                (event.title.includes("Missa") || event.title.includes("Santa Missa")) && 
+                !event.location.includes("Igreja Matriz") && 
+                !event.location.includes("Novena")
+            );
+
+            if (tomorrowEvents.length > 0) {
+                const event = tomorrowEvents[0];
+                const dayOnly = nextDateStr.split('(')[0].trim();
+                const dayOfWeek = nextDateStr.split('(')[1].replace(')', '');
+                const location = event.location.replace('Bairro ', '').replace('Igreja ', '');
+                
+                // Exemplo: Amanhã (Segunda, 24/Nov): Santa Missa no Sagrado Coração.
+                return `<div id="special-alert" class="card rounded-lg shadow-md p-3 mb-4 border-l-4 bg-red-800/20 border-red-500 light-mode:bg-red-200 light-mode:border-red-600 text-sm flex items-center gap-3">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-red-400 flex-shrink-0"></i>
+                    <p class="font-bold text-red-100 light-mode:text-red-900">
+                        Lembrete! <span class="text-amber-400 font-extrabold">${dayOfWeek}, ${dayOnly}</span> tem ${event.title} (${location}).
+                    </p>
+                </div>`;
+            }
+            return '';
+        }
+        // --- FIM: Lógica de Alerta de Missa Especial ---
+
+
         function renderAgenda() {
             const container = document.getElementById('agenda-content');
             if (!container) return;
             container.innerHTML = '';
             
+            // --- NOVO: Alerta de Missa Especial no Dia Seguinte ---
+            const specialAlertHTML = getSpecialAlert(currentSelectedDate);
+            if (specialAlertHTML) {
+                container.innerHTML += specialAlertHTML; // Adiciona o alerta ANTES do conteúdo principal do dia
+            }
+            // --- FIM NOVO ---
+
             const filteredData = AGENDA_DATA.filter(event => event.date.trim() === currentSelectedDate);
 
             if (filteredData.length === 0) {
-                container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-gray-500">
-                    <p>Nenhum evento agendado para esta data.</p>
-                </div>`;
+                // Se não houver eventos, mas houver alerta, o alerta já foi adicionado acima
+                if (!specialAlertHTML) {
+                    container.innerHTML = `<div class="p-6 card rounded-xl shadow-md text-center text-gray-500">
+                        <p>Nenhum evento agendado para esta data.</p>
+                    </div>`;
+                }
                 return;
             }
 
-            // Cabeçalho da data
             const headerDiv = document.createElement('div');
             headerDiv.className = 'mb-4 text-center';
             const dayOfWeek = currentSelectedDate.split('(')[1].replace(')', '');
@@ -662,7 +724,6 @@
             `;
             container.appendChild(headerDiv);
 
-            // Lista de eventos
             const listCard = document.createElement('div');
             listCard.className = 'card rounded-xl shadow-lg p-4 space-y-2';
 
@@ -670,7 +731,6 @@
                 const eventDiv = document.createElement('div');
                 eventDiv.className = 'flex justify-between items-center py-3 border-b border-gray-700 last:border-b-0';
                 
-                // Determina se é um evento de destaque (ex: Missa Matriz)
                 const isMatriz = event.title.includes("Igreja Matriz") || event.location.includes("Igreja Matriz");
                 const titleColor = isMatriz ? 'text-amber-400' : 'text-amber-100';
 
@@ -688,13 +748,11 @@
             lucide.createIcons();
         }
 
-        // Renderiza a Aba Notícias (Novena)
         function renderNews() {
             const container = document.getElementById('noticias-content');
             if (!container) return;
             container.innerHTML = '';
 
-            // Título Principal
             const header = document.createElement('div');
             header.className = 'news-header text-center mb-6';
             header.innerHTML = `
@@ -704,12 +762,10 @@
             `;
             container.appendChild(header);
 
-            // Lista de Notícias (A Novena)
             NEWS_DATA.forEach(news => {
                 const newsCard = document.createElement('div');
                 newsCard.className = 'card rounded-xl shadow-lg p-5 space-y-4';
 
-                // Título da Notícia
                 const titleDiv = document.createElement('div');
                 titleDiv.className = 'flex items-center gap-3 border-b border-gray-700 pb-3 mb-3 light-mode:border-gray-300';
                 titleDiv.innerHTML = `
@@ -721,7 +777,6 @@
                 `;
                 newsCard.appendChild(titleDiv);
 
-                // Eventos Detalhados da Novena
                 const eventsList = document.createElement('div');
                 eventsList.className = 'space-y-3';
 
@@ -740,31 +795,25 @@
                 container.appendChild(newsCard);
             });
             
-            // Remove o badge de "novidade" ao clicar na aba
             localStorage.setItem('last_news_version', NEWS_VERSION);
             checkNewsBadge();
             lucide.createIcons();
         }
 
-        
-        // --- Função de Troca de Abas ---
         function switchTab(tabName) {
             currentTab = tabName;
             
-            // Fecha o menu móvel se estiver aberto
             if (isMenuOpen) {
                 toggleMobileMenu();
             }
 
-            // Gerenciar Visibilidade
             document.getElementById('agenda-section').classList.add('hidden');
-            document.getElementById('noticias-section').classList.add('hidden'); // NOVA SEÇÃO
+            document.getElementById('noticias-section').classList.add('hidden'); 
             document.getElementById('jubileu-section').classList.add('hidden'); 
             document.getElementById('info-section').classList.add('hidden');
             document.getElementById('contatos-section').classList.add('hidden');
             document.getElementById(`${tabName}-section`).classList.remove('hidden');
 
-            // Gerenciar Botões (Desktop)
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -773,7 +822,6 @@
                  activeBtn.classList.add('active');
             }
 
-            // Chamadas específicas de renderização
             if (tabName === 'agenda') {
                 renderDatePicker(); 
                 renderAgenda(); 
@@ -783,7 +831,6 @@
             lucide.createIcons();
         }
         
-        // Função para Abrir/Fechar o Menu Móvel
         function toggleMobileMenu() {
             isMenuOpen = !isMenuOpen;
             const menuOverlay = document.getElementById('mobile-menu-overlay');
@@ -792,16 +839,15 @@
             if (isMenuOpen) {
                 menuOverlay.classList.add('open');
                 document.body.style.overflow = 'hidden'; 
-                menuIconContainer.innerHTML = `<i data-lucide="x" class="w-6 h-6 text-amber-400"></i>`; // Ícone X
+                menuIconContainer.innerHTML = `<i data-lucide="x" class="w-6 h-6 text-amber-400"></i>`; 
             } else {
-                document.body.style.overflow = 'auto'; // Restaura o scroll
-                menuIconContainer.innerHTML = `<i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>`; // Ícone Menu
+                document.body.style.overflow = 'auto'; 
+                menuIconContainer.innerHTML = `<i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>`; 
                 menuOverlay.classList.remove('open');
             }
             lucide.createIcons();
         }
         
-        // Funções para alternar Hino/Oração
         function toggleContent(type) {
             const hinoContent = document.getElementById('content-hino');
             const oracaoContent = document.getElementById('content-oracao');
@@ -811,7 +857,7 @@
             if (type === 'hino') {
                 isHinoOpen = !isHinoOpen;
                 hinoContent.classList.toggle('hidden', !isHinoOpen);
-                oracaoContent.classList.add('hidden'); // Fecha o outro
+                oracaoContent.classList.add('hidden'); 
                 isOracaoOpen = false;
                 
                 hinoBtn.innerHTML = isHinoOpen 
@@ -822,7 +868,7 @@
             } else if (type === 'oracao') {
                 isOracaoOpen = !isOracaoOpen;
                 oracaoContent.classList.toggle('hidden', !isOracaoOpen);
-                hinoContent.classList.add('hidden'); // Fecha o outro
+                hinoContent.classList.add('hidden'); 
                 isHinoOpen = false;
 
                 oracaoBtn.innerHTML = isOracaoOpen 
@@ -834,7 +880,6 @@
             lucide.createIcons();
         }
 
-        // Verifica e aplica o badge de novidades
         function checkNewsBadge() {
             const lastVersion = localStorage.getItem('last_news_version');
             const badgeDesktop = document.getElementById('noticias-badge');
@@ -844,9 +889,8 @@
                  if (badgeDesktop) badgeDesktop.classList.remove('hidden');
                  if (badgeMobile) badgeMobile.classList.remove('hidden');
                  
-                 // VIBRAR APENAS SE FOR NOVIDADE
                 if (window.navigator && window.navigator.vibrate) {
-                    window.navigator.vibrate([100, 50, 100]); // Dupla vibração sutil
+                    window.navigator.vibrate([100, 50, 100]); 
                 }
             } else {
                  if (badgeDesktop) badgeDesktop.classList.add('hidden');
@@ -857,10 +901,10 @@
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', () => {
-            // Aplicar o tema guardado antes de qualquer renderização
             applyTheme(currentTheme); 
             getUniqueDates(); 
-            checkNewsBadge(); // Verifica se precisa mostrar o badge
+            checkInstallationStatus(); // NOVO: Verifica se deve mostrar a barra de instalação
+            checkNewsBadge(); 
             switchTab('agenda'); 
             lucide.createIcons();
         });
@@ -868,10 +912,28 @@
     </script>
 </head>
 <body class="min-h-screen flex flex-col">
+    <!-- MODAL DE INSTRUÇÕES DE INSTALAÇÃO (Para evitar alert() ) -->
+    <div id="instruction-modal-overlay" class="fixed inset-0 flex items-center justify-center p-4" onclick="closeInstructionModal()">
+        <div class="instruction-modal-content rounded-xl shadow-2xl space-y-4" onclick="event.stopPropagation()">
+            <h3 class="text-xl font-bold text-amber-400 flex items-center gap-2"><i data-lucide="smartphone" class="w-5 h-5"></i> Instalar App na Tela Inicial</h3>
+            
+            <p class="text-sm text-gray-300 light-mode:text-gray-700">Para ter o App em ecrã inteiro e funcionando offline, siga estes 3 passos no seu navegador (Chrome ou Safari):</p>
+            
+            <ol class="list-decimal list-inside text-sm text-gray-200 light-mode:text-gray-800 space-y-2">
+                <li>Toque no **Menu** do Navegador (os **3 pontinhos** `⋮` ou o **ícone de Partilha** `⇧` ).</li>
+                <li>Procure a opção **"Instalar Aplicativo"** ou **"Adicionar à Tela Inicial"**.</li>
+                <li>Confirme a instalação para ter o ícone da **Aparóquia** na sua tela!</li>
+            </ol>
+
+            <button onclick="dismissInstallPrompt()" class="w-full bg-amber-500 text-white font-bold p-3 rounded-lg hover:bg-amber-600 transition-colors">
+                Entendido! Fechar Instruções
+            </button>
+        </div>
+    </div>
+
     <!-- Menu Hambúrguer Overlay (Mobile) -->
     <div id="mobile-menu-overlay" class="fixed inset-0 w-full h-full sm:hidden p-4 transition-transform duration-300 transform -translate-x-full">
-        <!-- Z-INDEX 55 (FIX) para garantir que está acima de tudo -->
-        <div class="hino-content-bg rounded-xl shadow-2xl p-6 flex flex-col items-start space-y-2 mt-20">
+        <div class="hino-content-bg rounded-xl shadow-2xl p-6 flex flex-col items-start space-y-2 mt-0">
             <h3 class="text-lg font-bold text-amber-400 mb-2">Navegação Principal</h3>
             <button onclick="switchTab('agenda')" class="menu-item flex items-center justify-start gap-3 rounded-lg"><i data-lucide="calendar-days" class="w-5 h-5"></i> Agenda</button>
             <button onclick="switchTab('noticias')" class="menu-item flex items-center justify-start gap-3 rounded-lg tab-with-badge">
@@ -907,7 +969,6 @@
                     <p class="text-lg font-bold text-amber-200">1866 – 2026</p>
                 </div>
                  <!-- Botão Menu Hambúrguer (APENAS em Mobile) -->
-                <!-- Z-INDEX 50 (FIX) para garantir que está acima da barra de menu (se o z-index do overlay for 55, isto deve funcionar) -->
                 <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-gray-700 transition-colors z-50">
                     <i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>
                 </button>
@@ -935,7 +996,7 @@
         </div>
     </header>
 
-    <main class="flex-1 max-w-xl mx-auto px-4 py-6 w-full">
+    <main class="flex-1 max-w-xl mx-auto px-4 py-6 w-full mb-[72px]">
         <!-- SEÇÃO 1: AGENDA -->
         <div id="agenda-section">
             <!-- BARRA DE SELEÇÃO DE DIAS (CALENDÁRIO) -->
@@ -947,7 +1008,7 @@
             
             <!-- Conteúdo da Agenda (Apenas do Dia Selecionado) -->
             <div id="agenda-content" class="space-y-4">
-                <!-- Conteúdo injetado pelo JavaScript -->
+                <!-- Conteúdo injetado pelo JavaScript (inclui o Alerta de Missa Especial) -->
             </div>
         </div>
 
@@ -1161,6 +1222,16 @@
         <!-- Botão Principal (Abre o WhatsApp) -->
         <button id="main-fab" onclick="openWhatsApp()" class="fab-button mt-4" aria-label="Abrir WhatsApp">
             <span id="main-fab-icon"><i data-lucide="message-square" class="w-6 h-6"></i></span>
+        </button>
+    </div>
+
+    <!-- Barra de Alerta PWA (Aparece no mobile para quem não instalou) -->
+    <div id="install-prompt-bar" class="fixed bottom-0 left-0 right-0 h-16 bg-amber-500 text-white flex items-center justify-between px-4 sm:hidden transition-transform duration-300 hidden">
+        <p class="text-sm font-bold flex items-center gap-2">
+            <i data-lucide="download" class="w-5 h-5"></i> Instale o App na Tela Inicial!
+        </p>
+        <button onclick="showInstallInstructions()" class="bg-white text-amber-500 font-bold px-3 py-1 rounded-full text-xs shadow-md">
+            Como Instalar?
         </button>
     </div>
     
