@@ -49,7 +49,7 @@
         /* TEMA CLARO (.light-mode) (AGORA É O "DARK MODE VISUAL" - Azul/Amarelo) */
         body.light-mode { /* Fundo escuro */
             background-color: #0f172a; /* darkNavy (Slate 900) */
-            color: #f8fafc; /* **White - MAIOR CONTRASTE** */
+            color: #f8fafc; /* **White - CONTRATE MÁXIMO** */
         }
         .light-mode .card {
             background-color: #1e293b; /* cardDark (Slate 800) */
@@ -75,7 +75,7 @@
         }
         /* Cor dos botões de aba no modo escuro (.light-mode) */
         .light-mode .tab-button {
-             color: #cbd5e1; /* **Slate 300 - Mais Claro** */
+             color: #cbd5e1; /* **Slate 300 - Mais Visível** */
         }
 
         /* NOVIDADES BADGE - Invertido */
@@ -157,7 +157,7 @@
         }
         .light-mode .hino-content-bg { /* NOVO DARK VISUAL */
             background-color: #1f2937; 
-            color: #f8fafc; /* **White - Maior Contraste** */
+            color: #f8fafc; /* **White - MAIOR CONTRASTE** */
         }
 
         /* Estilo do Alerta Especial - CORRIGIDO AGORA */
@@ -692,13 +692,9 @@
             const dayOfWeek = currentSelectedDate.split('(')[1].replace(')', '');
             const dateOnly = currentSelectedDate.split(' ')[0];
             
-            // TÍTULOS E DATAS AGORA COM NOVAS CORES (Azul no Light, Âmbar no Dark)
-            const headerClasses = currentTheme === 'light' 
-                ? 'text-xl font-bold text-amber-200' // Dark Visual: light amber
-                : 'text-xl font-bold text-blue-700'; // Light Visual: dark blue
-            const dateClasses = currentTheme === 'light' 
-                ? 'text-3xl font-extrabold text-amber-400' // Dark Visual: lighter amber
-                : 'text-3xl font-extrabold text-[var(--text-dark-blue)]'; // Light Visual: deep blue var
+            // TÍTULOS E DATAS AGORA COM AS CLASSES ORIGINAIS DO HTML (SEM MISTURA DE JS)
+            const headerClasses = 'text-xl font-bold text-blue-700 light-mode:text-amber-200';
+            const dateClasses = 'text-3xl font-extrabold text-[var(--text-dark-blue)] light-mode:text-amber-400';
 
             headerDiv.innerHTML = `
                 <p class="${headerClasses}">${dayOfWeek}</p>
@@ -711,17 +707,17 @@
 
             filteredData.forEach(event => {
                 const eventDiv = document.createElement('div');
-                // BORDER: Invertido
-                eventDiv.className = 'flex justify-between items-center py-3 border-b border-yellow-200 last:border-b-0 light-mode:border-slate-600'; // Alterado para Slate 600
+                // BORDER: Melhorado o contraste para slate-600 no dark mode
+                eventDiv.className = 'flex justify-between items-center py-3 border-b border-yellow-200 last:border-b-0 light-mode:border-slate-600';
                 
                 const isMatrizOrDestaque = event.location.includes("Igreja Matriz") || event.title.includes("Eucaristia") || event.title.includes("Batizado") || event.title.includes("Casamento") || event.title.includes("Adoração") || event.title.includes("Confissão");
 
                 // TITULO: CORREÇÃO DEFINITIVA DO CONTRASTE NO DARK MODE
-                // Matriz/Destaque: Usa Yellow 100 no Dark Mode (contraste máximo).
+                // Matriz/Destaque: Usa yellow-100 no Dark Mode (contraste máximo).
                 // Setor/Outros: Usa amber-200 no Dark Mode (claro e legível).
                 const titleColor = isMatrizOrDestaque 
-                    ? 'text-amber-700 light-mode:text-yellow-100' // LIGHT VISUAL: Dark Amber | DARK VISUAL: Yellow 100 (BRILHANTE!)
-                    : 'text-[var(--text-dark-blue)] light-mode:text-amber-200'; // LIGHT VISUAL: Dark Blue | DARK VISUAL: Amber 200 (Claro e Legível)
+                    ? 'text-amber-700 light-mode:text-yellow-100' // DARK VISUAL: Yellow 100 (BRILHANTE!)
+                    : 'text-[var(--text-dark-blue)] light-mode:text-amber-200'; // DARK VISUAL: Amber 200 (Claro e Legível)
 
                 // HORA: Amarelo/Âmbar no Dark Mode
                 const timeColor = 'text-amber-800 light-mode:text-amber-500';
@@ -767,8 +763,8 @@
                 newsCard.className = 'card rounded-xl shadow-lg p-5 space-y-4';
 
                 const titleDiv = document.createElement('div');
-                // BORDER: Invertido
-                titleDiv.className = 'flex items-center gap-3 border-b border-yellow-300 pb-3 mb-3 light-mode:border-slate-600'; // Alterado para Slate 600
+                // BORDER: Melhorado o contraste para slate-600 no dark mode
+                titleDiv.className = 'flex items-center gap-3 border-b border-yellow-300 pb-3 mb-3 light-mode:border-slate-600';
                 
                 // TITULO: Invertido
                 const titleTextColor = currentTheme === 'light' ? 'text-amber-400' : 'text-amber-700';
@@ -788,7 +784,7 @@
                 news.events.forEach(event => {
                     const eventItem = document.createElement('div');
                     // Background e Border Invertidos (Amarelo claro vs Dark)
-                    eventItem.className = 'news-item bg-amber-100 light-mode:bg-amber-400/20 border-l-4 border-amber-700 light-mode:border-amber-500 p-3 rounded-md'; // Alterado para amber 400/20
+                    eventItem.className = 'news-item bg-amber-100 light-mode:bg-amber-400/20 border-l-4 border-amber-700 light-mode:border-amber-500 p-3 rounded-md';
                     
                     // Texto Invertido
                     const descColor = currentTheme === 'light' ? 'text-amber-100' : 'text-[var(--text-dark-blue)]';
