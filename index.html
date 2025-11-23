@@ -81,63 +81,101 @@
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
         }
-        /* Novo estilo para o banner minimalista */
-        .minimal-hero {
-            height: 100px; /* Altura super reduzida */
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
+        /* Estilo para o menu de abas */
+        .tab-button-icon {
+            margin-right: 0.25rem;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        /* Container das abas */
+        #desktop-nav {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Ajuste para o padding das abas */
+        .nav-link.tab-button {
+            padding-bottom: 0.75rem; /* Aumentado o padding para dar espaço ao sublinhado */
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
         }
     </style>
 </head>
 <body class="text-gray-100">
 
-    <!-- Navbar Responsiva (Dark Mode) -->
-    <header class="bg-parish-card shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="#" class="text-2xl font-extrabold text-parish-gold tracking-wider">
-                APARÓQUIA
-            </a>
-            
-            <!-- Botão do Menu Mobile (Ícone Lucide Menu) -->
-            <button id="menu-button" class="md:hidden text-white focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-            </button>
+    <!-- Navbar e Abas (Seguindo o Design Exato do Senhor Supremo) -->
+    <header class="bg-parish-card shadow-xl sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <!-- Top Bar: Logo + Jubilee + Menu Mobile -->
+            <div class="flex justify-between items-center pb-4">
+                <div class="flex items-center space-x-2">
+                    <!-- Logo/Name Block -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-church"><path d="M10 9V3h4v6"/><path d="m20.72 13.79-8-6a1 1 0 0 0-1.44 0l-8 6a1 1 0 0 0-.28.69V19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4.52a1 1 0 0 0-.28-.69Z"/><path d="M12 21V9"/><path d="M18 10h-2c0 1-2 2-2 2s-2-1-2-2H6"/></svg>
+                    <div>
+                        <a href="#" class="text-xl font-extrabold text-parish-gold tracking-wider leading-none">APARÓQUIA</a>
+                        <p class="text-xs text-white/80 leading-none">Nossa Senhora da Conceição - Virgínia-MG</p>
+                    </div>
+                </div>
+                
+                <!-- Jubilee Info (Direita) -->
+                <div class="flex items-center space-x-2 text-right">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun hidden sm:block"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                    <div class="hidden sm:block">
+                        <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
+                        <p class="text-base font-bold text-parish-blue leading-none">1866 – 2026</p>
+                    </div>
+                    <!-- Menu Button for Mobile -->
+                    <button id="menu-button" class="sm:hidden text-white focus:outline-none ml-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                    </button>
+                </div>
+            </div>
 
-            <!-- Links de Navegação Desktop (Usados como abas) -->
-            <nav class="hidden md:flex space-x-6 text-lg font-semibold" id="desktop-nav">
-                <!-- Data-target aponta para o ID da seção de conteúdo -->
-                <a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold pb-1 transition duration-300" data-target="content-agenda">Agenda</a>
-                <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300" data-target="content-historia">História</a>
-                <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300" data-target="content-contato">Contatos</a>
-                <a href="https://diocesedacampanha.org.br/" target="_blank" class="text-parish-blue border border-parish-blue px-3 py-1 rounded-full hover:bg-parish-blue hover:text-white transition duration-300">Diocese</a>
+            <!-- Tab Navigation (Desktop e Carrossel Mobile) -->
+            <nav class="overflow-x-auto whitespace-nowrap" id="desktop-nav">
+                <div class="inline-flex space-x-6 text-base font-semibold">
+                    
+                    <!-- Aba: Agenda -->
+                    <a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">
+                        <svg class="tab-button-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Agenda
+                    </a>
+                    
+                    <!-- Aba: Notícias -->
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-noticias">
+                        <svg class="tab-button-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8L18 8"/><path d="M6 12L18 12"/><path d="M6 16L18 16"/><path d="M21 7.2V17.8C21 18.9959 20.252 20.0768 19.0485 20.2863L18.7554 20.3396C17.6534 20.5358 16.6346 20.5 16 20.5C14 20.5 12 20.5 12 20.5C12 20.5 10 20.5 8 20.5C7.36544 20.5 6.34665 20.5358 5.24462 20.3396L4.9515 20.2863C3.74803 20.0768 3 18.9959 3 17.8V7.2C3 6.00414 3.74803 4.92317 4.9515 4.71371L5.24462 4.66039C6.34665 4.46419 7.36544 4.5 8 4.5C10 4.5 12 4.5 12 4.5C12 4.5 14 4.5 16 4.5C16.6346 4.5 17.6534 4.46419 18.7554 4.66039L19.0485 4.71371C20.252 4.92317 21 6.00414 21 7.2Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Notícias
+                    </a>
+                    
+                    <!-- Aba: Jubileu 160 -->
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">
+                        <svg class="tab-button-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.73l-.686-.343a4 4 0 0 0-3.673 0l-.687.343c-3.13 1.565-3.13-1.077 0-2.643l.687-.343a4 4 0 0 0 3.673 0l.686.343c3.13 1.566 3.13-1.076 0-2.643l-.687-.343a4 4 0 0 0-3.673 0l-.686.343c-3.13 1.566-3.13-1.076 0-2.643l.687-.343a4 4 0 0 0 3.673 0l.686.343c3.13 1.566 3.13-1.076 0-2.643l-.687-.343a4 4 0 0 0-3.673 0l-.686.343c-3.13 1.566-3.13-1.076 0-2.643l.687-.343a4 4 0 0 0 3.673 0l.686.343c3.13 1.566 3.13-1.076 0-2.643l-.687-.343a4 4 0 0 0-3.673 0l-.686.343c-3.13 1.566-3.13-1.076 0-2.643l.687-.343a4 4 0 0 0 3.673 0l.686.343c3.13 1.566 3.13-1.076 0-2.643l-.687-.343a4 4 0 0 0-3.673 0l-.686.343c-3.13 1.566-3.13-1.076 0-2.643L12 1.27l.686.343a4 4 0 0 0 3.673 0l.687-.343c3.13-1.566 3.13 1.076 0 2.643l-.687.343a4 4 0 0 0 3.673 0l.686-.343c3.13-1.566 3.13 1.076 0 2.643l-.687.343a4 4 0 0 0-3.673 0l-.686-.343c3.13-1.566 3.13 1.076 0 2.643l.687.343a4 4 0 0 0 3.673 0l.686-.343c3.13-1.566 3.13 1.076 0 2.643l-.687-.343a4 4 0 0 0-3.673 0l-.686.343c-3.13 1.566-3.13-1.076 0-2.643l-.687-.343z"/></svg>
+                        Jubileu 160
+                    </a>
+                    
+                    <!-- Aba: Informações -->
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-informacoes">
+                        <svg class="tab-button-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                        Informações
+                    </a>
+                    
+                    <!-- Aba: Contatos -->
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-contato">
+                        <svg class="tab-button-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-4.7-5.74A19.5 19.5 0 0 1 2 12.18V8a2 2 0 0 1 2-2h3.92a2 2 0 0 1 1.84 1.18l.7 1.4a2 2 0 0 0 1.5 1.18h.61a2 2 0 0 0 1.5-1.18l.7-1.4A2 2 0 0 1 18.08 6H22a2 2 0 0 1 2 2v3.92"/></svg>
+                        Contatos
+                    </a>
+                </div>
+            </nav>
+            
+            <!-- Menu Mobile (Lista vertical) -->
+            <nav id="mobile-menu" class="hidden absolute left-0 right-0 bg-parish-card/95 pb-2 border-t border-gray-700/50 shadow-xl z-40">
+                <a href="#" class="block tab-button text-parish-gold py-2 px-4 border-l-4 border-parish-gold bg-parish-card/70" data-target="content-agenda">Agenda</a>
+                <a href="#" class="block tab-button text-white py-2 px-4 hover:bg-parish-card/70" data-target="content-noticias">Notícias</a>
+                <a href="#" class="block tab-button text-white py-2 px-4 hover:bg-parish-card/70" data-target="content-jubileu">Jubileu 160</a>
+                <a href="#" class="block tab-button text-white py-2 px-4 hover:bg-parish-card/70" data-target="content-informacoes">Informações</a>
+                <a href="#" class="block tab-button text-white py-2 px-4 hover:bg-parish-card/70" data-target="content-contato">Contatos</a>
+                <a href="https://diocesedacampanha.org.br/" target="_blank" class="block text-parish-blue py-2 px-4 hover:bg-parish-blue hover:text-white">Diocese de Campanha</a>
             </nav>
         </div>
-
-        <!-- Menu Mobile (oculto por padrão) (Usados como abas) -->
-        <nav id="mobile-menu" class="hidden md:hidden bg-parish-card/95 pb-2">
-            <a href="#" class="block tab-button text-parish-gold py-2 px-4 border-l-4 border-parish-gold bg-parish-card/70" data-target="content-agenda">Agenda</a>
-            <a href="#" class="block tab-button text-white py-2 px-4 hover:bg-parish-card/70" data-target="content-historia">História</a>
-            <a href="#" class="block tab-button text-white py-2 px-4 hover:bg-parish-card/70" data-target="content-contato">Contatos</a>
-            <a href="https://diocesedacampanha.org.br/" target="_blank" class="block text-parish-blue py-2 px-4 hover:bg-parish-blue hover:text-white">Diocese de Campanha</a>
-        </nav>
     </header>
-
-    <!-- Seção Principal (Hero) - AGORA MINIMALISTA -->
-    <section class="relative bg-parish-card minimal-hero flex items-center justify-center p-4 overflow-hidden shadow-2xl">
-        <!-- Imagem de fundo/placeholder para a igreja matriz -->
-        <div class="absolute inset-0 bg-cover bg-center opacity-30" 
-             style="background-image: url('https://placehold.co/1200x600/1e293b/a5b4fc?text=IGREJA+MATRIZ');">
-        </div>
-        
-        <div class="relative text-center text-white">
-            <h1 class="text-3xl sm:text-4xl font-extrabold mb-1 drop-shadow-lg text-parish-gold">
-                Nossa Senhora da Conceição
-            </h1>
-            <p class="text-sm sm:text-base font-light italic drop-shadow-md text-gray-300">
-                Virgínia, Diocese de Campanha - MG.
-            </p>
-        </div>
-    </section>
 
     <!-- CONTAINER PRINCIPAL DE CONTEÚDO (Controlado por JS) -->
     <main class="container mx-auto px-4 py-10">
@@ -178,10 +216,35 @@
 
 
         <!-- ========================================================= -->
-        <!-- SEÇÃO 2: HISTÓRIA (OCULTA POR PADRÃO) -->
+        <!-- SEÇÃO 2: NOTÍCIAS (OCULTA POR PADRÃO) -->
         <!-- ========================================================= -->
-        <section id="content-historia" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Nossa História de Fé</h2>
+        <section id="content-noticias" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Últimas Notícias da Paróquia</h2>
+            <div class="text-center text-gray-400 py-10">
+                <p class="text-xl">Esta seção está sendo preparada!</p>
+                <p class="mt-2">Em breve você encontrará comunicados, avisos e eventos recentes da comunidade aqui.</p>
+                <img src="https://placehold.co/400x150/1a2039/3b82f6?text=Not%C3%ADcias+em+Breve" alt="Placeholder para notícias" class="mx-auto mt-6 rounded-lg shadow-md" />
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEÇÃO 3: JUBILEU 160 ANOS (OCULTA POR PADRÃO) -->
+        <!-- ========================================================= -->
+        <section id="content-jubileu" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Jubileu 160 Anos (1866 – 2026)</h2>
+            <div class="text-center text-gray-400 py-10">
+                <p class="text-xl font-bold text-parish-blue">O Caminho Jubilar Continua!</p>
+                <p class="mt-4">Prepare-se para as celebrações especiais dos 160 anos de fé da nossa Paróquia.</p>
+                <p class="mt-2 text-sm">Abertura oficial: 15 de Novembro (verifique na agenda).</p>
+                <img src="https://placehold.co/400x150/1a2039/fbbd24?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-6 rounded-lg shadow-md" />
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEÇÃO 4: INFORMAÇÕES (Antiga História) (OCULTA POR PADRÃO) -->
+        <!-- ========================================================= -->
+        <section id="content-informacoes" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Informações e História de Fé</h2>
             
             <div class="md:flex md:space-x-8 items-center">
                 <div class="md:w-1/2">
@@ -210,7 +273,7 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- SEÇÃO 3: CONTATO (OCULTA POR PADRÃO) -->
+        <!-- SEÇÃO 5: CONTATO (OCULTA POR PADRÃO) -->
         <!-- ========================================================= -->
         <section id="content-contato" class="content-section mb-16 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Secretaria Paroquial e Contato</h2>
@@ -814,7 +877,7 @@
                 button.classList.add('text-white');
                 
                 if(button.parentElement.id === 'mobile-menu') {
-                     button.classList.remove('border-l-4');
+                     button.classList.remove('border-l-4', 'border-parish-gold', 'bg-parish-card/70');
                 }
             });
 
@@ -847,7 +910,12 @@
             
             // 1. Toggle do menu mobile
             menuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+                // Alterna a classe 'hidden' e ajusta a posição
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                }
             });
 
             // 2. Lógica de Navegação por Abas
@@ -857,7 +925,8 @@
                     const targetId = button.getAttribute('data-target');
                     showSection(targetId);
                     
-                    if(mobileMenu.classList.contains('flex')) { 
+                    // Fecha o menu mobile ao selecionar uma aba
+                    if(!mobileMenu.classList.contains('hidden')) { 
                         mobileMenu.classList.add('hidden');
                     }
                 });
