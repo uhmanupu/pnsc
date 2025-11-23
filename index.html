@@ -721,18 +721,21 @@
                 // BORDER: Invertido
                 eventDiv.className = 'flex justify-between items-center py-3 border-b border-yellow-200 last:border-b-0 light-mode:border-gray-700';
                 
-                const isMatriz = event.title.includes("Igreja Matriz") || event.location.includes("Igreja Matriz");
-                
-                // TITULO: CORRIGIDO! Mais claro para se destacar do fundo no dark mode.
+                const isMatriz = event.location.includes("Igreja Matriz");
+                const isEucaristia = event.title.includes("Eucaristia") || event.title.includes("Batizado") || event.title.includes("Casamento");
+
+                // TITULO: CORRIGIDO!
+                // Matriz: Amarelo Claro (Yellow 200) para se destacar.
+                // Outros (Capela/Setor/etc): Amarelo Muito Claro (Amber 100).
                 const titleColor = isMatriz 
-                    ? 'text-amber-700 light-mode:text-yellow-200' 
-                    : 'text-[var(--text-dark-blue)] light-mode:text-amber-100';
-                
-                // HORA: Invertido
+                    ? 'text-amber-700 light-mode:text-yellow-200' // Light: Dark Amber | Dark: Light Yellow (Máximo contraste)
+                    : 'text-[var(--text-dark-blue)] light-mode:text-amber-100'; // Light: Dark Blue | Dark: Very Light Amber
+
+                // HORA: Amarelo/Âmbar no Dark Mode
                 const timeColor = 'text-amber-800 light-mode:text-amber-500';
                 
-                // LOCALIZAÇÃO: Usa dark-slate no light mode, e CINZA CLARO no dark mode.
-                const locationColor = 'text-[var(--text-dark-slate)] light-mode:text-gray-300';
+                // LOCALIZAÇÃO: CORRIGIDO! Cinza Claro (Gray 400) no Dark Mode para contraste legível.
+                const locationColor = 'text-[var(--text-dark-slate)] light-mode:text-gray-400';
 
                 eventDiv.innerHTML = `
                     <div class="flex-1">
