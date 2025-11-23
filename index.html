@@ -165,9 +165,19 @@
             background-color: #e2e8f0;
         }
 
-        @media (max-width: 640px) { #desktop-tab-bar { display: none; } }
-        /* O botão de tema agora é visível em SM e abaixo também! */
-        /* Removida a restrição de visibilidade aqui: @media (min-width: 641px) { #mobile-menu-button { display: none; } } */ 
+        /* Corrigido: Oculta o menu de abas no mobile e mostra o Hambúrguer, como era antes */
+        @media (max-width: 640px) { 
+            #desktop-tab-bar { 
+                display: none; 
+            }
+        }
+
+        /* Corrigido: Oculta o Hambúrguer no desktop */
+        @media (min-width: 641px) { 
+            #mobile-menu-button { 
+                display: none; 
+            }
+        }
         
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #1e293b; }
@@ -637,7 +647,7 @@
             
             <!-- BLOCO DIREITO: JUBILEU EM DESTAQUE E MENU/TEMA MÓVEL -->
             <div class="flex items-center gap-4">
-                <!-- TEMA TOGGLE BUTTON (AGORA VISÍVEL EM TUDO) -->
+                <!-- TEMA TOGGLE BUTTON (VISÍVEL SEMPRE) -->
                 <button id="theme-toggle" onclick="toggleTheme()" class="p-1 rounded-full hover:bg-gray-700 light-mode:hover:bg-gray-200 transition-colors">
                     <!-- Ícone injetado pelo JavaScript (sun/moon) -->
                 </button>
@@ -646,15 +656,15 @@
                     <p class="text-xs font-bold text-amber-400">Ano Jubilar</p>
                     <p class="text-lg font-bold text-amber-200">1866 – 2026</p>
                 </div>
-                 <!-- Botão Menu Hambúrguer (Apenas em Mobile) -->
+                 <!-- Botão Menu Hambúrguer (APENAS em Mobile) -->
                 <button id="mobile-menu-button" onclick="toggleMobileMenu()" class="sm:hidden p-1 rounded-full hover:bg-gray-700 transition-colors z-50">
                     <i data-lucide="menu" class="w-6 h-6 text-amber-400"></i>
                 </button>
             </div>
         </div>
         
-        <!-- BARRA DE NAVEGAÇÃO POR ABAS (Desktop) -->
-        <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-gray-700 overflow-x-auto whitespace-nowrap">
+        <!-- BARRA DE NAVEGAÇÃO POR ABAS (Apenas em Desktop) -->
+        <div id="desktop-tab-bar" class="max-w-xl mx-auto px-4 flex justify-between border-t border-gray-700 overflow-x-auto whitespace-nowrap hidden sm:flex">
             <button id="agenda-btn" onclick="switchTab('agenda')" class="tab-button py-3 text-sm flex justify-center items-center gap-2">
                 <i data-lucide="calendar-days" class="w-4 h-4"></i> Agenda
             </button>
@@ -774,7 +784,7 @@
                         
                         <p>Que a memória dos que vieram antes de nós seja chama que não se apaga e nos impulsione a levar o Evangelho com coragem, esperança e verdade.</p>
                         
-                        <p class="pt-2">Nossa Senhora da Conceição, Mãe e Padroeira, estrela que guia os passos desta Paróquia, intercede por nós.</p>
+                        <p>Nossa Senhora da Conceição, Mãe e Padroeira, estrela que guia os passos desta Paróquia, intercede por nós.</p>
                         
                         <p>Guarda-nos no Teu manto, inspira-nos com o Teu "Sim" e conduz-nos a uma nova primavera espiritual.</p>
                         
