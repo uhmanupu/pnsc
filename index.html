@@ -170,7 +170,7 @@
             <div id="dynamic-alert" class="hidden bg-parish-blue/10 border-l-4 border-parish-blue p-4 rounded-lg mb-8 shadow-xl">
                 <p class="font-bold text-parish-blue flex items-center">
                     <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-ring"><path d="M6 8a6 6 0 0 1 6-6v2"/><path d="M12 2v2"/><path d="M12 21a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2"/><path d="M18.36 17.58A2 2 0 0 0 19 16.29V8a6 6 0 0 0-12 0v8.29a2 2 0 0 0 .52 1.39"/><path d="M21.73 18a2 2 0 0 0-.52-1.39V8a6 6 0 0 0-12 0v8.29a2 2 0 0 0 .52 1.39"/></svg>
-                    AVISO DE MISSA EM COMUNIDADE:
+                    AVISO DE EVENTO ESPECIAL:
                 </p>
                 <p id="alert-message" class="text-sm mt-1 text-gray-200"></p>
             </div>
@@ -242,9 +242,9 @@
                 <div class="md:w-1/2 mt-8 md:mt-0">
                     <!-- Placeholder para ícone ou imagem histórica -->
                     <img src="https://placehold.co/600x400/93c5fd/1e40af?text=Virgem+Imaculada" 
-                         alt="Imagem de Nossa Senhora da Conceição ou brasão paroquial" 
-                         class="w-full h-auto object-cover rounded-xl shadow-xl border-4 border-parish-gold"
-                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/93c5fd/1e40af?text=S%C3%ADmbolo+de+Maria';"
+                        alt="Imagem de Nossa Senhora da Conceição ou brasão paroquial" 
+                        class="w-full h-auto object-cover rounded-xl shadow-xl border-4 border-parish-gold"
+                        onerror="this.onerror=null; this.src='https://placehold.co/600x400/93c5fd/1e40af?text=S%C3%ADmbolo+de+Maria';"
                     />
                 </div>
             </div>
@@ -327,6 +327,7 @@
     <script>
         // Mapeamento da agenda mensal para demonstração (Novembro/2025)
         // Compromissos essenciais (Atendimento e Visita às Obras) foram mantidos.
+        // **Padres e Folgas foram removidos.**
         const dailyAgendaData = {
             '1': {
                 dayName: 'SÁBADO',
@@ -346,11 +347,11 @@
                 liturgical: 'Comemoração de Todos os Fiéis Defuntos',
                 dateStr: '02/Nov',
                 events: [
-                    { title: 'Santa Missa', subtitle: 'Cemitério', time: '05:00', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro São José da Mantiqueira', time: '08:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Cemitério', time: '05:00', church: 'External', color: 'parish-red' },
+                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro São José da Mantiqueira', time: '08:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Mendes', time: '11:00', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Corrêas', time: '17:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Mendes', time: '11:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Corrêas', time: '17:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -360,7 +361,7 @@
                 dateStr: '03/Nov',
                 events: [
                     { title: 'Visita às obras', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' }, 
-                    { title: 'Santa Missa', subtitle: 'Igreja Nossa Senhora Aparecida', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Nossa Senhora Aparecida', time: '19:00', church: 'External', color: 'parish-red' },
                 ]
             },
             '4': {
@@ -369,7 +370,7 @@
                 dateStr: '04/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' }, 
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Morangal', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Morangal', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '5': {
@@ -379,7 +380,7 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '10:00', church: 'Atendimento', color: 'text-gray-300' }, 
                     { title: 'Visita aos enfermos', subtitle: '', time: '16:00', church: 'Atendimento', color: 'text-gray-300' }, 
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '6': {
@@ -392,8 +393,8 @@
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Porto', time: '19:00', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Reunião Irmandade do Santíssimo', subtitle: 'Salão Paroquial', time: '20:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Porto', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Reunião Irmandade do Santíssimo', subtitle: 'Salão Paroquial', time: '20:00', church: 'External', color: 'parish-red' },
                 ]
             },
             '7': {
@@ -405,7 +406,7 @@
                     { title: 'Atendimento / Visita Abrigo S. Camilo', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '8': {
@@ -413,10 +414,10 @@
                 liturgical: 'Memória de Nossa Senhora no Sábado',
                 dateStr: '08/Nov',
                 events: [
-                    { title: 'Casamento', subtitle: 'Igreja São José', time: '09:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Igreja São José', time: '09:00', church: 'External', color: 'parish-red' },
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -427,9 +428,9 @@
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mogiano', time: '09:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mogiano', time: '09:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Batizado', subtitle: 'Igreja Matriz', time: '10:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Retirinho', time: '18:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Retirinho', time: '18:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -440,7 +441,7 @@
                 events: [
                     { title: 'Visita às obras', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Vargem Alegre e Retiro dos Marins', time: '16:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Pouso Frio', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Pouso Frio', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '11': {
@@ -450,8 +451,8 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Serra Verde e Rio Acima II', time: '16:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '19:00', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '12': {
@@ -459,11 +460,11 @@
                 liturgical: 'Memória de São Josafat, Bispo e Mártir',
                 dateStr: '12/Nov',
                 events: [
-                    { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'External', color: 'parish-red' },
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Atendimento/Confissões (Eucaristia)', subtitle: 'Bairro Marques', time: '16:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 8', subtitle: 'Serra dos Fernandes', time: '19:00', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Formação MESC', subtitle: 'Salão Paroquial', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 8', subtitle: 'Serra dos Fernandes', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Formação MESC', subtitle: 'Salão Paroquial', time: '19:00', church: 'External', color: 'parish-red' },
                 ]
             },
             '13': {
@@ -476,7 +477,7 @@
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Confissão (Eucaristia)', subtitle: 'Bairro Palmeiras (Retirinho e Lavras)', time: '18:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -488,8 +489,8 @@
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Bairro Moreiras', time: '15:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Mato Dentro', time: '19:00', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Mato Dentro', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '15': {
@@ -497,11 +498,11 @@
                 liturgical: 'SÁBADO: Abertura Ano Jubilar',
                 dateStr: '15/Nov',
                 events: [
-                    { title: 'Abertura Ano Jubilar', subtitle: 'Pouso Alto', time: '08:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Abertura Ano Jubilar', subtitle: 'Pouso Alto', time: '08:00', church: 'External', color: 'parish-red' },
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-blue' },
-                    { title: 'Casamento', subtitle: 'Igreja São José', time: '11:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Igreja São José', time: '11:00', church: 'External', color: 'parish-red' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro São José da Mantiqueira', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro São José da Mantiqueira', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -511,10 +512,10 @@
                 dateStr: '16/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '08:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '08:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 7', subtitle: 'Retiro dos Marins', time: '10:30', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '18:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Retiro dos Marins', time: '10:30', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '18:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -524,7 +525,7 @@
                 dateStr: '17/Nov',
                 events: [
                     { title: 'Atendimento / Confissão (Eucaristia)', subtitle: 'Cidade', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '18': {
@@ -532,9 +533,9 @@
                 liturgical: 'Memória da Dedicação das Basílicas de S. Pedro e S. Paulo',
                 dateStr: '18/Nov',
                 events: [
-                    { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'External', color: 'parish-red' },
                     { title: 'Atendimento / Visita às obras', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '19': {
@@ -544,7 +545,7 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Visita aos enfermos', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Marques', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '20': {
@@ -555,7 +556,7 @@
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Gonçalves', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Gonçalves', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -566,8 +567,8 @@
                 events: [
                     { title: 'Atendimento / Visita aos enfermos', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro Torres', time: '19:00', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 8', subtitle: 'Bairro Caeté', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 6', subtitle: 'Bairro Torres', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 8', subtitle: 'Bairro Caeté', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '22': {
@@ -576,22 +577,24 @@
                 dateStr: '22/Nov',
                 events: [
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-blue' },
-                    { title: 'Casamento', subtitle: 'Bairro Retirinho', time: '16:00', church: 'Outra', color: 'parish-blue' },
-                    { title: 'Santa Missa', subtitle: 'Hotel ou Comunidade Rural', time: '18:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Bairro Retirinho', time: '16:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
+                    // Eventos que disparam o aviso para o dia seguinte (23/Nov)
+                    { title: 'Novena (Dia 1)', subtitle: 'Pedra Santa', time: '18:00', church: 'External', color: 'parish-red' },
                 ]
             },
-            // Dados Mockados para o final do mês, com Atendimentos e Visitas mantidos
+            // --- Dados Mockados FINAIS ---
             '23': {
                 dayName: 'DOMINGO',
                 liturgical: 'SOLENIDADE de Nosso Senhor Jesus Cristo, Rei do Universo',
                 dateStr: '23/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Primeira Eucaristia', subtitle: 'Igreja Matriz', time: '15:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Retirinho', time: '18:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Retirinho', time: '18:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Novena (Dia 1)', subtitle: 'Pedra Santa', time: '19:00', church: 'External', color: 'parish-red' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -602,17 +605,20 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' }, 
                     { title: 'Visita às obras', subtitle: '', time: '16:00', church: 'Atendimento', color: 'text-gray-300' }, 
-                    { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 9', subtitle: 'Sertãozinho D. Rosalia', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    // Evento externo que dispara o aviso para o dia 25
+                    { title: 'Santa Missa', subtitle: 'Sagrado Coração', time: '20:00', church: 'External', color: 'parish-red' },
                 ]
             },
-             '25': {
+            '25': {
                 dayName: 'TERÇA-FEIRA',
                 liturgical: 'Feria do Tempo Comum',
                 dateStr: '25/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Confissão Primeira Eucaristia', subtitle: 'Cidade', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Felipe', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa', subtitle: 'Sagrado Coração', time: '20:00', church: 'External', color: 'parish-red' },
                 ]
             },
             '26': {
@@ -622,7 +628,7 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
                     { title: 'Visita aos enfermos', subtitle: '', time: '16:00', church: 'Atendimento', color: 'text-gray-300' },
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Serra Verde', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
             '27': {
@@ -663,9 +669,9 @@
                 dateStr: '30/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '08:30', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 2', subtitle: 'Bairro Ribeirão', time: '08:30', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '10:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '17:00', church: 'Outra', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Moreiras', time: '17:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             }
@@ -722,7 +728,7 @@
         // Adiciona listeners para capturar o início e fim do toque na tela (para gestos)
         document.addEventListener('touchstart', e => {
             touchstartX = e.changedTouches[0].screenX;
-            touchstartY = e.changedTouches[0].screenY;
+            startY = e.changedTouches[0].screenY;
         }, false);
 
         document.addEventListener('touchend', e => {
@@ -744,28 +750,26 @@
             };
         }
 
-        // Função para mostrar o alerta (Aviso de Missa fora da Matriz, um dia antes)
+        // Função para mostrar o alerta (Aviso de Missa ou Novena em local EXTERNO, um dia antes)
         function checkAndShowAlert(currentDay) {
             const alertContainer = document.getElementById('dynamic-alert');
             const alertMessage = document.getElementById('alert-message');
             
-            // Assume que o dia de hoje é 2025-11-XX (baseado no mock data)
             const today = parseInt(currentDay); 
             const tomorrow = today + 1;
             
-            let upcomingMissa = null;
+            let upcomingEvent = null;
 
             if (dailyAgendaData[tomorrow]) {
-                upcomingMissa = dailyAgendaData[tomorrow].events.find(event => 
-                    event.title.includes('Santa Missa') && 
-                    event.church !== 'Matriz' && 
-                    event.church !== 'Atendimento'
+                upcomingEvent = dailyAgendaData[tomorrow].events.find(event => 
+                    (event.title.includes('Santa Missa') || event.title.includes('Novena') || event.title.includes('Reunião')) && 
+                    event.church === 'External' // Filtra RIGIDAMENTE apenas eventos externos especiais
                 );
             }
 
-            if (upcomingMissa) {
+            if (upcomingEvent) {
                 const tomorrowData = dailyAgendaData[tomorrow];
-                alertMessage.innerHTML = `Lembrete: <strong class="text-white">${tomorrowData.dayName}, ${tomorrowData.dateStr}</strong> teremos a <strong class="text-white">${upcomingMissa.title}</strong> às <strong class="text-white">${upcomingMissa.time}</strong> na comunidade: <strong class="text-white">${upcomingMissa.subtitle}</strong>. Participe!`;
+                alertMessage.innerHTML = `Lembrete: <strong class="text-parish-gold">${tomorrowData.dayName}, ${tomorrowData.dateStr}</strong> teremos a <strong class="text-parish-gold">${upcomingEvent.title}</strong> às <strong class="text-parish-gold">${upcomingEvent.time}</strong> na: <strong class="text-parish-gold">${upcomingEvent.subtitle || upcomingEvent.church}</strong>. Participe!`;
                 alertContainer.classList.remove('hidden');
             } else {
                 alertContainer.classList.add('hidden');
@@ -787,11 +791,12 @@
             liturgicalDay.innerHTML = '';
 
             if (!data || data.events.length === 0) {
-                dayTitle.innerHTML = `<span class="text-parish-gold">Dia ${data.dateStr}</span>, Sem Eventos Agendados`;
+                dayTitle.innerHTML = `<span class="text-parish-gold">Dia ${day}</span>, Sem Eventos Agendados`;
                 listContainer.innerHTML = `<p class="text-center text-gray-400 py-8">Não há programação pública para este dia.</p>`;
                 
             } else {
-                dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span>, ${data.dateStr}`;
+                const dateParts = data.dateStr.split('/');
+                dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span>, ${dateParts[0]}/${dateParts[1]}`;
                 
                 // Adiciona o dia litúrgico
                 if (data.liturgical) {
@@ -845,17 +850,14 @@
         }
 
         // Função para construir o carrossel de dias
-        function buildDayCarousel(currentDay) {
+        function buildDayCarousel() {
             const carouselContainer = document.getElementById('day-carousel');
             carouselContainer.innerHTML = ''; // Limpa o carrossel
             
-            const daysInMonth = 30;
-            const startDay = 1;
-            
-            // Data mockada para 01 de Novembro de 2025
+            // Data mockada para 01 de Novembro de 2025 (Sábado)
             const mockDate = new Date(2025, 10, 1); 
 
-            for (let i = startDay; i <= daysInMonth; i++) {
+            for (let i = 1; i <= 30; i++) {
                 mockDate.setDate(i);
                 const day = i.toString();
                 const dayNames = getDayNames(mockDate);
@@ -901,12 +903,18 @@
                 button.classList.add('nav-active', 'text-parish-gold', 'border-b-2', 'border-parish-gold');
                 button.classList.remove('text-white');
             });
+            
+            // Reconstroi o carrossel quando a agenda é ativada para garantir o scroll correto
+            if (targetId === 'content-agenda') {
+                const currentDayNumber = 23; // Dia mockado para demonstração
+                buildDayCarousel();
+                loadDailyAgenda(currentDayNumber.toString());
+            }
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-            // MOCK: Dia atual para demonstração (22 de Novembro - Sábado)
-            // Usamos 22 para que o alerta do dia 23 (Domingo - Cristo Rei) apareça.
-            const currentDayNumber = 22; 
+            // MOCK: Dia atual para demonstração (23 de Novembro - Domingo)
+            const currentDayNumber = 23; 
             
             // 1. Lógica de Navegação por Abas (Clique)
             document.querySelectorAll('.tab-button').forEach(button => {
@@ -918,7 +926,7 @@
             });
 
             // 2. Monta o carrossel e carrega a agenda do dia atual
-            buildDayCarousel(currentDayNumber);
+            buildDayCarousel();
             loadDailyAgenda(currentDayNumber.toString());
             showSection('content-agenda'); 
         });
