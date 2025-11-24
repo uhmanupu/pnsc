@@ -86,8 +86,6 @@
         /* ESTILO PARA O CARD DE ALERTA */
         .alert-glass-card {
             background-color: var(--bg-card) !important;
-            backdrop-filter: var(--glass-blur) !important;
-            -webkit-backdrop-filter: var(--glass-blur) !important;
             border: 1px solid #E85555 !important; 
             box-shadow: 0 0 10px rgba(232, 85, 85, 0.5) !important; 
             border-radius: 1.5rem;
@@ -116,17 +114,21 @@
             color: var(--text-dark-contrast) !important; /* Texto sempre Dark/Preto sobre o Gold */
         }
         
-        /* HIERARQUIA DE CORREÇÃO: Dia inativo no DARK MODE - RESTAURADA/ORIGINAL */
+        /* HIERARQUIA CORRIGIDA: Dia inativo no DARK MODE - AMBAS AS PARTES EM CINZA SUAVE */
+        .day-button .day-number,
+        .day-button .day-short-name {
+            color: var(--color-primary) !important; /* Ambas as partes em Cinza Suave (Cor Principal do Texto) */
+        }
+
         .day-button .day-number {
-            color: #FFC759 !important; /* NÚMERO em Gold (Destaque Primário) */
             font-weight: 800;
         }
         .day-button .day-short-name {
-            color: var(--color-primary) !important; /* Abreviatura em Cinza Suave */
             font-size: 0.8rem; 
             font-weight: 500;
         }
-        
+
+
         /* HIERARQUIA DE CORREÇÃO: Dia inativo no LIGHT MODE - AJUSTADO CONFORME PEDIDO */
         body.light-mode .day-button .day-number,
         body.light-mode .day-button .day-short-name {
@@ -549,14 +551,21 @@
         function toggleTheme() {
             const body = document.body;
             const isLight = body.classList.toggle('light-mode');
+            const themeToggleBtn = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
 
             if (isLight) {
                 localStorage.setItem('theme', 'light');
                 themeIcon.innerHTML = MoonIcon; 
+                // Ajuste de cores do botão de toggle no Light Mode
+                themeToggleBtn.classList.remove('bg-parish-gold', 'text-parish-dark-base');
+                themeToggleBtn.classList.add('bg-white', 'text-gray-800', 'border', 'border-gray-200');
             } else {
                 localStorage.setItem('theme', 'dark');
                 themeIcon.innerHTML = SunIcon; 
+                // Ajuste de cores do botão de toggle no Dark Mode
+                themeToggleBtn.classList.add('bg-parish-gold', 'text-parish-dark-base');
+                themeToggleBtn.classList.remove('bg-white', 'text-gray-800', 'border', 'border-gray-200');
             }
         }
         
@@ -574,7 +583,7 @@
             },
             '24-Nov': {
                 dayName: 'SEGUNDA-FEIRA', liturgical: 'Segunda-feira da 34ª Semana do Tempo Comum', dateStr: '24/Nov',
-                events: [{ title: 'Visita às obras', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, { title: 'Santa Missa', subtitle: 'Sagrado Coração', time: '18:00', church: 'External', color: 'parish-red' }, { title: 'Formação MESC', subtitle: '', time: '19:00', church: 'External', color: 'parish-red' }]
+                events: [{ title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, { title: 'Santa Missa', subtitle: 'Sagrado Coração', time: '18:00', church: 'External', color: 'parish-red' }, { title: 'Formação MESC', subtitle: '', time: '19:00', church: 'External', color: 'parish-red' }]
             },
             '25-Nov': {
                 dayName: 'TERÇA-FEIRA', liturgical: 'Terça-feira da 34ª Semana do Tempo Comum', dateStr: '25/Nov',
@@ -609,7 +618,7 @@
                 events: [{ title: 'Quinto dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }]
             },
             '03-Dec': {
-                dayName: 'QUARTA-FEIRA', liturgical: '6º Dia da Novena | São Francisco Xavier, Presbítero (Memória)', dateStr: '03/Dez',
+                dayName: 'QUARTA-FEIRA', liturgical: '6º Dia da Novena | São Francisco Xavier, Presbítero e Doutor (Memória)', dateStr: '03/Dez',
                 events: [{ title: 'Sexto dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }]
             },
             '04-Dec': {
@@ -741,6 +750,7 @@
                     const itemDiv = document.createElement('div');
                     itemDiv.className = `flex justify-between items-start agenda-item-padding ${index < data.events.length - 1 ? 'border-b border-white/10' : ''}`;
                     
+                    // Usa event.subtitle, que agora foi processado para incluir "Horário Marcado" se for "Atendimento"
                     itemDiv.innerHTML = `
                         <div class="flex-grow pr-4">
                             <p class="text-xl font-bold ${titleColorClass}">${event.title}</p>
@@ -843,6 +853,23 @@
         // INICIALIZAÇÃO E LISTENERS
         // ===============================================
         document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Processamento dos Dados: Atendimento para Horário Marcado (Nova Feature)
+            Object.values(dailyAgendaData).forEach(dayData => {
+                dayData.events.forEach(event => {
+                    if (event.title === 'Atendimento') {
+                        // Se o subtítulo estiver vazio ou for apenas 'Secretaria', ajusta a descrição
+                        if (event.subtitle === '') {
+                             event.subtitle = 'Horário Marcado';
+                        } else if (event.subtitle === 'Secretaria' || event.subtitle.includes('Horário Marcado')) {
+                            // Garante que a secretaria mantenha a localização e adicione a informação de horário
+                            event.subtitle = 'Secretaria (Horário Marcado)';
+                        }
+                    }
+                });
+            });
+
+
             document.getElementById('menu-toggle').addEventListener('click', () => {
                 document.getElementById('mobile-menu').classList.toggle('hidden');
             });
