@@ -40,7 +40,7 @@
             --shadow-color: rgba(0, 0, 0, 0.4); 
             --hover-bg: rgba(255, 255, 255, 0.1); 
             --glass-blur: blur(16px); 
-            --text-dark-contrast: #0A1121; /* Usado para texto sobre fundo Gold */
+            --text-dark-contrast: #0A1121; /* Usado para texto sobre fundo Gold / Cor solicitada */
         }
 
         /* LIGHT MODE */
@@ -108,16 +108,16 @@
              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
         }
         
-        /* Cores do texto no botão ativo */
+        /* Cores do texto no botão ativo (AZUL ESCURO) */
         .day-active .day-number,
         .day-active .day-short-name {
-            color: var(--text-dark-contrast) !important; /* Texto sempre Dark/Preto sobre o Gold */
+            color: var(--text-dark-contrast) !important; /* Texto sempre Dark/Preto/AZUL ESCURO sobre o Gold */
         }
         
-        /* HIERARQUIA CORRIGIDA: Dia inativo no DARK MODE - AMBAS AS PARTES EM CINZA SUAVE */
+        /* HIERARQUIA CORRIGIDA: Dia inativo - AGORA USANDO CINZA SUAVE NOVAMENTE */
         .day-button .day-number,
         .day-button .day-short-name {
-            color: var(--color-primary) !important; /* Ambas as partes em Cinza Suave (Cor Principal do Texto) */
+            color: var(--color-primary) !important; /* CINZA SUAVE (Texto padrão) para ambas as partes */
         }
 
         .day-button .day-number {
@@ -127,15 +127,6 @@
             font-size: 0.8rem; 
             font-weight: 500;
         }
-
-
-        /* HIERARQUIA DE CORREÇÃO: Dia inativo no LIGHT MODE - AJUSTADO CONFORME PEDIDO */
-        body.light-mode .day-button .day-number,
-        body.light-mode .day-button .day-short-name {
-            /* Usando a cor escura do fundo DARK MODE (#0A1121) para contraste no Light Mode */
-            color: var(--text-dark-contrast) !important; 
-        }
-
 
         .day-button {
             border-radius: 2rem;
@@ -754,176 +745,202 @@
                     itemDiv.innerHTML = `
                         <div class="flex-grow pr-4">
                             <p class="text-xl font-bold ${titleColorClass}">${event.title}</p>
-                            ${event.subtitle ? `<p class="text-sm text-parish-soft-gray italic">${event.subtitle}</p>` : ''}
+                            ${event.subtitle ? `<p class="text-sm text-parish-soft-gray mt-1">${event.subtitle}</p>` : ''}
                         </div>
-                        <span class="text-3xl font-extrabold text-${event.color}">${event.time}</span>
+                        <div class="flex-shrink-0 text-right">
+                            <p class="text-2xl font-extrabold ${titleColorClass}">${event.time}</p>
+                        </div>
                     `;
-                    
                     listContainer.appendChild(itemDiv);
                 });
-            }
 
-            listContainer.classList.add('fade-in'); 
-            
-            document.querySelectorAll('.day-button-date').forEach(btn => {
-                btn.classList.remove('day-active');
-            });
-            const activeDayButton = document.getElementById(`day-${dayKey}`);
-            if(activeDayButton) {
-                activeDayButton.classList.add('day-active');
-                
-                const carouselContainer = document.getElementById('day-carousel');
-                if (carouselContainer) { 
-                    setTimeout(() => {
-                        // Rola para centralizar o botão ativo
-                        const offset = activeDayButton.offsetLeft - (carouselContainer.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
-                        carouselContainer.scroll({
-                            left: offset,
-                            behavior: 'smooth'
-                        });
-                    }, 50); 
-                }
+                listContainer.classList.add('fade-in'); 
             }
         }
 
-        // Função para construir o carrossel de dias
-        function buildDayCarousel() {
-            const carouselContainer = document.getElementById('day-carousel');
-            carouselContainer.innerHTML = ''; 
-            
-            const dayKeys = Object.keys(dailyAgendaData);
+        // ===============================================
+        // LÓGICA DO CARROSSEL DE DIAS
+        // ===============================================
 
-            dayKeys.forEach(key => {
-                const info = getDayInfo(key);
+        // 1. Gera os botões do carrossel no HTML
+        function generateDayCarousel(initialDayKey) {
+            const carousel = document.getElementById('day-carousel');
+            carousel.innerHTML = '';
+            const allDays = Object.keys(dailyAgendaData);
+
+            allDays.forEach(dayKey => {
+                const dayInfo = getDayInfo(dayKey);
                 
                 const button = document.createElement('button');
-                button.id = `day-${key}`;
-                button.className = 'day-button day-button-date text-center p-3 sm:p-4 font-semibold hover:bg-white/10 transition duration-200';
-                button.dataset.day = key; 
+                button.className = `day-button flex-shrink-0 flex flex-col items-center justify-center text-center transition duration-300 ${dayKey === initialDayKey ? 'day-active' : ''}`;
+                button.setAttribute('data-day-key', dayKey);
+                button.onclick = () => loadDailyAgenda(dayKey);
                 
                 button.innerHTML = `
-                    <span class="block text-xl day-number">${info.day}</span>
-                    <span class="day-short-name block transition-colors">${info.short}</span>
+                    <span class="day-number text-2xl leading-none">${dayInfo.day}</span>
+                    <span class="day-short-name leading-none">${dayInfo.short}</span>
                 `;
-                
-                carouselContainer.appendChild(button);
+                carousel.appendChild(button);
             });
         }
-
-
-        // Função para mostrar a seção de conteúdo desejada
-        function showSection(targetId) {
-            
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.add('hidden');
-                section.classList.remove('fade-in'); 
-            });
-            
-            document.getElementById('mobile-menu').classList.add('hidden');
-
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('nav-active', 'border-b-2', 'border-parish-gold', 'text-parish-gold');
-                button.classList.add('text-parish-soft-gray'); 
-            });
-
-            const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-                targetSection.classList.remove('hidden');
-                targetSection.classList.add('fade-in'); 
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // 2. Controla a seleção de um dia
+        function loadDailyAgenda(dayKey) {
+            // Remove a classe ativa do botão anterior
+            const prevActive = document.querySelector('.day-button.day-active');
+            if (prevActive) {
+                prevActive.classList.remove('day-active');
             }
 
-            document.querySelectorAll(`[data-target="${targetId}"]`).forEach(button => {
-                button.classList.add('nav-active', 'text-parish-gold', 'border-b-2', 'border-parish-gold');
-                button.classList.remove('text-parish-soft-gray'); 
-            });
-            
-            const dayCarouselWrapper = document.getElementById('day-carousel-wrapper');
-            
-            if (targetId === 'content-agenda') {
-                dayCarouselWrapper.classList.remove('hidden'); 
-                buildDayCarousel();
-                renderAgendaDay(activeDay); 
-            } else {
-                dayCarouselWrapper.classList.add('hidden'); 
+            // Adiciona a classe ativa ao novo botão
+            const newActive = document.querySelector(`.day-button[data-day-key="${dayKey}"]`);
+            if (newActive) {
+                newActive.classList.add('day-active');
+            }
+
+            // Centraliza o botão ativo
+            centerActiveDay(dayKey);
+
+            // Renderiza o conteúdo da agenda
+            renderAgendaDay(dayKey);
+        }
+
+        // 3. Centraliza o botão ativo na tela
+        function centerActiveDay(dayKey) {
+            const carousel = document.getElementById('day-carousel');
+            const activeElement = document.querySelector(`.day-button[data-day-key="${dayKey}"]`);
+
+            if (activeElement && carousel) {
+                const offset = activeElement.offsetLeft - (carousel.clientWidth / 2) + (activeElement.clientWidth / 2);
+                carousel.scrollTo({
+                    left: offset,
+                    behavior: 'smooth'
+                });
             }
         }
         
         // ===============================================
-        // INICIALIZAÇÃO E LISTENERS
+        // NAVEGAÇÃO POR ABAS (TABS)
         // ===============================================
-        document.addEventListener('DOMContentLoaded', () => {
+        function setupTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const contentSections = document.querySelectorAll('.content-section');
+            const desktopNavLinks = document.querySelectorAll('#desktop-nav .nav-link');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const dayCarouselWrapper = document.getElementById('day-carousel-wrapper');
             
-            // 1. Processamento dos Dados: Atendimento para Horário Marcado (Nova Feature)
-            Object.values(dailyAgendaData).forEach(dayData => {
-                dayData.events.forEach(event => {
-                    if (event.title === 'Atendimento') {
-                        // Se o subtítulo estiver vazio ou for apenas 'Secretaria', ajusta a descrição
-                        if (event.subtitle === '') {
-                             event.subtitle = 'Horário Marcado';
-                        } else if (event.subtitle === 'Secretaria' || event.subtitle.includes('Horário Marcado')) {
-                            // Garante que a secretaria mantenha a localização e adicione a informação de horário
-                            event.subtitle = 'Secretaria (Horário Marcado)';
-                        }
+            tabButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    const targetId = button.getAttribute('data-target');
+                    
+                    // 1. Atualiza as classes visuais da navegação (Desktop)
+                    desktopNavLinks.forEach(link => {
+                        link.classList.remove('nav-active', 'text-parish-gold', 'border-b-2', 'border-parish-gold');
+                        link.classList.add('text-parish-soft-gray');
+                    });
+                    
+                    // Encontra e ativa o link de desktop correspondente
+                    const activeDesktopLink = document.querySelector(`#desktop-nav .nav-link[data-target="${targetId}"]`);
+                    if (activeDesktopLink) {
+                         activeDesktopLink.classList.add('nav-active', 'text-parish-gold', 'border-b-2', 'border-parish-gold');
+                         activeDesktopLink.classList.remove('text-parish-soft-gray');
                     }
+
+                    // 2. Esconde o menu mobile
+                    mobileMenu.classList.add('hidden');
+
+                    // 3. Mostra/Esconde o carrossel de dias
+                    if (targetId === 'content-agenda') {
+                        dayCarouselWrapper.classList.remove('hidden');
+                        // Garante que o dia ativo seja centralizado ao voltar para a agenda
+                        setTimeout(() => centerActiveDay(activeDay), 10);
+                    } else {
+                        dayCarouselWrapper.classList.add('hidden');
+                    }
+                    
+                    // 4. Troca o conteúdo principal
+                    contentSections.forEach(section => {
+                        if (section.id === targetId) {
+                            section.classList.remove('hidden');
+                            section.classList.add('fade-in'); 
+                        } else {
+                            section.classList.add('hidden');
+                            section.classList.remove('fade-in');
+                        }
+                    });
                 });
             });
+        }
 
+        // ===============================================
+        // INICIALIZAÇÃO
+        // ===============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verifica o tema salvo
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-mode');
+                toggleTheme(); // Chama para configurar o ícone e cores do botão corretamente
+            } else {
+                // Configura o ícone e cores para o Dark Mode padrão
+                const themeToggleBtn = document.getElementById('theme-toggle');
+                const themeIcon = document.getElementById('theme-icon');
+                themeIcon.innerHTML = SunIcon; 
+                themeToggleBtn.classList.add('bg-parish-gold', 'text-parish-dark-base');
+            }
+            
+            // Ativa o toggle do tema
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
 
+            // Ativa o toggle do menu mobile
             document.getElementById('menu-toggle').addEventListener('click', () => {
                 document.getElementById('mobile-menu').classList.toggle('hidden');
             });
 
-            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            // Configura os ouvintes de eventos para as abas
+            setupTabs();
+            
+            // Agenda: Define o dia inicial e carrega os dados
+            const today = todayKey; 
+            const initialDay = '23-Nov'; // Começa em 23/Nov
+            
+            // 1. Gera o carrossel (sempre visível no desktop, mas escondido no mobile/tab)
+            generateDayCarousel(initialDay);
+            
+            // 2. Carrega a agenda do dia inicial
+            loadDailyAgenda(initialDay);
 
-            // Carrega o tema salvo
-            const savedTheme = localStorage.getItem('theme');
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            const themeIcon = document.getElementById('theme-icon');
-
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                themeIcon.innerHTML = MoonIcon;
-                // Ajuste de cores do botão de toggle no Light Mode
-                themeToggleBtn.classList.remove('bg-parish-gold', 'text-parish-dark-base');
-                themeToggleBtn.classList.add('bg-white', 'text-gray-800', 'border', 'border-gray-200');
-            } else {
-                document.body.classList.remove('light-mode');
-                themeIcon.innerHTML = SunIcon;
-                // Ajuste de cores do botão de toggle no Dark Mode
-                themeToggleBtn.classList.add('bg-parish-gold', 'text-parish-dark-base');
-                themeToggleBtn.classList.remove('bg-white', 'text-gray-800', 'border', 'border-gray-200');
+            // 3. Mostra o carrossel apenas em telas maiores no carregamento inicial
+            if (window.innerWidth >= 640) {
+                 document.getElementById('day-carousel-wrapper').classList.remove('hidden');
             }
             
-            // Define o dia inicial (Se hoje for 24/Nov, ele será o ativo)
-            const initialDayKey = todayKey; 
-            activeDay = initialDayKey;
+            // 4. Centraliza o dia inicial e ajusta o botão "HOJE"
+            centerActiveDay(initialDay);
             
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = button.getAttribute('data-target');
-                    showSection(targetId);
-                });
-            });
+            // 5. Ajusta o texto do botão "HOJE"
+            const todayButton = document.getElementById('today-button');
+            todayButton.innerHTML = `HOJE <span class="text-base font-extrabold ml-1">${today.replace('-', '/')}</span>`;
+            todayButton.onclick = () => loadDailyAgenda(today);
 
-            document.getElementById('day-carousel-wrapper').addEventListener('click', (e) => {
-                const dayButton = e.target.closest('.day-button-date');
-                if (dayButton && dayButton.dataset.day) {
-                    renderAgendaDay(dayButton.dataset.day); 
+            // Listener para mostrar/esconder o carrossel no redimensionamento
+            window.addEventListener('resize', () => {
+                const dayCarouselWrapper = document.getElementById('day-carousel-wrapper');
+                const contentAgenda = document.getElementById('content-agenda');
+                if (window.innerWidth >= 640 && !contentAgenda.classList.contains('hidden')) {
+                    dayCarouselWrapper.classList.remove('hidden');
+                    // Re-centraliza em caso de mudança de orientação
+                    centerActiveDay(activeDay); 
+                } else if (window.innerWidth < 640) {
+                    // O carrossel deve ser escondido se estivermos em mobile e não na aba 'Agenda'
+                    if (contentAgenda.classList.contains('hidden')) {
+                        dayCarouselWrapper.classList.add('hidden');
+                    }
                 }
             });
-
-            // Inicia a aplicação na seção Agenda
-            showSection('content-agenda'); 
         });
-        
-        // Funções globais (para o botão HOJE)
-        window.loadDailyAgenda = (dayKey) => {
-             activeDay = dayKey;
-             showSection('content-agenda');
-        };
-        window.renderAgendaDay = renderAgendaDay;
+
     </script>
 </body>
 </html>
