@@ -218,14 +218,53 @@
 
 
         <!-- ========================================================= -->
-        <!-- SEÇÃO 2: NOTÍCIAS (OCULTA POR PADRÃO) -->
+        <!-- SEÇÃO 2: NOTÍCIAS (OCULTA POR PADRÃO) - NOVO CONTEÚDO -->
         <!-- ========================================================= -->
         <section id="content-noticias" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Últimas Notícias da Paróquia</h2>
-            <div class="text-center text-gray-400 py-10">
-                <p class="text-xl">Esta seção está sendo preparada!</p>
-                <p class="mt-2">Em breve você encontrará comunicados, avisos e eventos recentes da comunidade aqui.</p>
-                <img src="https://placehold.co/400x150/1a2039/3b82f6?text=Not%C3%ADcias+em+Breve" alt="Placeholder para notícias" class="mx-auto mt-6 rounded-lg shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/3b82f6?text=Not%C3%ADcias+em+Breve';" />
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Festa da Padroeira 2025</h2>
+            
+            <div class="text-center max-w-2xl mx-auto space-y-6">
+                <p class="text-xl font-extrabold text-parish-blue mb-4">
+                    Nossa Senhora da Conceição
+                </p>
+
+                <!-- NOVENA -->
+                <div class="bg-parish-dark p-6 rounded-xl shadow-lg border-b-4 border-parish-gold">
+                    <h3 class="text-2xl font-bold text-parish-gold mb-3">Solene Novena da Padroeira</h3>
+                    <p class="text-lg text-gray-300 font-semibold">
+                        28 de Novembro a 7 de Dezembro
+                    </p>
+                    <p class="text-sm text-gray-400 mt-2">
+                        Venha participar de nove dias de intensa preparação espiritual em honra à Imaculada Conceição.
+                    </p>
+                    <p class="text-2xl font-extrabold text-white mt-4">
+                        TODOS OS DIAS: Santa Missa e Novena às 19:00h
+                    </p>
+                    <p class="text-sm text-parish-blue italic mt-1">
+                        (Na Igreja Matriz)
+                    </p>
+                </div>
+
+                <!-- FESTA -->
+                <div class="bg-parish-dark p-6 rounded-xl shadow-lg border-b-4 border-parish-blue">
+                    <h3 class="text-2xl font-bold text-parish-gold mb-3">Dia Solene da Festa</h3>
+                    <p class="text-xl text-gray-300 font-semibold">
+                        08 de Dezembro (Segunda-feira)
+                    </p>
+                    <div class="mt-4 space-y-3">
+                        <p class="text-lg font-bold text-white">
+                            Santa Missa Solene: <span class="text-parish-gold">10:00h</span>
+                        </p>
+                        <p class="text-lg font-bold text-white">
+                            Procissão Solene e Santa Missa: <span class="text-parish-gold">19:00h</span>
+                        </p>
+                    </div>
+                    <p class="text-sm text-parish-blue italic mt-4">
+                        Celebraremos a Fé de 160 anos!
+                    </p>
+                </div>
+
+                <img src="https://placehold.co/400x150/1a2039/fbbd24?text=Festa+da+Padroeira" alt="Placeholder para Festa da Padroeira" class="mx-auto mt-6 rounded-lg shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/fbbd24?text=Festa+da+Padroeira';" />
             </div>
         </section>
 
@@ -453,20 +492,20 @@
         // Variável GLOBAL para rastrear o dia ativo. É crucial para que o menu de abas
         // não resete a visualização para um dia fixo.
         // O dia 23 de Novembro é o primeiro dia visível.
-        let activeDay = '23'; 
+        let activeDay = '23-Nov'; 
 
+        // O objeto dailyAgendaData agora usa keys de string no formato 'DD-MM' para garantir unicidade e ordenar os dias corretamente.
         const dailyAgendaData = {
-            // DIAS JÁ PASSADOS (1 a 22) FORAM EXCLUÍDOS.
-            
             // ===================================
-            // DIAS RESTANTES (23 a 30)
+            // NOVEMBRO (23 a 30)
             // ===================================
-            '23': {
+            '23-Nov': {
                 dayName: 'DOMINGO',
                 liturgical: 'SOLENIDADE de Cristo Rei do Universo', 
                 dateStr: '23/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' }, 
                     { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '10:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Primeira Eucaristia', subtitle: 'Igreja Matriz', time: '15:00', church: 'Matriz', color: 'parish-gold' },
@@ -474,17 +513,17 @@
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
-            '24': {
+            '24-Nov': {
                 dayName: 'SEGUNDA-FEIRA',
                 liturgical: 'Segunda-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '24/Nov',
                 events: [
                     { title: 'Visita às obras', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
-                    { title: 'Santa Missa', subtitle: 'Sagrado Coração', time: '18:00', church: 'External', color: 'parish-red' }, // EXTERNAL (Dispara Alerta)
-                    { title: 'Formação MESC', subtitle: '', time: '19:00', church: 'External', color: 'parish-red' }, // IGNORED PELO ALERTA
+                    { title: 'Santa Missa', subtitle: 'Sagrado Coração', time: '18:00', church: 'External', color: 'parish-red' }, 
+                    { title: 'Formação MESC', subtitle: '', time: '19:00', church: 'External', color: 'parish-red' }, 
                 ]
             },
-            '25': {
+            '25-Nov': {
                 dayName: 'TERÇA-FEIRA',
                 liturgical: 'Terça-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '25/Nov',
@@ -493,12 +532,12 @@
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' }, 
                     { title: 'Santa Missa Setor 4', subtitle: 'Bairro Pereiras', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Rio Acima II', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Reunião Setor 7', subtitle: '', time: '20:00', church: 'External', color: 'parish-red' }, // IGNORED PELO ALERTA
+                    { title: 'Reunião Setor 7', subtitle: '', time: '20:00', church: 'External', color: 'parish-red' }, 
                 ]
             },
-            '26': { 
+            '26-Nov': { 
                 dayName: 'QUARTA-FEIRA',
-                liturgical: 'Quarta-feira da 34ª Semana do Tempo Comum', 
+                liturgical: 'Memória de São Nicolau Tavelić e Companheiros, Mártires', 
                 dateStr: '26/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
@@ -506,14 +545,14 @@
                     { title: 'Santa Missa Setor 4', subtitle: 'Bairro Água Limpa', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
             },
-            '27': { 
+            '27-Nov': { 
                 dayName: 'QUINTA-FEIRA',
-                liturgical: 'Quinta-feira da 34ª Semana do Tempo Comum', 
+                liturgical: 'Memória de Nossa Senhora das Graças e da Medalha Milagrosa', 
                 dateStr: '27/Nov',
                 events: [
-                    { title: 'Procissão', subtitle: 'Saindo da Igreja Matriz (até Pedra Santa)', time: '04:30', church: 'External', color: 'parish-red' }, // EXTERNAL (Dispara Alerta)
-                    { title: 'Santa Missa', subtitle: 'Pedra Santa (logo após a Procissão)', time: '05:00', church: 'External', color: 'parish-red' }, // EXTERNAL (Dispara Alerta)
-                    { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'External', color: 'parish-red' }, // EXTERNAL (Ignorado pelo Alerta)
+                    { title: 'Procissão', subtitle: 'Saindo da Igreja Matriz (até Pedra Santa)', time: '04:30', church: 'External', color: 'parish-red' }, 
+                    { title: 'Santa Missa', subtitle: 'Pedra Santa (logo após a Procissão)', time: '05:00', church: 'External', color: 'parish-red' }, 
+                    { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'External', color: 'parish-red' }, 
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' }, 
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
@@ -521,9 +560,9 @@
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
-            '28': {
+            '28-Nov': {
                 dayName: 'SEXTA-FEIRA',
-                liturgical: 'Sexta-feira da 34ª Semana do Tempo Comum', 
+                liturgical: '1º Dia da Novena | Memória de São Tiago da Marca, Presbítero', 
                 dateStr: '28/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
@@ -532,9 +571,9 @@
                     { title: 'Primeiro dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
-            '29': {
+            '29-Nov': {
                 dayName: 'SÁBADO',
-                liturgical: 'Sábado da 34ª Semana do Tempo Comum', 
+                liturgical: '2º Dia da Novena | Nossa Senhora no Sábado (Memória Facultativa)', 
                 dateStr: '29/Nov',
                 events: [
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-blue' },
@@ -543,17 +582,90 @@
                     { title: 'Segundo dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
-            '30': {
+            '30-Nov': {
                 dayName: 'DOMINGO',
-                liturgical: '1º DOMINGO DO ADVENTO',
+                liturgical: '3º Dia da Novena | 1º DOMINGO DO ADVENTO',
                 dateStr: '30/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' }, 
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Retiro dos Marins', time: '09:30', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '11:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '18:00', church: 'Comunidade', color: 'parish-blue' },
-                    // Corrigido para a Novena às 19:00
                     { title: 'Terceiro dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
+                ]
+            },
+            // ===================================
+            // DEZEMBRO (1 a 8)
+            // ===================================
+            '01-Dec': {
+                dayName: 'SEGUNDA-FEIRA',
+                liturgical: '4º Dia da Novena | São Remígio, Bispo (Memória)', 
+                dateStr: '01/Dez',
+                events: [
+                    { title: 'Quarto dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
+                ]
+            },
+            '02-Dec': {
+                dayName: 'TERÇA-FEIRA',
+                liturgical: '5º Dia da Novena | 1ª Semana do Advento', 
+                dateStr: '02/Dez',
+                events: [
+                    { title: 'Quinto dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
+                ]
+            },
+            '03-Dec': {
+                dayName: 'QUARTA-FEIRA',
+                liturgical: '6º Dia da Novena | São Francisco Xavier, Presbítero (Memória)', 
+                dateStr: '03/Dez',
+                events: [
+                    { title: 'Sexto dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
+                ]
+            },
+            '04-Dec': {
+                dayName: 'QUINTA-FEIRA',
+                liturgical: '7º Dia da Novena | São João Damasceno, Presbítero e Doutor (Memória)', 
+                dateStr: '04/Dez',
+                events: [
+                    { title: 'Sétimo dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
+                ]
+            },
+            '05-Dec': {
+                dayName: 'SEXTA-FEIRA',
+                liturgical: '8º Dia da Novena | Semana do Advento', 
+                dateStr: '05/Dez',
+                events: [
+                    { title: 'Oitavo dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
+                ]
+            },
+            '06-Dec': {
+                dayName: 'SÁBADO',
+                liturgical: '9º Dia da Novena | São Nicolau, Bispo (Memória)', 
+                dateStr: '06/Dez',
+                events: [
+                    { title: 'Nono dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
+                ]
+            },
+            '07-Dec': {
+                dayName: 'DOMINGO',
+                liturgical: 'VÉSPERA DA FESTA | 2º DOMINGO DO ADVENTO', 
+                dateStr: '07/Dez',
+                events: [
+                    // Missas diurnas da Matriz mantidas
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' },
+                    // MISSA DO SETOR 7 REMOVIDA
+                    // Novena final
+                    { title: 'Último dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
+                ]
+            },
+            '08-Dec': {
+                dayName: 'SEGUNDA-FEIRA',
+                liturgical: 'SOLENIDADE da Imaculada Conceição de Nossa Senhora', 
+                dateStr: '08/Dez',
+                events: [
+                    { title: 'Santa Missa Solene', subtitle: 'Igreja Matriz', time: '10:00', church: 'Matriz', color: 'parish-gold' },
+                    { title: 'Procissão Solene e Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
                 ]
             }
         };
@@ -566,28 +678,46 @@
         const dayNamesFull = ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO'];
         const dayNamesShort = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
         
-        // Retorna o dia da semana completo e curto
-        function getDayNames(date) {
+        // Retorna o dia da semana completo e curto e o dia do mês
+        function getDayInfo(key) {
+            const [dayNum, monthStr] = key.split('-');
+            const year = 2025; // Ano de referência
+            const month = { 'Nov': 10, 'Dec': 11 }[monthStr]; // Mês base 0 (Nov = 10, Dec = 11)
+            
+            const date = new Date(year, month, parseInt(dayNum));
             const dayIndex = date.getDay();
+
             return {
+                day: dayNum,
+                month: monthStr,
                 full: dayNamesFull[dayIndex],
-                short: dayNamesShort[dayIndex]
+                short: dayNamesShort[dayIndex],
+                dateObj: date
             };
         }
 
         // Função para mostrar o alerta (Aviso de Missa ou Novena em local EXTERNO, um dia antes)
-        function checkAndShowAlert(currentDay) {
+        function checkAndShowAlert(currentDayKey) {
             const alertContainer = document.getElementById('dynamic-alert');
             const alertMessage = document.getElementById('alert-message');
             
-            const today = parseInt(currentDay); 
-            const tomorrow = today + 1;
+            // Encontra a chave do dia seguinte
+            const keys = Object.keys(dailyAgendaData);
+            const currentIndex = keys.indexOf(currentDayKey);
+            
+            if (currentIndex === -1 || currentIndex >= keys.length - 1) {
+                alertContainer.classList.add('hidden');
+                return;
+            }
+
+            const tomorrowKey = keys[currentIndex + 1];
+            const tomorrowData = dailyAgendaData[tomorrowKey];
             
             let upcomingEvents = [];
 
-            if (dailyAgendaData[tomorrow]) {
+            if (tomorrowData) {
                 // FILTRO AJUSTADO: Apenas eventos EXTERNAL que NÃO são 'Abrigo', 'Reunião' ou 'Formação'
-                upcomingEvents = dailyAgendaData[tomorrow].events.filter(event => 
+                upcomingEvents = tomorrowData.events.filter(event => 
                     event.church === 'External' && 
                     !event.title.includes('Reunião') &&     // Exclui Reuniões
                     !event.title.includes('Formação') &&    // Exclui Formações
@@ -599,14 +729,14 @@
                 let message = '';
                 
                 // === LÓGICA EXTREMAMENTE DIRETA DO SENHOR SUPREMO ===
-                if (tomorrow === 24) {
+                if (tomorrowKey === '24-Nov') {
                      // Regra Específica para 24/Nov (amanhã, quando em 23/Nov)
                      message = `<span class="text-white">24/Nov: 18:00 Santa Missa na Igreja do Sagrado Coração</span>`;
                 } else {
                      // Lógica genérica clean (para outros dias com eventos externos)
                      upcomingEvents.forEach(event => {
                         // Formato: DD/Mês: HH:MM Título no Local
-                        const dateStr = dailyAgendaData[tomorrow].dateStr;
+                        const dateStr = tomorrowData.dateStr;
                         const location = event.subtitle.includes('Saindo da Igreja Matriz') ? 'Saindo da Matriz' : (event.subtitle || event.church);
                         
                         message += `<span class="text-white">${dateStr}: ${event.time} ${event.title} (${location})</span><br>`;
@@ -623,35 +753,36 @@
 
 
         // Função principal para carregar a agenda diária
-        function loadDailyAgenda(day) {
+        function loadDailyAgenda(dayKey) {
             // ATUALIZA O DIA ATIVO GLOBAL
-            activeDay = day; 
+            activeDay = dayKey; 
 
-            const data = dailyAgendaData[day];
+            const data = dailyAgendaData[dayKey];
             const listContainer = document.getElementById('daily-agenda-list');
             const dayTitle = document.getElementById('current-day-title');
             const liturgicalDay = document.getElementById('liturgical-day');
             
             // 1. Checa e mostra o alerta para o dia seguinte
-            checkAndShowAlert(day);
+            checkAndShowAlert(dayKey);
 
             // 2. Limpa e atualiza o conteúdo da agenda
             listContainer.innerHTML = '';
             liturgicalDay.innerHTML = '';
 
             if (!data || data.events.length === 0) {
-                dayTitle.innerHTML = `<span class="text-parish-gold">Dia ${day}</span>, Sem Eventos Agendados`;
+                dayTitle.innerHTML = `<span class="text-parish-gold">Dia ${dayKey.split('-')[0]}</span>, Sem Eventos Agendados`;
                 listContainer.innerHTML = `<p class="text-center text-gray-400 py-8">Não há programação pública para este dia.</p>`;
                 
             } else {
-                const dateParts = data.dateStr.split('/');
-                dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span>, ${dateParts[0]}/${dateParts[1]}`;
+                dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span>, ${data.dateStr}`;
                 
                 // Adiciona o dia litúrgico
                 if (data.liturgical) {
                     liturgicalDay.innerHTML = data.liturgical;
                 }
 
+                data.events.sort((a, b) => a.time.localeCompare(b.time)); // Ordena por horário
+                
                 data.events.forEach((event, index) => {
                     // Determina as cores com base no campo 'color'
                     const timeColorClass = event.color.startsWith('text-') ? event.color : `text-${event.color}`;
@@ -678,7 +809,7 @@
             document.querySelectorAll('.day-button-date').forEach(btn => {
                 btn.classList.remove('day-active');
             });
-            const activeDayButton = document.getElementById(`day-${day}`);
+            const activeDayButton = document.getElementById(`day-${dayKey}`);
             if(activeDayButton) {
                 activeDayButton.classList.add('day-active');
                 
@@ -701,30 +832,24 @@
             const carouselContainer = document.getElementById('day-carousel');
             carouselContainer.innerHTML = ''; // Limpa o carrossel
             
-            // O carrossel deve começar no dia 23, o primeiro dia restante.
-            const START_DAY = 23; 
-            const END_DAY = 30;
+            const dayKeys = Object.keys(dailyAgendaData);
 
-            // Data mockada para 01 de Novembro de 2025
-            const mockDate = new Date(2025, 10, 1); 
-
-            for (let i = START_DAY; i <= END_DAY; i++) {
-                mockDate.setDate(i);
-                const day = i.toString();
-                const dayNames = getDayNames(mockDate);
+            dayKeys.forEach(key => {
+                const info = getDayInfo(key);
                 
                 const button = document.createElement('button');
-                button.id = `day-${day}`;
+                button.id = `day-${key}`;
                 button.className = 'day-button day-button-date text-center p-3 sm:p-4 rounded-xl bg-parish-card text-gray-400 font-semibold hover:bg-parish-card/70 transition duration-200';
-                button.dataset.day = day; 
+                button.dataset.day = key; 
                 
+                // Usa o dia e a abreviação da semana
                 button.innerHTML = `
-                    <span class="block text-xl">${i}</span>
-                    <span class="day-short-name block text-gray-400 transition-colors">${dayNames.short}</span>
+                    <span class="block text-xl">${info.day}</span>
+                    <span class="day-short-name block text-gray-400 transition-colors">${info.short}</span>
                 `;
                 
                 carouselContainer.appendChild(button);
-            }
+            });
         }
 
 
@@ -772,11 +897,11 @@
                 document.getElementById('mobile-menu').classList.toggle('hidden');
             });
 
-            // O dia de hoje é 23/Nov. Este é o novo ponto de partida.
-            const initialDayNumber = 23; 
+            // O dia de hoje (23/Nov) é o novo ponto de partida.
+            const initialDayKey = '23-Nov'; 
 
             // Inicializa a variável de estado global
-            activeDay = initialDayNumber.toString();
+            activeDay = initialDayKey;
             
             // 1. Lógica de Navegação por Abas (Clique)
             document.querySelectorAll('.tab-button').forEach(button => {
