@@ -4,16 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paróquia Nossa Senhora da Conceição - Virgínia/MG</title>
-    <!-- Carrega o Tailwind CSS CDN para estilização -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configuração personalizada do Tailwind para um visual mais devocional (azul profundo e dourado) -->
-    <script>
+    <!-- Carrega o Tailwind CSS CDN para estilização --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração personalizada do Tailwind para um visual mais devocional (azul profundo e dourado) --><script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         'parish-dark': '#0e1428', // Fundo principal, azul muito escuro
-                        'parish-card': '#1a2039', // Fundo dos cards, ligeiramente mais claro
+                        'parish-card': '#1a2039', // Fundo dos cards, ligeiramente mais claro (base para glass)
                         'parish-blue': '#3b82f6', // Azul claro para destaque (para eventos externos/secundários)
                         'parish-gold': '#FBBF24', // Dourado forte para contraste (para eventos principais)
                         'parish-red': '#dc2626', // Vermelho para avisos importantes
@@ -84,10 +82,13 @@
             top: 100%;
             left: 0;
             right: 0;
-            background-color: '#1a2039'; /* Cor do card */
+            background-color: rgba(26, 32, 57, 0.9); /* Glass */
+            backdrop-filter: blur(10px); /* Glass */
+            -webkit-backdrop-filter: blur(10px); /* Glass para Safari */
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 1rem 0;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 0.75rem 0.75rem; /* Arredonda só em baixo */
         }
         .nav-link.tab-button {
             padding-bottom: 0.75rem; 
@@ -96,7 +97,9 @@
         }
         /* Estilo para a barra do cabeçalho fixo */
         .header-bar {
-            background-color: '#1a2039'; /* Cor de card para a barra superior */
+            background-color: rgba(26, 32, 57, 0.9); /* Glass */
+            backdrop-filter: blur(10px); /* Glass */
+            -webkit-backdrop-filter: blur(10px); /* Glass para Safari */
         }
         /* Novo estilo para garantir o alinhamento no mobile */
         .header-top-bar {
@@ -118,24 +121,70 @@
             justify-self: end;
             text-align: right;
         }
+
+        /* Estilo para os CARDS de conteúdo: Aplicando Liquid Glass */
+        .liquid-glass-card {
+            background-color: rgba(26, 32, 57, 0.7); /* Fundo semi-transparente */
+            backdrop-filter: blur(10px); /* Efeito de desfoque */
+            -webkit-backdrop-filter: blur(10px); /* Para Safari */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Borda sutil */
+            border-radius: 1rem; /* Bordas arredondadas */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Sombra para profundidade */
+            padding: 1.5rem;
+        }
+        /* Ajuste para o carrossel de dias (também com glass) */
+        #day-carousel-wrapper {
+            background-color: rgba(26, 32, 57, 0.8); /* Um pouco menos transparente */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Ajuste para botões de dia do carrossel no modo glass */
+        .day-button {
+            background-color: rgba(255, 255, 255, 0.05); /* Um pouco de brilho no fundo dos botões inativos */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .day-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .day-active { /* O botão ativo deve se destacar */
+            background-color: #FBBF24 !important; 
+            color: #0e1428 !important;
+            border-color: #FBBF24 !important;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+        }
+        /* Alerta dinâmico no estilo glass */
+        #dynamic-alert {
+            background-color: rgba(220, 38, 38, 0.2); /* Fundo vermelho semi-transparente */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(220, 38, 38, 0.5); /* Borda vermelha mais definida */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            color: #f1f1f1; /* Texto claro */
+        }
+        /* Garante que o conteúdo da lista interna da agenda tenha z-index e cor correta */
+        #daily-agenda-list > div {
+            z-index: 20; /* Garante que os itens fiquem acima do fundo glass */
+            color: #f1f1f1; /* Garante a cor padrão do texto */
+        }
+
     </style>
 </head>
 <body class="text-gray-100">
 
-    <!-- Navbar e Cabeçalho (Fixo e com Z-INDEX Máximo) -->
-    <header class="header-bar shadow-xl sticky top-0 z-[9999] bg-parish-card"> 
+    <!-- Navbar e Cabeçalho (Fixo e com Z-INDEX Máximo) --><header class="header-bar shadow-xl sticky top-0 z-[9999]"> 
         <div class="container mx-auto px-4 py-4 relative"> 
-            <!-- Top Bar: Left (Name), Center (Menu), Right (Jubilee) -->
-            <div class="header-top-bar pb-4">
+            <!-- Top Bar: Left (Name), Center (Menu), Right (Jubilee) --><div class="header-top-bar pb-4">
                 
-                <!-- 1. Name Block (LEFT) -->
-                <div id="parish-name-block" class="flex flex-col z-20">
+                <!-- 1. Name Block (LEFT) --><div id="parish-name-block" class="flex flex-col z-20">
                     <a href="#" class="text-xl font-extrabold text-parish-gold tracking-wider leading-none">PARÓQUIA</a>
                     <p class="text-xs text-white/80 leading-none">Nossa Senhora da Conceição - Virgínia-MG</p>
                 </div>
                 
-                <!-- 2. Hamburger Icon (CENTER - only for mobile) -->
-                <div id="menu-toggle-wrapper" class="sm:hidden z-20">
+                <!-- 2. Hamburger Icon (CENTER - only for mobile) --><div id="menu-toggle-wrapper" class="sm:hidden z-20">
                     <button id="menu-toggle" class="text-white hover:text-parish-gold focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -143,31 +192,27 @@
                     </button>
                 </div>
                 
-                <!-- 3. Jubilee Info (RIGHT) - visível em todas as telas -->
-                <div id="jubilee-info-block" class="z-20">
+                <!-- 3. Jubilee Info (RIGHT) - visível em todas as telas --><div id="jubilee-info-block" class="z-20">
                     <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
                     <p class="text-base font-bold text-parish-blue leading-none">1866 – 2026</p>
                 </div>
             </div>
 
-            <!-- Mobile Menu Content (Aparece ao clicar no Hambúrguer) -->
-            <nav id="mobile-menu" class="hidden sm:hidden z-[9990]">
+            <!-- Mobile Menu Content (Aparece ao clicar no Hambúrguer) --><nav id="mobile-menu" class="hidden sm:hidden z-[9990]">
                 <div class="flex flex-col space-y-2 text-base font-semibold">
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-agenda">AGENDA</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-noticias">NOTÍCIAS</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-jubileu">JUBILEU</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-oracao">ORAÇÃO</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-hino">HINO</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-informacoes">INFORMAÇÕES</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-contato">CONTATOS</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-agenda">AGENDA</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-noticias">NOTÍCIAS</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-jubileu">JUBILEU</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-oracao">ORAÇÃO</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-hino">HINO</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-informacoes">INFORMAÇÕES</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-contato">CONTATOS</a>
                 </div>
             </nav>
 
-            <!-- Desktop Tab Navigation (Aparece apenas em Desktop/Tablet) -->
-            <nav class="overflow-x-auto whitespace-nowrap hidden sm:block" id="desktop-nav">
+            <!-- Desktop Tab Navigation (Aparece apenas em Desktop/Tablet) --><nav class="overflow-x-auto whitespace-nowrap hidden sm:block" id="desktop-nav">
                 <div class="inline-flex space-x-6 text-base font-semibold">
-                    <!-- Abas replicadas para o Desktop -->
-                    <a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">AGENDA</a>
+                    <!-- Abas replicadas para o Desktop --><a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">AGENDA</a>
                     <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-noticias">NOTÍCIAS</a>
                     <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">JUBILEU</a>
                     <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-oracao">ORAÇÃO</a>
@@ -178,49 +223,34 @@
             </nav>
         </div>
         
-        <!-- DAY CAROUSEL CONTAINER (AGORA FIXO COM O HEADER E CONTROLADO PELO JS) -->
-        <div id="day-carousel-wrapper" class="hidden bg-parish-card border-t border-gray-800 pt-4 pb-2">
+        <!-- DAY CAROUSEL CONTAINER (AGORA FIXO COM O HEADER E CONTROLADO PELO JS) --><div id="day-carousel-wrapper" class="hidden border-t border-gray-800 pt-4 pb-2">
             <div id="day-carousel" class="flex flex-row justify-start space-x-2 sm:space-x-4 mx-auto px-4 whitespace-nowrap max-w-7xl">
-                <!-- Estes botões serão preenchidos via JavaScript -->
-            </div>
+                <!-- Estes botões serão preenchidos via JavaScript --></div>
         </div>
     </header>
 
-    <!-- CONTAINER PRINCIPAL DE CONTEÚDO (Controlado por JS) -->
-    <main class="container mx-auto px-4 py-10">
+    <!-- CONTAINER PRINCIPAL DE CONTEÚDO (Controlado por JS) --><main class="container mx-auto px-4 py-10">
         
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 1: AGENDA (VISÍVEL POR PADRÃO) -->
-        <!-- ========================================================= -->
-        <section id="content-agenda" class="content-section mb-20 relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 1: AGENDA (VISÍVEL POR PADRÃO) --><!-- ========================================================= --><section id="content-agenda" class="content-section mb-20 relative z-10">
             <h2 class="text-4xl font-bold text-center text-parish-gold mb-10">Agenda Mensal</h2>
 
-            <!-- Alerta Dinâmico (Aviso de Missas fora da Matriz - Aparece 1 dia antes) -->
-            <!-- Fundo em tom de vermelho (parish-red/30) e borda vermelha (parish-red) -->
-            <div id="dynamic-alert" class="hidden bg-parish-red/30 border-l-4 border-parish-red p-4 rounded-lg mb-8 shadow-xl">
+            <!-- Alerta Dinâmico (Aviso de Missas fora da Matriz - Aparece 1 dia antes) --><!-- Aplicando estilo glass --><div id="dynamic-alert" class="hidden p-4 rounded-lg mb-8 shadow-xl">
                 <p class="font-bold text-parish-red flex items-center">
                     AVISO:
                 </p>
-                <!-- A mensagem será inserida aqui com o novo formato clean -->
-                <p id="alert-message" class="text-sm mt-1 text-gray-200"></p>
+                <!-- A mensagem será inserida aqui com o novo formato clean --><p id="alert-message" class="text-sm mt-1 text-gray-200"></p>
             </div>
 
-            <!-- Título do Dia Selecionado + Dia Litúrgico -->
-            <h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-2"></h3>
+            <!-- Título do Dia Selecionado + Dia Litúrgico --><h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-2"></h3>
             <p id="liturgical-day" class="text-xl font-semibold text-center text-parish-blue mb-8"></p>
 
-            <!-- Lista de Eventos do Dia (Container Dinâmico) -->
-            <div id="daily-agenda-list" class="bg-parish-card p-6 rounded-xl shadow-2xl space-y-4">
-                <!-- Conteúdo da agenda será injetado aqui pelo JavaScript -->
-            </div>
+            <!-- Lista de Eventos do Dia (Container Dinâmico) --><div id="daily-agenda-list" class="liquid-glass-card space-y-4">
+                <!-- Conteúdo da agenda será injetado aqui pelo JavaScript --></div>
             
         </section>
 
 
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 2: NOTÍCIAS (OCULTA POR PADRÃO) - NOVO CONTEÚDO -->
-        <!-- ========================================================= -->
-        <section id="content-noticias" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 2: NOTÍCIAS (OCULTA POR PADRÃO) - NOVO CONTEÚDO --><!-- ========================================================= --><section id="content-noticias" class="content-section mb-20 hidden liquid-glass-card relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Festa da Padroeira 2025</h2>
             
             <div class="text-center max-w-2xl mx-auto space-y-6">
@@ -228,8 +258,7 @@
                     Nossa Senhora da Conceição
                 </p>
 
-                <!-- NOVENA -->
-                <div class="bg-parish-dark p-6 rounded-xl shadow-lg border-b-4 border-parish-gold">
+                <!-- NOVENA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-xl shadow-lg border-b-4 border-parish-gold">
                     <h3 class="text-2xl font-bold text-parish-gold mb-3">Solene Novena da Padroeira</h3>
                     <p class="text-lg text-gray-300 font-semibold">
                         28 de Novembro a 7 de Dezembro
@@ -245,8 +274,7 @@
                     </p>
                 </div>
 
-                <!-- FESTA -->
-                <div class="bg-parish-dark p-6 rounded-xl shadow-lg border-b-4 border-parish-blue">
+                <!-- FESTA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-xl shadow-lg border-b-4 border-parish-blue">
                     <h3 class="text-2xl font-bold text-parish-gold mb-3">Dia Solene da Festa</h3>
                     <p class="text-xl text-gray-300 font-semibold">
                         08 de Dezembro (Segunda-feira)
@@ -268,10 +296,7 @@
             </div>
         </section>
 
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 3: JUBILEU (OCULTA POR PADRÃO) -->
-        <!-- ========================================================= -->
-        <section id="content-jubileu" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 3: JUBILEU (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-jubileu" class="content-section mb-20 hidden liquid-glass-card relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Ano Jubilar 160 Anos (1866 – 2026)</h2>
             <div class="text-center text-gray-400 py-10">
                 <p class="text-xl font-bold text-parish-blue">O Caminho Jubilar Continua!</p>
@@ -281,10 +306,7 @@
             </div>
         </section>
 
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 3B: ORAÇÃO DO JUBILEU (OCULTA POR PADRÃO) -->
-        <!-- ========================================================= -->
-        <section id="content-oracao" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 3B: ORAÇÃO DO JUBILEU (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-oracao" class="content-section mb-20 hidden liquid-glass-card relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Oração do Jubileu de 160 Anos</h2>
             <div class="text-center max-w-xl mx-auto space-y-4">
                 <p class="text-lg text-gray-300">
@@ -321,10 +343,7 @@
             </div>
         </section>
 
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 3C: HINO DO JUBILEU (OCULTA POR PADRÃO) -->
-        <!-- ========================================================= -->
-        <section id="content-hino" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 3C: HINO DO JUBILEU (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-hino" class="content-section mb-20 hidden liquid-glass-card relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Hino do Jubileu de 160 Anos</h2>
             <div class="text-center max-w-xl mx-auto space-y-6">
                 <p class="text-lg text-gray-300">
@@ -383,10 +402,7 @@
             </div>
         </section>
         
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 4: INFORMAÇÕES (Antiga História) (OCULTA POR PADRÃO) -->
-        <!-- ========================================================= -->
-        <section id="content-informacoes" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 4: INFORMAÇÕES (Antiga História) (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-informacoes" class="content-section mb-20 hidden liquid-glass-card relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Informações e História de Fé</h2>
             
             <div class="md:flex md:space-x-8 items-center">
@@ -405,8 +421,7 @@
                     </p>
                 </div>
                 <div class="md:w-1/2 mt-8 md:mt-0">
-                    <!-- Placeholder para ícone ou imagem histórica -->
-                    <img src="https://placehold.co/600x400/93c5fd/1e40af?text=Virgem+Imaculada" 
+                    <!-- Placeholder para ícone ou imagem histórica --><img src="https://placehold.co/600x400/93c5fd/1e40af?text=Virgem+Imaculada" 
                         alt="Imagem de Nossa Senhora da Conceição ou brasão paroquial" 
                         class="w-full h-auto object-cover rounded-xl shadow-xl border-4 border-parish-gold"
                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/93c5fd/1e40af?text=S%C3%ADmbolo+de+Maria';"
@@ -415,17 +430,12 @@
             </div>
         </section>
 
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 5: CONTATO (OCULTA POR PADRÃO) - REVITALIZADA -->
-        <!-- ========================================================= -->
-        <section id="content-contato" class="content-section mb-16 hidden relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 5: CONTATO (OCULTA POR PADRÃO) - REVITALIZADA --><!-- ========================================================= --><section id="content-contato" class="content-section mb-16 hidden liquid-glass-card relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Contatos, Secretaria e Liderança</h2>
 
             <div class="space-y-8">
-                <!-- Card 1: Liderança Clerical (Padres) - Título removido conforme solicitado -->
-                <div class="bg-parish-card p-6 rounded-xl shadow-2xl">
-                    <!-- Conteúdo do card é a Liderança Clerical -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                <!-- Card 1: Liderança Clerical (Padres) - Título removido conforme solicitado --><div class="liquid-glass-card">
+                    <!-- Conteúdo do card é a Liderança Clerical --><div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                         <div>
                             <p class="text-lg font-medium text-gray-300">Administrador Paroquial:</p>
                             <p class="text-xl font-extrabold text-parish-blue mt-1">Pe. Érick de Oliveira e Silva</p>
@@ -437,19 +447,16 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Informações da Secretaria - Telefones Corrigidos -->
-                <div class="bg-parish-card p-6 rounded-xl shadow-2xl">
+                <!-- Card 2: Informações da Secretaria - Telefones Corrigidos --><div class="liquid-glass-card">
                     <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 pb-2">Secretaria Paroquial</h3>
                     <div class="space-y-3 text-lg text-gray-300">
                         <p class="font-medium">
                             <span class="text-parish-blue pr-2">Endereço:</span> Praça Cônego Monte Raso, nº 304, Virgínia/MG
                         </p>
-                        <!-- NOVO TELEFONE FIXO COM RAMAL -->
-                        <p class="font-medium">
+                        <!-- NOVO TELEFONE FIXO COM RAMAL --><p class="font-medium">
                             <span class="text-parish-blue pr-2">Telefone (Fixo):</span> (35) 3261-1217 ramal 8007
                         </p>
-                        <!-- WHATSAPP ATUALIZADO -->
-                        <p class="font-medium">
+                        <!-- WHATSAPP ATUALIZADO --><p class="font-medium">
                             <span class="text-parish-blue pr-2">WhatsApp:</span> (35) 3373-1397
                         </p>
                         <p class="font-medium">
@@ -458,9 +465,8 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Localização (Mapa) -->
-                <div class="bg-parish-card p-6 rounded-xl shadow-2xl">
-                    <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 pb-2">Onde nos Encontrar (Igreja Matriz)</h3>
+                <!-- Card 3: Localização (Mapa) --><div class="liquid-glass-card p-0 overflow-hidden">
+                    <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 p-6 pb-2">Onde nos Encontrar (Igreja Matriz)</h3>
                     <div class="rounded-xl overflow-hidden shadow-xl mt-4">
                         <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14820.751688647575!2d-45.05068225!3d-22.3804812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c9794d216d7a4b%3A0x8670c53d6199f1a0!2sVirg%C3%ADnia%2C%20MG%2C%2037465-000!5e0!3m2!1spt-BR!2sbr!4v1700684200000!5m2!1spt-BR!2sbr" 
@@ -479,16 +485,14 @@
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8">
+    <!-- Footer --><footer class="bg-gray-900 text-gray-400 py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-2">&copy; 2025 Paróquia Nossa Senhora da Conceição, Virgínia/MG. Todos os direitos reservados.</p>
             <p class="text-sm">Desenvolvido por: Emanuel Uchôas</p>
         </div>
     </footer>
 
-    <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica -->
-    <script>
+    <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica --><script>
         // Variável GLOBAL para rastrear o dia ativo. É crucial para que o menu de abas
         // não resete a visualização para um dia fixo.
         // O dia 23 de Novembro é o primeiro dia visível.
@@ -654,7 +658,6 @@
                     // Missas diurnas da Matriz mantidas
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' },
-                    // MISSA DO SETOR 7 REMOVIDA
                     // Novena final
                     { title: 'Último dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }
                 ]
@@ -785,8 +788,10 @@
                 
                 data.events.forEach((event, index) => {
                     // Determina as cores com base no campo 'color'
+                    // Garante que o texto seja legível (parish-dark para ouro, e text-white/text-gray para azul/vermelho)
                     const timeColorClass = event.color.startsWith('text-') ? event.color : `text-${event.color}`;
-                    const titleColorClass = event.color.startsWith('text-') ? 'text-white' : `text-${event.color}`;
+                    // Garante que o título do evento interno não desapareça (usa text-white/parish-gold para os títulos)
+                    const titleColorClass = event.color === 'parish-gold' ? 'text-parish-gold' : 'text-white';
                     
                     // Cria o elemento do item da agenda
                     const itemDiv = document.createElement('div');
@@ -839,7 +844,7 @@
                 
                 const button = document.createElement('button');
                 button.id = `day-${key}`;
-                button.className = 'day-button day-button-date text-center p-3 sm:p-4 rounded-xl bg-parish-card text-gray-400 font-semibold hover:bg-parish-card/70 transition duration-200';
+                button.className = 'day-button day-button-date text-center p-3 sm:p-4 rounded-xl bg-parish-card text-gray-400 font-semibold hover:bg-white/10 transition duration-200';
                 button.dataset.day = key; 
                 
                 // Usa o dia e a abreviação da semana
