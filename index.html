@@ -10,10 +10,10 @@
             theme: {
                 extend: {
                     colors: {
-                        'parish-dark': '#0e1428', // Fundo principal, azul muito escuro
-                        'parish-card': '#1a2039', // Fundo dos cards, ligeiramente mais claro (base para glass)
-                        'parish-blue': '#3b82f6', // Azul claro para destaque (para eventos externos/secundários)
-                        'parish-gold': '#FBBF24', // Dourado forte para contraste (para eventos principais)
+                        'parish-dark': '#0a1024', // Fundo principal, azul muito escuro
+                        'parish-card': '#182040', // Base escura para elementos internos
+                        'parish-blue': '#4a90e2', // Azul moderno para destaque secundário
+                        'parish-gold': '#FBBF24', // Dourado forte para contraste (eventos principais)
                         'parish-red': '#dc2626', // Vermelho para avisos importantes
                     },
                     fontFamily: {
@@ -27,7 +27,7 @@
         /* Estilos customizados para a fonte Inter e fundo Dark Mode */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0e1428; /* Fundo principal escuro */
+            background-color: #0a1024; /* Fundo principal escuro */
             color: #f1f1f1; /* Texto padrão claro */
         }
         /* Estilo para a aba ativa na navegação principal */
@@ -38,7 +38,7 @@
         /* Estilo para o carrossel de dias */
         .day-active {
             background-color: #FBBF24 !important; /* Dourado */
-            color: #0e1428 !important; /* Dark */
+            color: #0a1024 !important; /* Dark */
             font-weight: 800;
         }
         .day-button {
@@ -52,6 +52,7 @@
             align-items: center;
             padding-top: 8px; /* Ajuste de padding */
             padding-bottom: 8px;
+            border-radius: 1.5rem; /* Mais arredondado */
         }
         /* Estilo específico para o texto do dia da semana (secundário) */
         .day-short-name {
@@ -82,24 +83,24 @@
             top: 100%;
             left: 0;
             right: 0;
-            background-color: rgba(26, 32, 57, 0.9); /* Glass */
-            backdrop-filter: blur(10px); /* Glass */
-            -webkit-backdrop-filter: blur(10px); /* Glass para Safari */
+            background-color: rgba(10, 16, 36, 0.95); /* Fundo quase sólido para menu aberto */
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 1rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            border-radius: 0 0 0.75rem 0.75rem; /* Arredonda só em baixo */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-radius: 0 0 1rem 1rem; /* Arredonda só em baixo */
         }
         .nav-link.tab-button {
             padding-bottom: 0.75rem; 
             padding-left: 0.5rem;
             padding-right: 0.5rem;
         }
-        /* Estilo para a barra do cabeçalho fixo */
+        /* Estilo para a barra do cabeçalho fixo (Liquid Glass) */
         .header-bar {
-            background-color: rgba(26, 32, 57, 0.9); /* Glass */
-            backdrop-filter: blur(10px); /* Glass */
-            -webkit-backdrop-filter: blur(10px); /* Glass para Safari */
+            background-color: rgba(10, 16, 36, 0.9); /* Base mais escura para melhor contraste */
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px); 
         }
         /* Novo estilo para garantir o alinhamento no mobile */
         .header-top-bar {
@@ -122,19 +123,19 @@
             text-align: right;
         }
 
-        /* Estilo para os CARDS de conteúdo: Aplicando Liquid Glass */
+        /* Estilo para os CARDS de conteúdo: Liquid Glass Moderno */
         .liquid-glass-card {
-            background-color: rgba(26, 32, 57, 0.7); /* Fundo semi-transparente */
-            backdrop-filter: blur(10px); /* Efeito de desfoque */
-            -webkit-backdrop-filter: blur(10px); /* Para Safari */
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Borda sutil */
-            border-radius: 1rem; /* Bordas arredondadas */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Sombra para profundidade */
-            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.08); /* Fundo mais claro e transparente para efeito frosted */
+            backdrop-filter: blur(12px); /* Efeito de desfoque mais intenso */
+            -webkit-backdrop-filter: blur(12px); /* Para Safari */
+            border: 1px solid rgba(255, 255, 255, 0.15); /* Borda mais visível e suave */
+            border-radius: 1.5rem; /* Mais arredondado */
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); /* Sombra mais suave */
+            padding: 2rem; /* Aumenta o padding interno para respiro */
         }
         /* Ajuste para o carrossel de dias (também com glass) */
         #day-carousel-wrapper {
-            background-color: rgba(26, 32, 57, 0.8); /* Um pouco menos transparente */
+            background-color: rgba(10, 16, 36, 0.9); /* Segue o header */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -142,33 +143,38 @@
         }
         /* Ajuste para botões de dia do carrossel no modo glass */
         .day-button {
-            background-color: rgba(255, 255, 255, 0.05); /* Um pouco de brilho no fundo dos botões inativos */
+            background-color: rgba(255, 255, 255, 0.03); 
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: none;
         }
         .day-button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.08);
         }
         .day-active { /* O botão ativo deve se destacar */
             background-color: #FBBF24 !important; 
-            color: #0e1428 !important;
+            color: #0a1024 !important;
             border-color: #FBBF24 !important;
             box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
         }
         /* Alerta dinâmico no estilo glass */
         #dynamic-alert {
-            background-color: rgba(220, 38, 38, 0.2); /* Fundo vermelho semi-transparente */
+            background-color: rgba(220, 38, 38, 0.15); /* Fundo vermelho mais suave */
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(220, 38, 38, 0.5); /* Borda vermelha mais definida */
-            border-radius: 0.75rem;
+            border: 1px solid rgba(220, 38, 38, 0.5); /* Borda vermelha */
+            border-radius: 1rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            color: #f1f1f1; /* Texto claro */
+            padding: 1.5rem; /* Aumenta padding */
         }
         /* Garante que o conteúdo da lista interna da agenda tenha z-index e cor correta */
         #daily-agenda-list > div {
-            z-index: 20; /* Garante que os itens fiquem acima do fundo glass */
-            color: #f1f1f1; /* Garante a cor padrão do texto */
+            z-index: 20; 
+            color: #f1f1f1; 
+        }
+        /* Aumenta o espaçamento interno dos itens da agenda */
+        .agenda-item-padding {
+            padding-top: 1.25rem; /* py-5 */
+            padding-bottom: 1.25rem; /* py-5 */
         }
 
     </style>
@@ -234,7 +240,7 @@
         <!-- ========================================================= --><!-- SEÇÃO 1: AGENDA (VISÍVEL POR PADRÃO) --><!-- ========================================================= --><section id="content-agenda" class="content-section mb-20 relative z-10">
             <h2 class="text-4xl font-bold text-center text-parish-gold mb-10">Agenda Mensal</h2>
 
-            <!-- Alerta Dinâmico (Aviso de Missas fora da Matriz - Aparece 1 dia antes) --><!-- Aplicando estilo glass --><div id="dynamic-alert" class="hidden p-4 rounded-lg mb-8 shadow-xl">
+            <!-- Alerta Dinâmico (Aviso de Missas fora da Matriz - Aparece 1 dia antes) --><div id="dynamic-alert" class="hidden p-4 rounded-lg mb-8 shadow-xl">
                 <p class="font-bold text-parish-red flex items-center">
                     AVISO:
                 </p>
@@ -244,7 +250,7 @@
             <!-- Título do Dia Selecionado + Dia Litúrgico --><h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-2"></h3>
             <p id="liturgical-day" class="text-xl font-semibold text-center text-parish-blue mb-8"></p>
 
-            <!-- Lista de Eventos do Dia (Container Dinâmico) --><div id="daily-agenda-list" class="liquid-glass-card space-y-4">
+            <!-- Lista de Eventos do Dia (Container Dinâmico) --><div id="daily-agenda-list" class="liquid-glass-card space-y-0">
                 <!-- Conteúdo da agenda será injetado aqui pelo JavaScript --></div>
             
         </section>
@@ -258,7 +264,7 @@
                     Nossa Senhora da Conceição
                 </p>
 
-                <!-- NOVENA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-xl shadow-lg border-b-4 border-parish-gold">
+                <!-- NOVENA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-2xl shadow-lg border-b-4 border-parish-gold">
                     <h3 class="text-2xl font-bold text-parish-gold mb-3">Solene Novena da Padroeira</h3>
                     <p class="text-lg text-gray-300 font-semibold">
                         28 de Novembro a 7 de Dezembro
@@ -274,7 +280,7 @@
                     </p>
                 </div>
 
-                <!-- FESTA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-xl shadow-lg border-b-4 border-parish-blue">
+                <!-- FESTA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-2xl shadow-lg border-b-4 border-parish-blue">
                     <h3 class="text-2xl font-bold text-parish-gold mb-3">Dia Solene da Festa</h3>
                     <p class="text-xl text-gray-300 font-semibold">
                         08 de Dezembro (Segunda-feira)
@@ -292,7 +298,7 @@
                     </p>
                 </div>
 
-                <img src="https://placehold.co/400x150/1a2039/fbbd24?text=Festa+da+Padroeira" alt="Placeholder para Festa da Padroeira" class="mx-auto mt-6 rounded-lg shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/fbbd24?text=Festa+da+Padroeira';" />
+                <img src="https://placehold.co/400x150/1a2039/fbbd24?text=Festa+da+Padroeira" alt="Placeholder para Festa da Padroeira" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/fbbd24?text=Festa+da+Padroeira';" />
             </div>
         </section>
 
@@ -302,7 +308,7 @@
                 <p class="text-xl font-bold text-parish-blue">O Caminho Jubilar Continua!</p>
                 <p class="mt-4">Prepare-se para as celebrações especiais dos 160 anos de fé da nossa Paróquia.</p>
                 <p class="mt-2 text-sm">Abertura oficial: 15 de Novembro (verifique na agenda).</p>
-                <img src="https://placehold.co/400x150/1a2039/fbbd24?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-6 rounded-lg shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/fbbd24?text=Jubileu+160+Anos';" />
+                <img src="https://placehold.co/400x150/1a2039/fbbd24?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/fbbd24?text=Jubileu+160+Anos';" />
             </div>
         </section>
 
@@ -423,7 +429,7 @@
                 <div class="md:w-1/2 mt-8 md:mt-0">
                     <!-- Placeholder para ícone ou imagem histórica --><img src="https://placehold.co/600x400/93c5fd/1e40af?text=Virgem+Imaculada" 
                         alt="Imagem de Nossa Senhora da Conceição ou brasão paroquial" 
-                        class="w-full h-auto object-cover rounded-xl shadow-xl border-4 border-parish-gold"
+                        class="w-full h-auto object-cover rounded-2xl shadow-xl border-4 border-parish-gold"
                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/93c5fd/1e40af?text=S%C3%ADmbolo+de+Maria';"
                     />
                 </div>
@@ -788,14 +794,14 @@
                 
                 data.events.forEach((event, index) => {
                     // Determina as cores com base no campo 'color'
-                    // Garante que o texto seja legível (parish-dark para ouro, e text-white/text-gray para azul/vermelho)
                     const timeColorClass = event.color.startsWith('text-') ? event.color : `text-${event.color}`;
                     // Garante que o título do evento interno não desapareça (usa text-white/parish-gold para os títulos)
                     const titleColorClass = event.color === 'parish-gold' ? 'text-parish-gold' : 'text-white';
                     
                     // Cria o elemento do item da agenda
                     const itemDiv = document.createElement('div');
-                    itemDiv.className = `flex justify-between items-start py-4 ${index < data.events.length - 1 ? 'border-b border-gray-700' : ''}`;
+                    // Usando a classe agenda-item-padding para mais espaço
+                    itemDiv.className = `flex justify-between items-start agenda-item-padding ${index < data.events.length - 1 ? 'border-b border-gray-700' : ''}`;
                     
                     // Renderização aprimorada: só inclui a tag de subtítulo se houver subtítulo
                     itemDiv.innerHTML = `
