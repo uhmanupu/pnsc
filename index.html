@@ -10,12 +10,12 @@
             theme: {
                 extend: {
                     colors: {
-                        'parish-dark': '#0A1121', // Fundo principal (Subtle refinement)
+                        'parish-dark': '#0A1121', // Fundo principal (Fundo da paleta)
                         'parish-card': '#182040', // Base escura para elementos internos
-                        'parish-blue': '#70A7FF', // Azul moderno (mais claro e suave)
-                        'parish-gold': '#FFC759', // Dourado principal (mais quente e suave)
-                        'parish-red': '#E85555', // Vermelho para avisos importantes (melhor contraste)
-                        'parish-soft-gray': '#BCC8D6', // Novo cinza para subtítulos/texto secundário
+                        'parish-gold': '#FFC759', // Dourado principal (2ª Cor da paleta)
+                        'parish-red': '#E85555', // Vermelho para avisos importantes (4ª Cor da paleta)
+                        'parish-soft-gray': '#BCC8D6', // Cinza Suave (3ª Cor da paleta)
+                        // A cor 'parish-blue' foi substituída para garantir a coerência total da paleta fornecida.
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -200,11 +200,11 @@
                 
                 <!-- 1. Name Block (LEFT) --><div id="parish-name-block" class="flex flex-col z-20">
                     <a href="#" class="text-xl font-extrabold text-parish-gold tracking-wider leading-none">PARÓQUIA</a>
-                    <p class="text-xs text-white/80 leading-none">Nossa Senhora da Conceição - Virgínia-MG</p>
+                    <p class="text-xs text-parish-soft-gray leading-none">Nossa Senhora da Conceição - Virgínia-MG</p>
                 </div>
                 
                 <!-- 2. Hamburger Icon (CENTER - only for mobile) --><div id="menu-toggle-wrapper" class="sm:hidden z-20">
-                    <button id="menu-toggle" class="text-white hover:text-parish-gold focus:outline-none">
+                    <button id="menu-toggle" class="text-parish-soft-gray hover:text-parish-gold focus:outline-none">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -212,7 +212,7 @@
                 </div>
                 
                 <!-- 3. Jubilee Info (RIGHT) - COR RIGIDA PARA DOURADO --><div id="jubilee-info-block" class="z-20">
-                    <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
+                    <p class="text-xs text-parish-soft-gray leading-none">Ano Jubilar</p>
                     <p class="text-base font-bold text-parish-gold leading-none">1866 – 2026</p>
                 </div>
             </div>
@@ -287,9 +287,7 @@
             </div>
 
             <!-- Título do Dia Selecionado + Dia Litúrgico --><h3 id="current-day-title" class="text-3xl font-extrabold text-center text-parish-soft-gray mb-2"></h3>
-            <p id="liturgical-day" class="text-xl font-semibold text-center text-parish-blue mb-8"></p>
-
-            <!-- Lista de Eventos do Dia (Container Dinâmico) --><div id="daily-agenda-list" class="liquid-glass-card space-y-0">
+            <p id="liturgical-day" class="text-xl font-semibold text-center text-parish-soft-gray mb-8"></p> <!-- CORREÇÃO: Litúrgico agora usa Cinza Suave --><div id="daily-agenda-list" class="liquid-glass-card space-y-0">
                 <!-- Conteúdo da agenda será injetado aqui pelo JavaScript --></div>
             
         </section>
@@ -299,7 +297,7 @@
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Festa da Padroeira 2025</h2>
             
             <div class="text-center max-w-2xl mx-auto space-y-6">
-                <p class="text-xl font-extrabold text-parish-blue mb-4">
+                <p class="text-xl font-extrabold text-parish-soft-gray mb-4"> <!-- CORREÇÃO: Texto secundário usa Cinza Suave -->
                     Nossa Senhora da Conceição
                 </p>
 
@@ -314,13 +312,12 @@
                     <p class="text-2xl font-extrabold text-parish-soft-gray mt-4">
                         TODOS OS DIAS: Santa Missa e Novena às 19:00h
                     </p>
-                    <p class="text-sm text-parish-blue italic mt-1">
+                    <p class="text-sm text-parish-soft-gray italic mt-1"> <!-- CORREÇÃO: Azul de destaque substituído por Cinza Suave -->
                         (Na Igreja Matriz)
                     </p>
                 </div>
 
-                <!-- FESTA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-2xl shadow-lg border-b-4 border-parish-blue">
-                    <h3 class="text-2xl font-bold text-parish-gold mb-3">Dia Solene da Festa</h3>
+                <!-- FESTA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-2xl shadow-lg border-b-4 border-parish-soft-gray"> <!-- Borda Cinza Suave --><h3 class="text-2xl font-bold text-parish-gold mb-3">Dia Solene da Festa</h3>
                     <p class="text-xl text-parish-soft-gray font-semibold">
                         08 de Dezembro (Segunda-feira)
                     </p>
@@ -332,7 +329,7 @@
                             Procissão Solene e Santa Missa: <span class="text-parish-gold">19:00h</span>
                         </p>
                     </div>
-                    <p class="text-sm text-parish-blue italic mt-4">
+                    <p class="text-sm text-parish-soft-gray italic mt-4"> <!-- CORREÇÃO: Azul de destaque substituído por Cinza Suave -->
                         Celebraremos a Fé de 160 anos!
                     </p>
                 </div>
@@ -347,7 +344,7 @@
             <div class="space-y-12">
                 <!-- 3.1: MENSAGEM PRINCIPAL -->
                 <div class="text-center text-parish-soft-gray">
-                    <p class="text-xl font-bold text-parish-blue">O Caminho Jubilar Continua!</p>
+                    <p class="text-xl font-bold text-parish-gold">O Caminho Jubilar Continua!</p> <!-- CORREÇÃO: Destaque principal agora é Dourado -->
                     <p class="mt-4">Prepare-se para as celebrações especiais dos 160 anos de fé da nossa Paróquia.</p>
                     <p class="mt-2 text-sm">Abertura oficial: 15 de Novembro (verifique na agenda).</p>
                     <img src="https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos';" />
@@ -357,7 +354,7 @@
                 <div class="max-w-xl mx-auto border-t border-b border-white/10 pt-8 pb-8 space-y-4">
                     <h3 class="text-3xl font-extrabold text-center text-parish-gold mb-6">Oração do Jubileu</h3>
                     <p class="text-lg text-parish-soft-gray">
-                        <strong class="text-parish-blue block mb-2">ANOS JUBILAR: 1866 – 2026</strong>
+                        <strong class="text-parish-gold block mb-2">ANOS JUBILAR: 1866 – 2026</strong> <!-- CORREÇÃO: Título secundário do Jubileu é Dourado -->
                     </p>
                     <p class="text-lg leading-relaxed">
                         Deus Todo-poderoso, Senhor do Tempo e da História, a Ti elevamos nossa voz neste Ano de Graça.
@@ -386,14 +383,14 @@
                     <p class="text-lg leading-relaxed">
                         Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e contigo vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.
                     </p>
-                    <p class="text-2xl font-extrabold text-parish-blue mt-6">Amém.</p>
+                    <p class="text-2xl font-extrabold text-parish-gold mt-6">Amém.</p> <!-- CORREÇÃO: Amém em Dourado -->
                 </div>
 
                 <!-- 3.3: HINO DO JUBILEU (Conteúdo da antiga aba HINO) -->
                 <div class="max-w-xl mx-auto pt-4 space-y-6">
                     <h3 class="text-3xl font-extrabold text-center text-parish-gold mb-6">Hino do Jubileu</h3>
                     <p class="text-lg text-parish-soft-gray">
-                        <strong class="text-parish-blue block mb-2">Paróquia Nossa Senhora da Conceição - Virgínia-MG</strong>
+                        <strong class="text-parish-gold block mb-2">Paróquia Nossa Senhora da Conceição - Virgínia-MG</strong> <!-- CORREÇÃO: Título secundário do Jubileu é Dourado -->
                         <span class="block text-sm text-parish-soft-gray">ANO JUBILAR: 1866 – 2026</span>
                     </p>
                     
@@ -455,15 +452,15 @@
             <div class="md:flex md:space-x-8 items-center">
                 <div class="md:w-1/2">
                     <p class="mb-4 text-lg leading-relaxed text-parish-soft-gray">
-                        A história da Paróquia Nossa Senhora da Conceição, em Virgínia/MG, remonta à segunda metade do século XIX, sendo oficialmente <strong class="text-parish-blue">criada em 15 de novembro de 1866</strong>.
+                        A história da Paróquia Nossa Senhora da Conceição, em Virgínia/MG, remonta à segunda metade do século XIX, sendo oficialmente <strong class="text-parish-gold">criada em 15 de novembro de 1866</strong>. <!-- CORREÇÃO: Destaque para Cinza Suave ou Dourado -->
                     </p>
                     <p class="mb-4 text-lg leading-relaxed text-parish-soft-gray">
-                        O marco inicial foi a passagem do <strong class="text-parish-blue">Padre Custódio de Oliveira Monte-Raso</strong>, que, sensibilizado pela distância que os moradores tinham que percorrer até a freguesia de Pouso Alto, sugeriu a construção de uma capela.
+                        O marco inicial foi a passagem do <strong class="text-parish-gold">Padre Custódio de Oliveira Monte-Raso</strong>, que, sensibilizado pela distância que os moradores tinham que percorrer até a freguesia de Pouso Alto, sugeriu a construção de uma capela.
                     </p>
                     <p class="mb-4 text-lg leading-relaxed text-parish-soft-gray">
                         Em um ato de profunda devoção, os fazendeiros Diogo José Labat Uchôas e Francisco Ribeiro Pires doaram terras para a edificação do templo. A capela foi dedicada à <strong class="text-parish-gold">Nossa Senhora da Conceição</strong>, e a nova povoação recebeu o nome de **"Virgínea"** (que mais tarde se tornou Virgínia), uma homenagem à Virgem Santíssima e em alusão à mata virgem que cobria o local.
                     </p>
-                    <p class="text-lg font-semibold text-parish-blue mt-4">
+                    <p class="text-lg font-semibold text-parish-gold mt-4">
                         Somos uma comunidade de fé com mais de 150 anos de história, filiada à Diocese de Campanha.
                     </p>
                 </div>
@@ -485,11 +482,11 @@
                     <!-- Conteúdo do card é a Liderança Clerical --><div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                         <div>
                             <p class="text-lg font-medium text-parish-soft-gray">Administrador Paroquial:</p>
-                            <p class="text-xl font-extrabold text-parish-blue mt-1">Pe. Érick de Oliveira e Silva</p>
+                            <p class="text-xl font-extrabold text-parish-gold mt-1">Pe. Érick de Oliveira e Silva</p> <!-- CORREÇÃO: Títulos de liderança usam Dourado -->
                         </div>
                         <div>
                             <p class="text-lg font-medium text-parish-soft-gray">Vigário Paroquial:</p>
-                            <p class="text-xl font-extrabold text-parish-blue mt-1">Pe. Edimilson Luiz Ribeiro, SF</p>
+                            <p class="text-xl font-extrabold text-parish-gold mt-1">Pe. Edimilson Luiz Ribeiro, SF</p> <!-- CORREÇÃO: Títulos de liderança usam Dourado -->
                         </div>
                     </div>
                 </div>
@@ -498,16 +495,16 @@
                     <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 pb-2">Secretaria Paroquial</h3>
                     <div class="space-y-3 text-lg text-parish-soft-gray">
                         <p class="font-medium">
-                            <span class="text-parish-blue pr-2">Endereço:</span> Praça Cônego Monte Raso, nº 304, Virgínia/MG
+                            <span class="text-parish-gold pr-2">Endereço:</span> Praça Cônego Monte Raso, nº 304, Virgínia/MG
                         </p>
                         <!-- NOVO TELEFONE FIXO COM RAMAL --><p class="font-medium">
-                            <span class="text-parish-blue pr-2">Telefone (Fixo):</span> (35) 3261-1217 ramal 8007
+                            <span class="text-parish-gold pr-2">Telefone (Fixo):</span> (35) 3261-1217 ramal 8007
                         </p>
                         <!-- WHATSAPP ATUALIZADO --><p class="font-medium">
-                            <span class="text-parish-blue pr-2">WhatsApp:</span> (35) 3373-1397
+                            <span class="text-parish-gold pr-2">WhatsApp:</span> (35) 3373-1397
                         </p>
-                        <p class="font-medium">
-                            <span class="text-parish-blue pr-2">E-mail:</span> <a href="mailto:paroquiavirginia@yahoo.com.br" class="text-parish-blue hover:underline">paroquiavirginia@yahoo.com.br</a>
+                        <!-- E-MAIL COM QUEBRA DE PALAVRA FORÇADA (CORREÇÃO) --><p class="font-medium break-words">
+                            <span class="text-parish-gold pr-2">E-mail:</span> <a href="mailto:paroquiavirginia@yahoo.com.br" class="text-parish-soft-gray hover:underline">paroquiavirginia@yahoo.com.br</a> <!-- O link usa Cinza Suave -->
                         </p>
                     </div>
                 </div>
@@ -557,10 +554,10 @@
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' }, 
-                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 3 Cinza Suave */
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '10:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Primeira Eucaristia', subtitle: 'Igreja Matriz', time: '15:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Retirinho', time: '18:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Retirinho', time: '18:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 1 Cinza Suave */
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -581,8 +578,8 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
-                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Pereiras', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Rio Acima II', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Pereiras', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 4 Cinza Suave */
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Rio Acima II', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 7 Cinza Suave */
                     { title: 'Reunião Setor 7', subtitle: '', time: '20:00', church: 'External', color: 'parish-red' }, 
                 ]
             },
@@ -592,8 +589,8 @@
                 dateStr: '26/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Mendes', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Água Limpa', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Mendes', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 1 Cinza Suave */
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Água Limpa', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 4 Cinza Suave */
                 ]
             },
             '27-Nov': { 
@@ -607,7 +604,7 @@
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Muquém', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Muquém', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 1 Cinza Suave */
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -618,7 +615,7 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 7 Cinza Suave */
                     { title: 'Primeiro dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
@@ -627,9 +624,9 @@
                 liturgical: '2º Dia da Novena | Nossa Senhora no Sábado (Memória Facultativa)', 
                 dateStr: '29/Nov',
                 events: [
-                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-blue' },
+                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-soft-gray' }, /* CORREÇÃO: Casamento Cinza Suave */
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', church: 'Matriz', color: 'parish-gold' }, 
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '16:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '16:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 7 Cinza Suave */
                     { title: 'Segundo dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
@@ -640,9 +637,9 @@
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' }, 
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Retiro dos Marins', time: '09:30', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '11:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '18:00', church: 'Comunidade', color: 'parish-blue' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Retiro dos Marins', time: '09:30', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 7 Cinza Suave */
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '11:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 1 Cinza Suave */
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '18:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 5 Cinza Suave */
                     { title: 'Terceiro dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
