@@ -21,6 +21,10 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                     },
+                    borderRadius: {
+                        '3xl': '1.5rem', /* 24px */
+                        '4xl': '2rem',   /* 32px */
+                    }
                 }
             }
         }
@@ -72,6 +76,7 @@
             -webkit-backdrop-filter: var(--glass-blur) !important;
             border: 1px solid var(--border-color) !important;
             box-shadow: 0 6px 16px var(--shadow-color) !important;
+            border-radius: 2rem; /* Cantos arredondados (4xl) */
         }
 
         .day-button {
@@ -89,18 +94,28 @@
         }
         .day-active {
             background-color: #FFC759 !important; 
-            color: #0A1121 !important;
+            color: #0A1121 !important; /* CORREÇÃO: Dia Ativo (Número) em Azul Escuro */
             border-color: #FFC759 !important;
         }
+        /* CORREÇÃO DO DESTAQUE FINAL: Dias Ativos em Azul Escuro */
+        .day-active .day-number,
         .day-active .day-short-name {
             color: #0A1121 !important; 
         }
+
+        /* CORREÇÃO DO DESTAQUE: dias da semana em Dourado para contraste (Inativos) */
+        .day-button .day-short-name {
+            color: #FFC759 !important; 
+        }
+        .day-button .day-number {
+             color: var(--color-primary) !important;
+        }
+        
         .text-parish-soft-gray { color: var(--color-primary) !important; }
         .text-parish-gold { color: #FFC759 !important; }
         .text-parish-red { color: #E85555 !important; }
 
         /* Estilos de transição e responsividade */
-        /* ... (mantidos do código anterior) */
         
         .day-button {
             transition: all 0.2s;
@@ -249,6 +264,16 @@
             background-color: var(--hover-bg);
             transform: scale(1.05);
         }
+        
+        /* Ajuste do carrossel para usar cantos super-arredondados */
+        #day-carousel-wrapper {
+            border-radius: 0 0 2rem 2rem; /* Arredonda a parte de baixo do wrapper */
+            overflow: hidden;
+        }
+        .day-button {
+            border-radius: 2rem; /* Aplica super-arredondamento aos botões */
+        }
+
 
     </style>
 </head>
@@ -345,8 +370,14 @@
             </div>
 
             <!-- Título do Dia Selecionado + Dia Litúrgico --><h3 id="current-day-title" class="text-3xl font-extrabold text-center text-parish-soft-gray mb-2"></h3>
-            <p id="liturgical-day" class="text-lg font-semibold text-center text-parish-soft-gray mb-8"></p> <!-- CORREÇÃO: Toque Fino, Litúrgico com texto menor --><div id="daily-agenda-list" class="liquid-glass-card space-y-0">
-                <!-- Conteúdo da agenda será injetado aqui pelo JavaScript --></div>
+            <p id="liturgical-day" class="text-lg font-semibold text-center text-parish-soft-gray mb-8"></p> <!-- CORREÇÃO: Toque Fino, Litúrgico com texto menor -->
+            
+            <!-- CORREÇÃO DE ALINHAMENTO: Adicionado mx-auto e max-w-3xl para centralização no desktop -->
+            <div class="max-w-3xl mx-auto"> 
+                <div id="daily-agenda-list" class="liquid-glass-card space-y-0 rounded-4xl"> <!-- CORREÇÃO: Aplicado rounded-4xl -->
+                    <!-- Conteúdo da agenda será injetado aqui pelo JavaScript -->
+                </div>
+            </div>
             
         </section>
 
@@ -359,7 +390,7 @@
                     Nossa Senhora da Conceição
                 </p>
 
-                <!-- NOVENA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-2xl shadow-lg border-b-4 border-parish-gold">
+                <!-- NOVENA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-4xl shadow-lg border-b-4 border-parish-gold"> <!-- CORREÇÃO: Aplicado rounded-4xl -->
                     <h3 class="text-2xl font-bold text-parish-gold mb-3">Solene Novena da Padroeira</h3>
                     <p class="text-lg text-parish-soft-gray font-semibold">
                         28 de Novembro a 7 de Dezembro
@@ -375,7 +406,7 @@
                     </p>
                 </div>
 
-                <!-- FESTA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-2xl shadow-lg border-b-4 border-parish-soft-gray"> <!-- Borda Cinza Suave --><h3 class="text-2xl font-bold text-parish-gold mb-3">Dia Solene da Festa</h3>
+                <!-- FESTA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-4xl shadow-lg border-b-4 border-parish-soft-gray"> <!-- Borda Cinza Suave, CORREÇÃO: Aplicado rounded-4xl --><h3 class="text-2xl font-bold text-parish-gold mb-3">Dia Solene da Festa</h3>
                     <p class="text-xl text-parish-soft-gray font-semibold">
                         08 de Dezembro (Segunda-feira)
                     </p>
@@ -392,7 +423,7 @@
                     </p>
                 </div>
 
-                <img src="https://placehold.co/400x150/1a2039/FFC759?text=Festa+da+Padroeira" alt="Placeholder para Festa da Padroeira" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/FFC759?text=Festa+da+Padroeira';" />
+                <img src="https://placehold.co/400x150/1a2039/FFC759?text=Festa+da+Padroeira" alt="Placeholder para Festa da Padroeira" class="mx-auto mt-6 rounded-4xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/FFC759?text=Festa+da+Padroeira';" />
             </div>
         </section>
 
@@ -405,7 +436,7 @@
                     <p class="text-xl font-bold text-parish-gold">O Caminho Jubilar Continua!</p> <!-- CORREÇÃO: Destaque principal agora é Dourado -->
                     <p class="mt-4">Prepare-se para as celebrações especiais dos 160 anos de fé da nossa Paróquia.</p>
                     <p class="mt-2 text-sm">Abertura oficial: 15 de Novembro (verifique na agenda).</p>
-                    <img src="https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos';" />
+                    <img src="https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-6 rounded-4xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos';" />
                 </div>
 
                 <!-- 3.2: ORAÇÃO DO JUBILEU (Conteúdo da antiga aba ORAÇÃO) -->
@@ -525,7 +556,7 @@
                 <div class="md:w-1/2 mt-8 md:mt-0">
                     <!-- Placeholder para ícone ou imagem histórica --><img src="https://placehold.co/600x400/93c5fd/1e40af?text=Virgem+Imaculada" 
                         alt="Imagem de Nossa Senhora da Conceição ou brasão paroquial" 
-                        class="w-full h-auto object-cover rounded-2xl shadow-xl border-4 border-parish-gold"
+                        class="w-full h-auto object-cover rounded-4xl shadow-xl border-4 border-parish-gold" <!-- CORREÇÃO: Aplicado rounded-4xl -->
                         onerror="this.onerror=null; this.src='https://placehold.co/600x400/93c5fd/1e40af?text=S%C3%ADmbolo+de+Maria';"
                     />
                 </div>
@@ -536,7 +567,7 @@
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Contatos, Secretaria e Liderança</h2>
 
             <div class="space-y-8">
-                <!-- Card 1: Liderança Clerical (Padres) --><div class="liquid-glass-card">
+                <!-- Card 1: Liderança Clerical (Padres) --><div class="liquid-glass-card rounded-4xl"> <!-- CORREÇÃO: Aplicado rounded-4xl -->
                     <!-- Conteúdo do card é a Liderança Clerical --><div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                         <div>
                             <p class="text-lg font-medium text-parish-soft-gray">Administrador Paroquial:</p>
@@ -549,7 +580,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Informações da Secretaria - Telefones Corrigidos --><div class="liquid-glass-card">
+                <!-- Card 2: Informações da Secretaria - Telefones Corrigidos --><div class="liquid-glass-card rounded-4xl"> <!-- CORREÇÃO: Aplicado rounded-4xl -->
                     <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 pb-2">Secretaria Paroquial</h3>
                     <div class="space-y-3 text-lg text-parish-soft-gray">
                         <p class="font-medium">
@@ -567,9 +598,9 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Localização (Mapa) --><div class="liquid-glass-card p-0 overflow-hidden">
+                <!-- Card 3: Localização (Mapa) --><div class="liquid-glass-card p-0 overflow-hidden rounded-4xl"> <!-- CORREÇÃO: Aplicado rounded-4xl -->
                     <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 p-6 pb-2">Onde nos Encontrar (Igreja Matriz)</h3>
-                    <div class="rounded-xl overflow-hidden shadow-xl mt-4">
+                    <div class="rounded-4xl overflow-hidden shadow-xl mt-4"> <!-- CORREÇÃO: Aplicado rounded-4xl -->
                         <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14820.751688647575!2d-45.05068225!3d-22.3804812!2m3!1f0!2f0!0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c9794d216d7a4b%3A0x8670c53d6199f1a0!2sVirg%C3%ADnia%2C%20MG%2C%2037465-000!5e0!3m2!1spt-BR!2sbr!4v1700684200000!5m2!1spt-BR!2sbr" 
                             width="100%" 
@@ -988,14 +1019,16 @@
                 
                 const button = document.createElement('button');
                 button.id = `day-${key}`;
+                // Removida a cor do texto padrão do botão. Será aplicada via CSS para o dia e a abreviação
                 button.className = 'day-button day-button-date text-center p-3 sm:p-4 rounded-xl bg-parish-card text-parish-soft-gray font-semibold hover:bg-white/10 transition duration-200';
                 button.dataset.day = key; 
                 
                 // Usa o dia e a abreviação da semana
-                // Nota: O texto do dia da semana (span class="day-short-name") herda a cor do botão, que é parish-soft-gray
+                // Cor do Dia: text-parish-soft-gray (para inativos)
+                // Cor da Abreviacao: text-parish-gold (para inativos)
                 button.innerHTML = `
-                    <span class="block text-xl">${info.day}</span>
-                    <span class="day-short-name block transition-colors">${info.short}</span>
+                    <span class="block text-xl day-number text-parish-soft-gray">${info.day}</span>
+                    <span class="day-short-name block transition-colors text-parish-gold">${info.short}</span>
                 `;
                 
                 carouselContainer.appendChild(button);
