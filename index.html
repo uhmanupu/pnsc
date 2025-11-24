@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paróquia Nossa Senhora da Conceição - Virgínia/MG</title>
-    <!-- Carrega o Tailwind CSS CDN para estilização --><script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Configuração e Definição de Variáveis CSS para Temas --><script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -29,85 +29,171 @@
         }
     </script>
     <style>
-    /* Variáveis CSS para gerenciar a transição de tema e Glassmorphism */
-    :root {
-        /* DARK MODE (Padrão) */
-        --bg-primary: #0A1121; /* Azul do fundo principal (Quase Preto) */
-        --bg-card: rgba(255, 255, 255, 0.08); /* Liquid Glass Effect: 8% White */
-        --color-primary: #BCC8D6; /* Cinza Suave (Texto principal) */
-        --color-header: rgba(10, 17, 33, 0.95); /* Header mais opaco */
-        --border-color: rgba(255, 255, 255, 0.25); /* Borda mais visível */
-        --shadow-color: rgba(0, 0, 0, 0.4); 
-        --hover-bg: rgba(255, 255, 255, 0.1); 
-        --glass-blur: blur(16px); 
-        --text-dark-contrast: #0A1121; /* Usado para texto sobre fundo Gold */
-    }
+        /* Variáveis CSS para gerenciar a transição de tema e Glassmorphism */
+        :root {
+            /* DARK MODE (Padrão) */
+            --bg-primary: #0A1121; /* AZUL ESCURO DO FUNDO (Cor Solicitada) */
+            --bg-card: rgba(255, 255, 255, 0.08); /* Liquid Glass Effect: 8% White */
+            --color-primary: #BCC8D6; /* Cinza Suave (Texto principal) */
+            --color-header: rgba(10, 17, 33, 0.95); /* Header mais opaco */
+            --border-color: rgba(255, 255, 255, 0.25); /* Borda mais visível */
+            --shadow-color: rgba(0, 0, 0, 0.4); 
+            --hover-bg: rgba(255, 255, 255, 0.1); 
+            --glass-blur: blur(16px); 
+            --text-dark-contrast: #0A1121; /* Usado para texto sobre fundo Gold */
+        }
 
-    /* LIGHT MODE */
-    body.light-mode {
-        /* ... (sem alterações aqui) ... */
-    }
-    
-    /* Estilos globais aplicados via variáveis */
-    body {
-        /* ... (sem alterações aqui) ... */
-    }
-    
-    /* Utility Classes de cores que respeitam a paleta do modo ativo */
-    .text-parish-soft-gray { color: var(--color-primary) !important; }
-    .text-parish-gold { color: #FFC759 !important; }
-    .text-parish-red { color: #E85555 !important; }
+        /* LIGHT MODE */
+        body.light-mode {
+            --bg-primary: #F0F4F8; 
+            --bg-card: rgba(255, 255, 255, 0.9); 
+            --color-primary: #333C48; /* Cor principal no Light Mode (Preto/Escuro) */
+            --color-header: rgba(240, 244, 248, 0.98);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.15);
+            --hover-bg: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Estilos globais aplicados via variáveis */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary); 
+            color: var(--color-primary); 
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Utility Classes de cores que respeitam a paleta do modo ativo */
+        .text-parish-soft-gray { color: var(--color-primary) !important; }
+        .text-parish-gold { color: #FFC759 !important; }
+        .text-parish-red { color: #E85555 !important; }
 
-    /* ESTILOS GLASSMORPHISM */
-    /* ... (sem alterações aqui) ... */
+        /* ESTILOS GLASSMORPHISM */
+        .header-bar {
+            background-color: var(--color-header) !important;
+            backdrop-filter: var(--glass-blur); 
+            -webkit-backdrop-filter: var(--glass-blur); 
+        }
+        .liquid-glass-card {
+            background-color: var(--bg-card) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: 0 8px 20px var(--shadow-color) !important;
+            border-radius: 2.5rem; /* 5xl - SUPER ARREDONDADO */
+            padding: 2.5rem; 
+        }
 
-    /* ESTILO PARA O CARD DE ALERTA */
-    /* ... (sem alterações aqui) ... */
+        /* ESTILO PARA O CARD DE ALERTA */
+        .alert-glass-card {
+            background-color: var(--bg-card) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+            border: 1px solid #E85555 !important; 
+            box-shadow: 0 0 10px rgba(232, 85, 85, 0.5) !important; 
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+        }
 
-    /* ESTILOS DO CARROSSEL DE DIAS */
-    /* ... (sem alterações aqui) ... */
+        /* ESTILOS DO CARROSSEL DE DIAS */
+        .nav-active {
+            color: #FFC759 !important; 
+            border-color: #FFC759 !important; 
+        }
+        .day-active {
+            background-color: #FFC759 !important; 
+            border-color: #FFC759 !important;
+            box-shadow: 0 4px 15px rgba(255, 199, 89, 0.6);
+        }
 
-    .day-active {
-        background-color: #FFC759 !important; 
-        border-color: #FFC759 !important;
-        box-shadow: 0 4px 15px rgba(255, 199, 89, 0.6);
-    }
-
-    /* Destaque no Light Mode */
-    body.light-mode .day-active {
+        /* Destaque no Light Mode */
+        body.light-mode .day-active {
              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
-    }
-    
-    /* Cores do texto no botão ativo */
-    .day-active .day-number,
-    .day-active .day-short-name {
-        color: var(--text-dark-contrast) !important; /* Texto sempre Dark/Preto sobre o Gold */
-    }
-    
-    /* HIERARQUIA DE CORREÇÃO: Dia inativo no DARK MODE */
-    .day-button .day-number {
-        color: var(--bg-primary) !important; /* AGORA É O AZUL DO FUNDO: #0A1121 */
-        font-weight: 800;
-    }
-    .day-button .day-short-name {
-        color: var(--bg-primary) !important; /* AGORA É O AZUL DO FUNDO: #0A1121 */
-        font-size: 0.8rem; 
-        font-weight: 500;
-    }
-    
-    /* HIERARQUIA DE CORREÇÃO: Dia inativo no LIGHT MODE */
-    /* ... (sem alterações aqui) ... */
+        }
+        
+        /* Cores do texto no botão ativo */
+        .day-active .day-number,
+        .day-active .day-short-name {
+            color: var(--text-dark-contrast) !important; /* Texto sempre Dark/Preto sobre o Gold */
+        }
+        
+        /* HIERARQUIA DE CORREÇÃO: Dia inativo no DARK MODE - RESTAURADA/ORIGINAL */
+        .day-button .day-number {
+            color: #FFC759 !important; /* NÚMERO em Gold (Destaque Primário) */
+            font-weight: 800;
+        }
+        .day-button .day-short-name {
+            color: var(--color-primary) !important; /* Abreviatura em Cinza Suave */
+            font-size: 0.8rem; 
+            font-weight: 500;
+        }
+        
+        /* HIERARQUIA DE CORREÇÃO: Dia inativo no LIGHT MODE - AJUSTADO CONFORME PEDIDO */
+        body.light-mode .day-button .day-number,
+        body.light-mode .day-button .day-short-name {
+            /* Usando a cor escura do fundo DARK MODE (#0A1121) para contraste no Light Mode */
+            color: var(--text-dark-contrast) !important; 
+        }
 
-    /* ... (restante do CSS sem alterações) ... */
-</style>
+
+        .day-button {
+            border-radius: 2rem;
+            min-width: 75px;
+            height: 75px;
+            background-color: var(--hover-bg); 
+            border: 1px solid var(--border-color);
+        }
+        
+        /* AGENDA INTERNA: Separação visível e padding correto */
+        .agenda-item-padding {
+            padding-top: 1.5rem; 
+            padding-bottom: 1.5rem;
+        }
+        .daily-agenda-list > div.border-b {
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important; 
+        }
+
+        /* Efeito de Transição Suave (Fade-In) - APLICADO À LISTA DE EVENTOS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Oculta barras de rolagem */
+        #day-carousel, #desktop-nav { overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+        #day-carousel::-webkit-scrollbar, #desktop-nav::-webkit-scrollbar { display: none; }
+        
+        /* BOTÕES FLUTUANTES */
+        #today-button { bottom: 24px; right: 24px; }
+        #theme-toggle { bottom: 24px; left: 24px; }
+        #today-button, #theme-toggle {
+            position: fixed;
+            z-index: 50;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            transition: all 0.3s;
+            /* Estilo específico para o botão "HOJE" */
+            background-color: #FFC759;
+            color: #0A1121;
+            padding: 8px 16px;
+            border-radius: 9999px; /* Pill shape */
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Ajuste do botão HOJE no Light Mode */
+        body.light-mode #today-button {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
+        }
+    </style>
 </head>
 <body class="text-parish-soft-gray">
     
-    <!-- HEADER -->
     <header class="header-bar shadow-2xl sticky top-0 z-[9999]"> 
         <div class="mx-auto px-6 py-4 relative max-w-6xl"> 
             
-            <!-- Top Bar: Nome da Paróquia e Jubileu -->
             <div class="header-top-bar pb-5 grid grid-cols-2 sm:grid-cols-3 items-center">
                 
                 <div id="parish-name-block" class="flex flex-col z-20">
@@ -115,7 +201,6 @@
                     <p class="text-xs text-parish-soft-gray leading-tight">Nossa Senhora da Conceição - Virgínia-MG</p>
                 </div>
                 
-                <!-- Hamburger Icon (Mobile) -->
                 <div id="menu-toggle-wrapper" class="sm:hidden justify-self-end z-20">
                     <button id="menu-toggle" class="text-parish-soft-gray hover:text-parish-gold focus:outline-none">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -124,21 +209,19 @@
                     </button>
                 </div>
                 
-                <!-- Jubilee Info (RIGHT) -->
                 <div id="jubilee-info-block" class="hidden sm:block justify-self-end z-20">
                     <p class="text-xs text-parish-soft-gray leading-none">Ano Jubilar</p>
                     <p class="text-lg font-bold text-parish-gold leading-none">1866 – 2026</p>
                 </div>
             </div>
 
-            <!-- Mobile Menu Content (Glass Card) -->
             <nav id="mobile-menu" class="hidden sm:hidden z-[9990] liquid-glass-card p-4 space-y-3">
                 <div class="flex flex-col text-base font-semibold">
                     <a href="#" class="nav-link tab-button py-2 px-4 rounded-lg text-parish-soft-gray hover:bg-white/10" data-target="content-agenda">
                         <svg class="w-5 h-5 inline mr-3 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> AGENDA
                     </a>
                     <a href="#" class="nav-link tab-button py-2 px-4 rounded-lg text-parish-soft-gray hover:bg-white/10" data-target="content-noticias">
-                         <svg class="w-5 h-5 inline mr-3 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg> NOTÍCIAS
+                           <svg class="w-5 h-5 inline mr-3 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg> NOTÍCIAS
                     </a>
                     <a href="#" class="nav-link tab-button py-2 px-4 rounded-lg text-parish-soft-gray hover:bg-white/10" data-target="content-jubileu">
                         <svg class="w-5 h-5 inline mr-3 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.447a1 1 0 011.902 0l1.545 4.04a1 1 0 00.957.697l4.314.385a1 1 0 01.558 1.706l-3.29 2.946a1 1 0 00-.285.928l.995 4.106a1 1 0 01-1.503 1.051l-3.793-2.31a1 1 0 00-1.042 0l-3.793 2.31a1 1 0 01-1.503-1.051l.995-4.106a1 1 0 00-.285-.928l-3.29-2.946a1 1 0 01.558-1.706l4.314-.385a1 1 0 00.957-.697l1.545-4.04z"></path></svg> JUBILEU
@@ -152,14 +235,12 @@
                 </div>
             </nav>
 
-            <!-- Desktop Tab Navigation -->
             <nav class="overflow-x-auto whitespace-nowrap hidden sm:block border-b border-white/10" id="desktop-nav">
-                <div class="inline-flex space-x-8 text-lg font-semibold h-12 items-center"> <!-- Aumentado space-x e altura -->
-                    <a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">
+                <div class="inline-flex space-x-8 text-lg font-semibold h-12 items-center"> <a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">
                         <svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> AGENDA
                     </a>
                     <a href="#" class="nav-link tab-button text-parish-soft-gray hover:text-parish-gold transition duration-300 flex items-center" data-target="content-noticias">
-                         <svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg> NOTÍCIAS
+                           <svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg> NOTÍCIAS
                     </a>
                     <a href="#" class="nav-link tab-button text-parish-soft-gray hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">
                         <svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.447a1 1 0 011.902 0l1.545 4.04a1 1 0 00.957.697l4.314.385a1 1 0 01.558 1.706l-3.29 2.946a1 1 0 00-.285.928l.995 4.106a1 1 0 01-1.503 1.051l-3.793-2.31a1 1 0 00-1.042 0l-3.793 2.31a1 1 0 01-1.503-1.051l.995-4.106a1 1 0 00-.285-.928l-3.29-2.946a1 1 0 01.558-1.706l4.314-.385a1 1 0 00.957-.697l1.545-4.04z"></path></svg> JUBILEU
@@ -174,24 +255,17 @@
             </nav>
         </div>
         
-        <!-- DAY CARROSSEL CONTAINER (FIXO) -->
         <div id="day-carousel-wrapper" class="hidden border-t border-gray-800 pt-5 pb-5"> 
             <div id="day-carousel" class="flex flex-row justify-start space-x-3 sm:space-x-4 mx-auto px-6 whitespace-nowrap max-w-6xl">
-                <!-- Botões de dias preenchidos via JavaScript -->
-            </div>
+                </div>
         </div>
     </header>
 
-    <!-- CONTAINER PRINCIPAL DE CONTEÚDO (Main) -->
     <main class="mx-auto px-6 py-16 max-w-6xl">
         
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 1: AGENDA (VISÍVEL POR PADRÃO) -->
-        <!-- ========================================================= -->
         <section id="content-agenda" class="content-section mb-24 relative z-10 max-w-3xl mx-auto"> 
             <h2 class="text-5xl font-extrabold text-center text-parish-gold mb-16">Agenda Mensal</h2>
 
-            <!-- Alerta Dinâmico (AGORA COM GLASS HARMONIZADO) -->
             <div id="dynamic-alert" class="hidden alert-glass-card mb-12"> 
                 <p class="font-bold text-parish-red flex items-center mb-2">
                     <svg class="w-6 h-6 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.78-1.4 2.78-3.111V6.111C21.78 4.4 20.54 3 19 3H5C3.46 3 2.22 4.4 2.22 6.111v11.778C2.22 19.6 3.46 21 5 21z"></path></svg>
@@ -200,20 +274,15 @@
                 <p id="alert-message" class="text-sm mt-2 text-parish-soft-gray"></p> 
             </div>
 
-            <!-- Data e Dia Litúrgico -->
             <h3 id="current-day-title" class="text-4xl font-extrabold text-center text-parish-soft-gray mb-3"></h3>
             <p id="liturgical-day" class="text-lg font-semibold text-center text-parish-soft-gray mb-12"></p> 
             
             <div id="daily-agenda-list" class="liquid-glass-card space-y-0 daily-agenda-list">
-                <!-- Conteúdo da agenda será injetado aqui pelo JavaScript -->
-            </div>
+                </div>
             
         </section>
 
 
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 2: NOTÍCIAS (FESTA DA PADROEIRA) -->
-        <!-- ========================================================= -->
         <section id="content-noticias" class="content-section mb-24 hidden liquid-glass-card relative z-10 max-w-4xl mx-auto p-10 sm:p-14">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-14">Festa da Padroeira 2025</h2>
             
@@ -222,7 +291,6 @@
                     Nossa Senhora da Conceição
                 </p>
 
-                <!-- Card Novena -->
                 <div class="bg-parish-dark-base p-8 rounded-4xl shadow-lg border-b-4 border-parish-gold"> 
                     <h3 class="text-3xl font-bold text-parish-gold mb-5">Solene Novena da Padroeira</h3>
                     <p class="text-xl text-parish-soft-gray font-semibold">
@@ -239,7 +307,6 @@
                     </p>
                 </div>
 
-                <!-- Card Festa Solene -->
                 <div class="bg-parish-dark-base p-8 rounded-4xl shadow-lg border-b-4 border-parish-soft-gray">
                     <h3 class="text-3xl font-bold text-parish-gold mb-5">Dia Solene da Festa</h3>
                     <p class="text-xl text-parish-soft-gray font-semibold">
@@ -262,21 +329,16 @@
             </div>
         </section>
 
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 3: JUBILEU (INCLUI ORAÇÃO E HINO) -->
-        <!-- ========================================================= -->
         <section id="content-jubileu" class="content-section mb-24 hidden liquid-glass-card relative z-10 max-w-4xl mx-auto p-10 sm:p-14">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-14">Ano Jubilar 160 Anos (1866 – 2026)</h2>
 
             <div class="space-y-16"> 
-                <!-- 3.1: MENSAGEM PRINCIPAL -->
                 <div class="text-center text-parish-soft-gray">
                     <p class="text-2xl font-bold text-parish-gold">O Caminho Jubilar Continua!</p> 
                     <p class="mt-6 text-lg">Prepare-se para as celebrações especiais dos 160 anos de fé da nossa Paróquia.</p> 
                     <img src="https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-10 rounded-4xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos';" /> 
                 </div>
 
-                <!-- 3.2: ORAÇÃO DO JUBILEU -->
                 <div class="max-w-xl mx-auto border-t border-b border-white/10 pt-12 pb-12 space-y-6"> 
                     <h3 class="text-3xl font-extrabold text-center text-parish-gold mb-8">Oração do Jubileu</h3> 
                     <p class="text-lg text-parish-soft-gray">
@@ -312,7 +374,6 @@
                     <p class="text-2xl font-extrabold text-parish-gold mt-8">Amém.</p> 
                 </div>
 
-                <!-- 3.3: HINO DO JUBILEU -->
                 <div class="max-w-xl mx-auto pt-8 space-y-8"> 
                     <h3 class="text-3xl font-extrabold text-center text-parish-gold mb-8">Hino do Jubileu</h3> 
                     <p class="text-lg text-parish-soft-gray">
@@ -372,14 +433,10 @@
             </div>
         </section>
         
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 4: INFORMAÇÕES (HISTÓRIA) -->
-        <!-- ========================================================= -->
         <section id="content-informacoes" class="content-section mb-24 hidden liquid-glass-card relative z-10 max-w-4xl mx-auto p-10 sm:p-14">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-14">Informações e História de Fé</h2>
             
-            <div class="md:flex md:space-x-12 items-start"> <!-- Aumentado space-x -->
-                <div class="md:w-1/2 space-y-6"> 
+            <div class="md:flex md:space-x-12 items-start"> <div class="md:w-1/2 space-y-6"> 
                     <p class="text-lg leading-relaxed text-parish-soft-gray">
                         A história da Paróquia Nossa Senhora da Conceição, em Virgínia/MG, remonta à segunda metade do século XIX, sendo oficialmente <strong class="text-parish-gold">criada em 15 de novembro de 1866</strong>.
                     </p>
@@ -403,15 +460,11 @@
             </div>
         </section>
 
-        <!-- ========================================================= -->
-        <!-- SEÇÃO 5: CONTATO -->
-        <!-- ========================================================= -->
         <section id="content-contato" class="content-section mb-24 hidden liquid-glass-card relative z-10 max-w-4xl mx-auto p-10 sm:p-14">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-14">Contatos, Secretaria e Liderança</h2>
 
             <div class="space-y-12"> 
                 
-                <!-- Card 1: Liderança Clerical (Padres) -->
                 <div class="liquid-glass-card rounded-4xl p-8"> 
                     <h3 class="text-2xl font-bold mb-6 text-parish-gold border-b border-white/10 pb-2">Liderança Clerical</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-2"> 
@@ -426,7 +479,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2: Informações da Secretaria -->
                 <div class="liquid-glass-card rounded-4xl p-8"> 
                     <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-white/10 pb-2">Secretaria Paroquial</h3>
                     <div class="space-y-4 text-lg text-parish-soft-gray"> 
@@ -445,7 +497,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Localização (Mapa) -->
                 <div class="liquid-glass-card p-0 overflow-hidden rounded-4xl"> 
                     <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-white/10 p-6 pb-2">Onde nos Encontrar (Igreja Matriz)</h3>
                     <div class="rounded-4xl overflow-hidden shadow-xl mt-4"> 
@@ -466,26 +517,23 @@
 
     </main>
     
-    <!-- Botões Flutuantes -->
     <button id="today-button" onclick="loadDailyAgenda('24-Nov')" class="text-sm">
-        HOJE <span class="text-base font-extrabold">24/NOV</span>
+        HOJE <span class="text-base font-extrabold ml-1">24/NOV</span>
     </button>
     
-    <button id="theme-toggle">
+    <button id="theme-toggle" class="rounded-full w-12 h-12 flex items-center justify-center p-2 bg-parish-gold text-parish-dark-base">
         <svg id="theme-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
         </svg>
     </button>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-parish-soft-gray py-8">
         <div class="mx-auto px-6 text-center max-w-6xl">
-            <p class="mb-2">&copy; 2025 Paróquia Nossa Senhora da Conceição, Virgínia/MG. Todos os direitos reservados.</p>
+            <p class="mb-2">© 2025 Paróquia Nossa Senhora da Conceição, Virgínia/MG. Todos os direitos reservados.</p>
             <p class="text-sm">Desenvolvido por: Emanuel Uchôas</p>
         </div>
     </footer>
 
-    <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica -->
     <script>
         // Variável GLOBAL para rastrear o dia ativo.
         let activeDay = '23-Nov'; 
@@ -594,8 +642,9 @@
         function getDayInfo(key) {
             const [dayNum, monthStr] = key.split('-');
             const year = 2025; // Ano de referência
-            const month = { 'Nov': 10, 'Dec': 11 }[monthStr]; // Mês base 0 (Nov = 10, Dec = 11)
+            const month = { 'Nov': 10, 'Dec': 11 }[monthStr]; // Mês base 0 (Nov = 10, Dez = 11)
             
+            // Corrige o bug de inicialização da data no JavaScript com base em sua estrutura de dados
             const date = new Date(year, month, parseInt(dayNum));
             const dayIndex = date.getDay();
 
@@ -630,7 +679,7 @@
                 upcomingEvents = tomorrowData.events.filter(event => 
                     event.church === 'External' && 
                     !event.title.includes('Reunião') && 
-                    !event.title.includes('Formação') &&    
+                    !event.title.includes('Formação') &&   
                     !event.subtitle.includes('Abrigo São Camilo') 
                 );
             }
@@ -685,7 +734,8 @@
                 data.events.sort((a, b) => a.time.localeCompare(b.time)); 
                 
                 data.events.forEach((event, index) => {
-                    const timeColorClass = event.color.startsWith('text-') ? event.color : `text-${event.color}`;
+                    // Nota: 'color' não funciona diretamente como classe Tailwind, mas é usada aqui para referência 
+                    // e para selecionar as cores definidas em CSS customizado.
                     const titleColorClass = event.color === 'parish-gold' ? 'text-parish-gold' : 'text-parish-soft-gray';
                     
                     const itemDiv = document.createElement('div');
@@ -696,7 +746,7 @@
                             <p class="text-xl font-bold ${titleColorClass}">${event.title}</p>
                             ${event.subtitle ? `<p class="text-sm text-parish-soft-gray italic">${event.subtitle}</p>` : ''}
                         </div>
-                        <span class="text-3xl font-extrabold ${timeColorClass}">${event.time}</span>
+                        <span class="text-3xl font-extrabold text-${event.color}">${event.time}</span>
                     `;
                     
                     listContainer.appendChild(itemDiv);
@@ -715,6 +765,7 @@
                 const carouselContainer = document.getElementById('day-carousel');
                 if (carouselContainer) { 
                     setTimeout(() => {
+                        // Rola para centralizar o botão ativo
                         const offset = activeDayButton.offsetLeft - (carouselContainer.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
                         carouselContainer.scroll({
                             left: offset,
@@ -800,17 +851,25 @@
 
             // Carrega o tema salvo
             const savedTheme = localStorage.getItem('theme');
+            const themeToggleBtn = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
+
             if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
                 themeIcon.innerHTML = MoonIcon;
+                // Ajuste de cores do botão de toggle no Light Mode
+                themeToggleBtn.classList.remove('bg-parish-gold', 'text-parish-dark-base');
+                themeToggleBtn.classList.add('bg-white', 'text-gray-800', 'border', 'border-gray-200');
             } else {
                 document.body.classList.remove('light-mode');
                 themeIcon.innerHTML = SunIcon;
+                // Ajuste de cores do botão de toggle no Dark Mode
+                themeToggleBtn.classList.add('bg-parish-gold', 'text-parish-dark-base');
+                themeToggleBtn.classList.remove('bg-white', 'text-gray-800', 'border', 'border-gray-200');
             }
             
-            // Define o dia inicial e os listeners
-            const initialDayKey = '23-Nov'; 
+            // Define o dia inicial (Se hoje for 24/Nov, ele será o ativo)
+            const initialDayKey = todayKey; 
             activeDay = initialDayKey;
             
             document.querySelectorAll('.tab-button').forEach(button => {
@@ -829,7 +888,6 @@
             });
 
             // Inicia a aplicação na seção Agenda
-            buildDayCarousel();
             showSection('content-agenda'); 
         });
         
@@ -842,4 +900,3 @@
     </script>
 </body>
 </html>
-
