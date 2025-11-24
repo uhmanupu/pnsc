@@ -48,6 +48,10 @@
             min-width: 70px; /* Aumentado para melhor toque/clique */
             margin-right: 8px; /* Espaçamento entre os botões */
             height: 90px; /* Aumentado a altura para incluir a liturgia */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         /* Estilo específico para o texto da liturgia dentro do botão */
         .liturgical-text {
@@ -74,9 +78,19 @@
         #desktop-nav {
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        /* Ajuste para o padding das abas */
+        /* Estilo para o menu hambúrguer (mobile) */
+        #mobile-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #1a2039; /* Cor do card */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
         .nav-link.tab-button {
-            padding-bottom: 0.75rem; /* Aumentado o padding para dar espaço ao sublinhado */
+            padding-bottom: 0.75rem; 
             padding-left: 0.5rem;
             padding-right: 0.5rem;
         }
@@ -88,58 +102,68 @@
 </head>
 <body class="text-gray-100">
 
-    <!-- Navbar e Abas (Apenas Texto - Máxima Estabilidade) -->
-    <header class="header-bar shadow-xl sticky top-0 z-50">
+    <!-- Navbar e Cabeçalho (Fixo e com Z-INDEX Máximo) -->
+    <header class="header-bar shadow-xl sticky top-0 z-[9999] bg-parish-card"> 
         <div class="container mx-auto px-4 py-4">
-            <!-- Top Bar: Logo/Name + Ano Jubilar -->
+            <!-- Top Bar: Logo/Name + Hamburguer/Jubilee -->
             <div class="flex justify-between items-center pb-4">
-                <div class="flex items-center space-x-2">
-                    <!-- Name Block (Sem Ícone) -->
-                    <div class="pt-1">
-                        <a href="#" class="text-xl font-extrabold text-parish-gold tracking-wider leading-none">PARÓQUIA</a>
-                        <p class="text-xs text-white/80 leading-none">Nossa Senhora da Conceição - Virgínia-MG</p>
-                    </div>
+                
+                <!-- Name Block -->
+                <div class="flex flex-col">
+                    <a href="#" class="text-xl font-extrabold text-parish-gold tracking-wider leading-none">PARÓQUIA</a>
+                    <p class="text-xs text-white/80 leading-none">Nossa Senhora da Conceição - Virgínia-MG</p>
                 </div>
                 
-                <!-- Jubilee Info (Direita) -->
-                <div class="text-right">
-                    <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
-                    <p class="text-base font-bold text-parish-blue leading-none">1866 – 2026</p>
+                <!-- Mobile Menu Button (Hamburger) e Jubilee Info -->
+                <div class="flex items-center space-x-4">
+                    <!-- Jubilee Info (Apenas em telas maiores ou centralizado no topo em mobile) -->
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
+                        <p class="text-base font-bold text-parish-blue leading-none">1866 – 2026</p>
+                    </div>
+
+                    <!-- Hamburger Icon (Somente em Mobile) -->
+                    <button id="menu-toggle" class="sm:hidden text-white hover:text-parish-gold focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
-            <!-- Tab Navigation (Apenas Texto) -->
-            <nav class="overflow-x-auto whitespace-nowrap" id="desktop-nav">
-                <div class="inline-flex space-x-6 text-base font-semibold">
-                    
-                    <!-- Aba: Agenda -->
-                    <a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">
-                        AGENDA
-                    </a>
-                    
-                    <!-- Aba: Notícias (Placeholder) -->
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-noticias">
-                        NOTÍCIAS
-                    </a>
-                    
-                    <!-- Aba: Jubileu 160 (Placeholder) -->
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">
-                        JUBILEU 160
-                    </a>
-                    
-                    <!-- Aba: Informações (História) -->
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-informacoes">
-                        INFORMAÇÕES
-                    </a>
-                    
-                    <!-- Aba: Contatos -->
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-contato">
-                        CONTATOS
-                    </a>
+            <!-- Mobile Menu Content (Aparece ao clicar no Hambúrguer) -->
+            <nav id="mobile-menu" class="hidden sm:hidden z-[9990]">
+                <div class="flex flex-col space-y-2 text-base font-semibold">
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-agenda">AGENDA</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-noticias">NOTÍCIAS</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-jubileu">JUBILEU</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-oracao">ORAÇÃO</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-hino">HINO</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-informacoes">INFORMAÇÕES</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-parish-dark/50 rounded-lg text-white" data-target="content-contato">CONTATOS</a>
                 </div>
             </nav>
-            
-            <nav id="mobile-menu" class="hidden"></nav>
+
+            <!-- Desktop Tab Navigation (Aparece apenas em Desktop/Tablet) -->
+            <nav class="overflow-x-auto whitespace-nowrap hidden sm:block" id="desktop-nav">
+                <div class="inline-flex space-x-6 text-base font-semibold">
+                    <!-- Abas replicadas para o Desktop -->
+                    <a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">AGENDA</a>
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-noticias">NOTÍCIAS</a>
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">JUBILEU</a>
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-oracao">ORAÇÃO</a>
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-hino">HINO</a>
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-informacoes">INFORMAÇÕES</a>
+                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-contato">CONTATOS</a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- DAY CAROUSEL CONTAINER (AGORA FIXO COM O HEADER E CONTROLADO PELO JS) -->
+        <div id="day-carousel-wrapper" class="hidden bg-parish-card border-t border-gray-800 pt-4 pb-2">
+            <div id="day-carousel" class="flex flex-row justify-start space-x-2 sm:space-x-4 mx-auto px-4 whitespace-nowrap max-w-7xl">
+                <!-- Estes botões serão preenchidos via JavaScript -->
+            </div>
         </div>
     </header>
 
@@ -149,7 +173,7 @@
         <!-- ========================================================= -->
         <!-- SEÇÃO 1: AGENDA (VISÍVEL POR PADRÃO) -->
         <!-- ========================================================= -->
-        <section id="content-agenda" class="content-section mb-20">
+        <section id="content-agenda" class="content-section mb-20 relative z-10">
             <h2 class="text-4xl font-bold text-center text-parish-gold mb-10">Agenda Mensal</h2>
 
             <!-- Alerta Dinâmico (Aviso de Missas fora da Matriz - Aparece 1 dia antes) -->
@@ -160,11 +184,7 @@
                 <p id="alert-message" class="text-sm mt-1 text-gray-200"></p>
             </div>
 
-
-            <!-- Carrossel de Dias (Navegação) -->
-            <div id="day-carousel" class="flex flex-row justify-start space-x-2 sm:space-x-4 mb-8 p-4 bg-parish-card rounded-xl shadow-lg whitespace-nowrap">
-                <!-- Estes botões serão preenchidos via JavaScript -->
-            </div>
+            <!-- O CARROSSEL DE DIAS FOI MOVIDO PARA DENTRO DO <HEADER> -->
 
             <!-- Título do Dia Selecionado + Dia Litúrgico -->
             <h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-2"></h3>
@@ -181,7 +201,7 @@
         <!-- ========================================================= -->
         <!-- SEÇÃO 2: NOTÍCIAS (OCULTA POR PADRÃO) -->
         <!-- ========================================================= -->
-        <section id="content-noticias" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
+        <section id="content-noticias" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Últimas Notícias da Paróquia</h2>
             <div class="text-center text-gray-400 py-10">
                 <p class="text-xl">Esta seção está sendo preparada!</p>
@@ -191,10 +211,10 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- SEÇÃO 3: JUBILEU 160 ANOS (OCULTA POR PADRÃO) -->
+        <!-- SEÇÃO 3: JUBILEU (OCULTA POR PADRÃO) -->
         <!-- ========================================================= -->
-        <section id="content-jubileu" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Jubileu 160 Anos (1866 – 2026)</h2>
+        <section id="content-jubileu" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Ano Jubilar 160 Anos (1866 – 2026)</h2>
             <div class="text-center text-gray-400 py-10">
                 <p class="text-xl font-bold text-parish-blue">O Caminho Jubilar Continua!</p>
                 <p class="mt-4">Prepare-se para as celebrações especiais dos 160 anos de fé da nossa Paróquia.</p>
@@ -204,9 +224,111 @@
         </section>
 
         <!-- ========================================================= -->
+        <!-- SEÇÃO 3B: ORAÇÃO DO JUBILEU (OCULTA POR PADRÃO) -->
+        <!-- ========================================================= -->
+        <section id="content-oracao" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Oração do Jubileu de 160 Anos</h2>
+            <div class="text-center max-w-xl mx-auto space-y-4">
+                <p class="text-lg text-gray-300">
+                    <strong class="text-parish-blue block mb-2">ANOS JUBILAR: 1866 – 2026</strong>
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Deus Todo-poderoso, Senhor do Tempo e da História, a Ti elevamos nossa voz neste Ano de Graça.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Somos herdeiros de 160 anos de fé que não se dobrou, e Te bendizemos por cada vida iluminada, por cada Sacramento que fez este Templo pulsar com a força do Teu Reino.
+                </p>
+                <p class="text-lg leading-relaxed font-semibold text-parish-gold">
+                    Senhor Jesus Cristo, Fonte Eterna de Misericórdia, concede-nos viver este Jubileu com coração renovado.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Purifica-nos. Reconcilia-nos. Reergue-nos na luz da Tua Ressurreição, para que sejamos um só povo, firme e ardente na fé.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Que a memória dos que vieram antes de nós seja chama que não se apaga e nos impulsione a levar o Evangelho com coragem, esperança e verdade.
+                </p>
+                <p class="text-lg leading-relaxed font-semibold text-parish-gold">
+                    Nossa Senhora da Conceição, Mãe e Padroeira, estrela que guia os passos desta Paróquia, intercede por nós.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Guarda-nos no Teu manto, inspira-nos com o Teu "Sim" e conduz-nos a uma nova primavera espiritual.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Pai santo, recebe este Jubileu como oferta viva, para Tua glória e para a salvação das almas.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e contigo vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.
+                </p>
+                <p class="text-2xl font-extrabold text-parish-blue mt-6">Amém.</p>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEÇÃO 3C: HINO DO JUBILEU (OCULTA POR PADRÃO) -->
+        <!-- ========================================================= -->
+        <section id="content-hino" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Hino do Jubileu de 160 Anos</h2>
+            <div class="text-center max-w-xl mx-auto space-y-6">
+                <p class="text-lg text-gray-300">
+                    <strong class="text-parish-blue block mb-2">Paróquia Nossa Senhora da Conceição - Virgínia-MG</strong>
+                    <span class="block text-sm text-gray-400">ANO JUBILAR: 1866 – 2026</span>
+                </p>
+                
+                <div class="text-lg leading-relaxed space-y-4 text-white/90">
+                    <p>
+                        Aqui nesta terra, ornada de serra,<br>
+                        Coberta pelo céu azul anil,<br>
+                        Nasceu nossa fé, que o tempo não encerra,<br>
+                        Abençoando este chão do Brasil.<br>
+                        Nesta alvorada bendita e festiva,<br>
+                        A semente de Cristo cresceu,<br>
+                        E é a vossa presença, ó Mãe compassiva,<br>
+                        Nossa Paróquia edificou.
+                    </p>
+                    <p class="font-extrabold text-parish-gold">
+                        Soberana da pátria celeste,<br>
+                        Velai por Virgínia querida;<br>
+                        Nossa Paróquia em festa celebra<br>
+                        O jubileu de cento e sessenta anos de história!
+                    </p>
+                    <p>
+                        Gerações que aqui receberam<br>
+                        o santo batismo e a união,<br>
+                        Em cada jornada da vida souberam<br>
+                        Buscar em Vós consolação.<br>
+                        As preces dos filhos que aqui cresceram<br>
+                        Sustentam a força da missão,<br>
+                        E o amor que em Cristo sempre viveram<br>
+                        Guia firme todo o coração.
+                    </p>
+                    <p class="font-extrabold text-parish-gold">
+                        Soberana da pátria celeste,<br>
+                        Velai por Virgínia querida;<br>
+                        Nossa Paróquia em festa celebra<br>
+                        O jubileu de cento e sessenta anos de história!
+                    </p>
+                    <p>
+                        Que a fé que herdamos acesa<br>
+                        Nos guarde em Vós, fortaleza.<br>
+                        Que a nossa Paróquia seja<br>
+                        Sinal de esperança e fé.<br>
+                        E que o Evangelho, nossa luz,<br>
+                        Nos leve sempre ao Cristo Jesus.
+                    </p>
+                    <p class="font-extrabold text-parish-gold">
+                        Soberana da pátria celeste,<br>
+                        Velai por Virgínia querida;<br>
+                        Nossa Paróquia em festa celebra<br>
+                        O jubileu de cento e sessenta anos de história!
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ========================================================= -->
         <!-- SEÇÃO 4: INFORMAÇÕES (Antiga História) (OCULTA POR PADRÃO) -->
         <!-- ========================================================= -->
-        <section id="content-informacoes" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
+        <section id="content-informacoes" class="content-section mb-20 hidden bg-parish-card p-8 rounded-xl shadow-2xl relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Informações e História de Fé</h2>
             
             <div class="md:flex md:space-x-8 items-center">
@@ -236,56 +358,63 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- SEÇÃO 5: CONTATO (OCULTA POR PADRÃO) -->
+        <!-- SEÇÃO 5: CONTATO (OCULTA POR PADRÃO) - REVITALIZADA -->
         <!-- ========================================================= -->
-        <section id="content-contato" class="content-section mb-16 hidden bg-parish-card p-8 rounded-xl shadow-2xl">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Secretaria Paroquial e Contato</h2>
+        <section id="content-contato" class="content-section mb-16 hidden relative z-10">
+            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Contatos, Secretaria e Liderança</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Informações de Contato -->
-                <div>
-                    <h3 class="text-2xl font-semibold mb-4 text-parish-blue">Fale Conosco</h3>
-                    <div class="space-y-4">
-                        <p class="flex items-center text-lg text-gray-300">
-                            <strong class="font-bold pr-2 text-parish-gold">Endereço:</strong> Praça Cônego Monte Raso, nº 304, Virgínia/MG
-                        </p>
-                        <p class="flex items-center text-lg text-gray-300">
-                            <strong class="font-bold pr-2 text-parish-gold">Telefone:</strong> (35) 3373-1397
-                        </p>
-                        <p class="flex items-center text-lg text-gray-300">
-                            <strong class="font-bold pr-2 text-parish-gold">E-mail:</strong> <a href="mailto:paroquiavirginia@yahoo.com.br" class="text-parish-blue hover:underline">paroquiavirginia@yahoo.com.br</a>
-                        </p>
-                        
-                        <div class="pt-4">
-                            <p class="text-lg text-gray-300">
-                                <strong class="font-bold text-parish-gold">Administrador Paroquial:</strong> Pe. Érick de Oliveira e Silva
-                            </p>
-                            <p class="text-lg text-gray-300">
-                                <strong class="font-bold text-parish-gold">Vigário Paroquial:</strong> Pe. Edimilson Luiz Ribeiro, SF
-                            </p>
+            <div class="space-y-8">
+                <!-- Card 1: Liderança Clerical (Padres) - Título removido conforme solicitado -->
+                <div class="bg-parish-card p-6 rounded-xl shadow-2xl">
+                    <!-- Conteúdo do card é a Liderança Clerical -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                        <div>
+                            <p class="text-lg font-medium text-gray-300">Administrador Paroquial:</p>
+                            <p class="text-xl font-extrabold text-parish-blue mt-1">Pe. Érick de Oliveira e Silva</p>
                         </div>
-                        
-                        <!-- AVISO DE ATUALIZAÇÃO -->
-                        <div class="mt-4 p-2 bg-parish-red/20 text-parish-red rounded-lg text-sm font-semibold">
-                            <p>⚠️ Se os nomes dos Padres estiverem desatualizados para 2025, por favor, edite as linhas acima para a correção.</p>
+                        <div>
+                            <p class="text-lg font-medium text-gray-300">Vigário Paroquial:</p>
+                            <p class="text-xl font-extrabold text-parish-blue mt-1">Pe. Edimilson Luiz Ribeiro, SF</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mapa / Iframe Placeholder -->
-                <div class="rounded-xl overflow-hidden shadow-xl">
-                    <h3 class="text-2xl font-semibold mb-4 text-parish-blue">Localização (Mapa)</h3>
-                    <!-- Mapa do Google Maps -->
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14820.751688647575!2d-45.05068225!3d-22.3804812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c9794d216d7a4b%3A0x8670c53d6199f1a0!2sVirg%C3%ADnia%2C%20MG%2C%2037465-000!5e0!3m2!1spt-BR!2sbr!4v1700684200000!5m2!1spt-BR!2sbr" 
-                        width="100%" 
-                        height="300" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade"
-                        title="Localização de Virgínia, MG">
-                    </iframe>
+                <!-- Card 2: Informações da Secretaria - Telefones Corrigidos -->
+                <div class="bg-parish-card p-6 rounded-xl shadow-2xl">
+                    <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 pb-2">Secretaria Paroquial</h3>
+                    <div class="space-y-3 text-lg text-gray-300">
+                        <p class="font-medium">
+                            <span class="text-parish-blue pr-2">Endereço:</span> Praça Cônego Monte Raso, nº 304, Virgínia/MG
+                        </p>
+                        <!-- NOVO TELEFONE FIXO COM RAMAL -->
+                        <p class="font-medium">
+                            <span class="text-parish-blue pr-2">Telefone (Fixo):</span> (35) 3261-1217 ramal 8007
+                        </p>
+                        <!-- WHATSAPP ATUALIZADO -->
+                        <p class="font-medium">
+                            <span class="text-parish-blue pr-2">WhatsApp:</span> (35) 3373-1397
+                        </p>
+                        <p class="font-medium">
+                            <span class="text-parish-blue pr-2">E-mail:</span> <a href="mailto:paroquiavirginia@yahoo.com.br" class="text-parish-blue hover:underline">paroquiavirginia@yahoo.com.br</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Localização (Mapa) -->
+                <div class="bg-parish-card p-6 rounded-xl shadow-2xl">
+                    <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 pb-2">Onde nos Encontrar (Igreja Matriz)</h3>
+                    <div class="rounded-xl overflow-hidden shadow-xl mt-4">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14820.751688647575!2d-45.05068225!3d-22.3804812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c9794d216d7a4b%3A0x8670c53d6199f1a0!2sVirg%C3%ADnia%2C%20MG%2C%2037465-000!5e0!3m2!1spt-BR!2sbr!4v1700684200000!5m2!1spt-BR!2sbr" 
+                            width="100%" 
+                            height="300" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Localização de Virgínia, MG">
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </section>
@@ -373,6 +502,8 @@
                     { title: 'Adoração ao Santíssimo', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 2', subtitle: 'Bairro Porto', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    // COMPROMISSO REESTABELECIDO (Não deve disparar alerta)
+                    { title: 'Reunião Irmandade do Santíssimo', subtitle: 'Salão Paroquial', time: '20:00', church: 'External', color: 'parish-red' }, 
                 ]
             },
             '7': {
@@ -584,7 +715,8 @@
                 events: [
                     { title: 'Visita às obras', subtitle: 'Construção Pastoral', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
                     { title: 'Santa Missa', subtitle: 'Sagrado Coração', time: '18:00', church: 'External', color: 'parish-red' }, // EXTERNAL
-                    { title: 'Formação MESC', subtitle: 'Local não informado', time: '19:00', church: 'External', color: 'parish-red' }, // EXTERNAL
+                    // COMPROMISSO REESTABELECIDO (Não deve disparar alerta)
+                    { title: 'Formação MESC', subtitle: 'Local não informado', time: '19:00', church: 'External', color: 'parish-red' },
                 ]
             },
             '25': {
@@ -596,6 +728,8 @@
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 4', subtitle: 'Bairro Pereiras', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Rio Acima II', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
+                    // COMPROMISSO REESTABELECIDO (Não deve disparar alerta)
+                    { title: 'Reunião Setor 7', subtitle: 'Local não informado', time: '20:00', church: 'External', color: 'parish-red' }, 
                 ]
             },
             '26': { 
@@ -613,8 +747,8 @@
                 liturgical: 'Quinta-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '27/Nov',
                 events: [
-                    { title: 'Procissão', subtitle: 'Saindo da Igreja Matriz (até Pedra Santa)', time: '04:30', church: 'External', color: 'parish-red' }, // NOVO EVENTO DETALHADO
-                    { title: 'Santa Missa', subtitle: 'Pedra Santa (logo após a Procissão)', time: '05:00', church: 'External', color: 'parish-red' }, // NOVO EVENTO DETALHADO
+                    { title: 'Procissão', subtitle: 'Saindo da Igreja Matriz (até Pedra Santa)', time: '04:30', church: 'External', color: 'parish-red' }, 
+                    { title: 'Santa Missa', subtitle: 'Pedra Santa (logo após a Procissão)', time: '05:00', church: 'External', color: 'parish-red' }, 
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'External', color: 'parish-red' }, // EXTERNAL
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
@@ -745,9 +879,10 @@
             let upcomingEvents = [];
 
             if (dailyAgendaData[tomorrow]) {
+                // Filtra para incluir APENAS eventos externos que o Senhor Supremo deseja alertar
                 upcomingEvents = dailyAgendaData[tomorrow].events.filter(event => 
-                    (event.title.includes('Santa Missa') || event.title.includes('Procissão') || event.title.includes('Visita ao Abrigo')) && 
-                    event.church === 'External' // Filtra RIGIDAMENTE apenas eventos externos especiais
+                    (event.title.includes('Santa Missa') || event.title.includes('Procissão') || event.title.includes('Visita ao Abrigo') || event.title.includes('Abertura Ano Jubilar')) && 
+                    event.church === 'External'
                 );
             }
 
@@ -858,7 +993,7 @@
                 const dayNames = getDayNames(mockDate);
                 const data = dailyAgendaData[day];
                 // Limita o texto litúrgico para caber no botão
-                const liturgicalText = data && data.liturgical ? data.liturgical.split(' ').slice(0, 3).join(' ') : 'Feria';
+                const liturgicalText = data && data.liturgical ? data.liturgical.split(' ').slice(0, 3).join(' ').replace('SOLENIDADE', 'SOL.') : 'Feria';
 
 
                 const button = document.createElement('button');
@@ -883,6 +1018,9 @@
                 section.classList.add('hidden');
             });
             
+            // Fecha o menu mobile quando uma opção é selecionada
+            document.getElementById('mobile-menu').classList.add('hidden');
+
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('nav-active', 'border-b-2', 'border-parish-gold', 'text-parish-gold');
                 button.classList.add('text-white');
@@ -899,15 +1037,24 @@
                 button.classList.remove('text-white');
             });
             
-            // CORREÇÃO CRUCIAL: Ao voltar para a agenda, carrega o último dia ATIVO (activeDay),
-            // e não um dia hardcoded.
+            const dayCarouselWrapper = document.getElementById('day-carousel-wrapper');
+            
+            // CORREÇÃO CRUCIAL: Mostrar/Esconder o Carrossel de Dias
             if (targetId === 'content-agenda') {
+                dayCarouselWrapper.classList.remove('hidden'); // MOSTRA
                 buildDayCarousel();
                 loadDailyAgenda(activeDay); 
+            } else {
+                dayCarouselWrapper.classList.add('hidden'); // ESCONDE
             }
         }
         
         document.addEventListener('DOMContentLoaded', () => {
+            // Lógica para toggle do menu hambúrguer
+            document.getElementById('menu-toggle').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+
             // MOCK: Dia atual para demonstração (23 de Novembro - Domingo)
             // Se a data atual for maior que 30, usamos '30', caso contrário, usamos a data real.
             const todayDate = new Date().getDate();
