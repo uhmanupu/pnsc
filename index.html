@@ -155,7 +155,7 @@
             <!-- Alerta Dinâmico (Aviso de Missas fora da Matriz - Aparece 1 dia antes) -->
             <div id="dynamic-alert" class="hidden bg-parish-blue/10 border-l-4 border-parish-blue p-4 rounded-lg mb-8 shadow-xl">
                 <p class="font-bold text-parish-blue flex items-center">
-                    AVISO DE EVENTO ESPECIAL:
+                    AVISO:
                 </p>
                 <p id="alert-message" class="text-sm mt-1 text-gray-200"></p>
             </div>
@@ -302,10 +302,10 @@
 
     <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica -->
     <script>
-        // Mapeamento da agenda mensal (TOTALMENTE REFITA) para Novembro/2025
-        // **Padres e Folgas foram removidos.**
-        // **Foco estrito em Missas e Atendimentos com horários precisos.**
-        // Base de dados consolidada a partir das imagens Captura de Tela (39), (40) e (86).
+        // Variável GLOBAL para rastrear o dia ativo. É crucial para que o menu de abas
+        // não resete a visualização para um dia fixo.
+        let activeDay = '23'; // Define o dia inicial para a data de hoje (23 de Novembro)
+
         const dailyAgendaData = {
             // DIAS LITÚRGICOS CORRIGIDOS COM FOCO NA ESTRUTURA LITÚRGICA
             '1': {
@@ -373,7 +373,6 @@
                     { title: 'Adoração ao Santíssimo', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 2', subtitle: 'Bairro Porto', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Reunião Irmandade do Santíssimo', subtitle: 'Salão Paroquial', time: '20:00', church: 'External', color: 'parish-red' }, // EXTERNAL
                 ]
             },
             '7': {
@@ -567,7 +566,7 @@
             // DIAS 23 a 30 (Final da Agenda)
             '23': {
                 dayName: 'DOMINGO',
-                liturgical: 'SOLENIDADE de Cristo Rei do Universo', // CORRIGIDO: Nome mais comum da Solenidade
+                liturgical: 'SOLENIDADE de Cristo Rei do Universo', 
                 dateStr: '23/Nov',
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
@@ -580,7 +579,7 @@
             },
             '24': {
                 dayName: 'SEGUNDA-FEIRA',
-                liturgical: 'Segunda-feira da 34ª Semana do Tempo Comum', // CORRIGIDO: 34ª semana
+                liturgical: 'Segunda-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '24/Nov',
                 events: [
                     { title: 'Visita às obras', subtitle: 'Construção Pastoral', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
@@ -590,19 +589,18 @@
             },
             '25': {
                 dayName: 'TERÇA-FEIRA',
-                liturgical: 'Terça-feira da 34ª Semana do Tempo Comum', // CORRIGIDO: 34ª semana
+                liturgical: 'Terça-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '25/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 4', subtitle: 'Bairro Pereiras', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Rio Acima II', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Reunião Setor 7', subtitle: 'Local não informado', time: '20:00', church: 'External', color: 'parish-red' }, // EXTERNAL
                 ]
             },
             '26': { 
                 dayName: 'QUARTA-FEIRA',
-                liturgical: 'Quarta-feira da 34ª Semana do Tempo Comum', // CORRIGIDO: 34ª semana
+                liturgical: 'Quarta-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '26/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
@@ -612,10 +610,11 @@
             },
             '27': { 
                 dayName: 'QUINTA-FEIRA',
-                liturgical: 'Quinta-feira da 34ª Semana do Tempo Comum', // CORRIGIDO: 34ª semana
+                liturgical: 'Quinta-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '27/Nov',
                 events: [
-                    { title: 'Santa Missa', subtitle: 'Pedra Santa', time: '05:00', church: 'External', color: 'parish-red' }, // EXTERNAL
+                    { title: 'Procissão', subtitle: 'Saindo da Igreja Matriz (até Pedra Santa)', time: '04:30', church: 'External', color: 'parish-red' }, // NOVO EVENTO DETALHADO
+                    { title: 'Santa Missa', subtitle: 'Pedra Santa (logo após a Procissão)', time: '05:00', church: 'External', color: 'parish-red' }, // NOVO EVENTO DETALHADO
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'External', color: 'parish-red' }, // EXTERNAL
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
@@ -626,24 +625,24 @@
             },
             '28': {
                 dayName: 'SEXTA-FEIRA',
-                liturgical: 'Sexta-feira da 34ª Semana do Tempo Comum', // CORRIGIDO: 34ª semana
+                liturgical: 'Sexta-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '28/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
                     { title: 'Atendimento', subtitle: 'Secretaria Paroquial', time: '14:00', church: 'Atendimento', color: 'text-gray-300' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Primeiro dia da Novena', subtitle: 'Ronda Pastoral', time: '19:00', church: 'External', color: 'parish-red' }, // EXTERNAL
+                    { title: 'Primeiro dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
             '29': {
                 dayName: 'SÁBADO',
-                liturgical: 'Sábado da 34ª Semana do Tempo Comum', // CORRIGIDO: 34ª semana
+                liturgical: 'Sábado da 34ª Semana do Tempo Comum', 
                 dateStr: '29/Nov',
                 events: [
                     { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-blue' },
-                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', church: 'Matriz', color: 'parish-gold' }, // NOVO EVENTO ADICIONADO
+                    { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', church: 'Matriz', color: 'parish-gold' }, 
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '16:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Segundo dia da Novena', subtitle: 'Ronda Pastoral', time: '19:00', church: 'External', color: 'parish-red' }, // EXTERNAL
+                    { title: 'Segundo dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -656,7 +655,7 @@
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Retiro dos Marins', time: '09:30', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '11:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '18:00', church: 'Comunidade', color: 'parish-blue' },
-                    { title: 'Terceiro dia da Novena', subtitle: 'Ronda Pastoral', time: '18:00', church: 'External', color: 'parish-red' }, // EXTERNAL
+                    { title: 'Terceiro dia da Novena', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' }, 
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             }
@@ -743,26 +742,37 @@
             const today = parseInt(currentDay); 
             const tomorrow = today + 1;
             
-            let upcomingEvent = null;
+            let upcomingEvents = [];
 
             if (dailyAgendaData[tomorrow]) {
-                upcomingEvent = dailyAgendaData[tomorrow].events.find(event => 
-                    (event.title.includes('Santa Missa') || event.title.includes('Novena') || event.title.includes('Procissão') || event.title.includes('Reunião') || event.title.includes('Visita ao Abrigo')) && 
+                upcomingEvents = dailyAgendaData[tomorrow].events.filter(event => 
+                    (event.title.includes('Santa Missa') || event.title.includes('Procissão') || event.title.includes('Visita ao Abrigo')) && 
                     event.church === 'External' // Filtra RIGIDAMENTE apenas eventos externos especiais
                 );
             }
 
-            if (upcomingEvent) {
+            if (upcomingEvents.length > 0) {
                 const tomorrowData = dailyAgendaData[tomorrow];
-                alertMessage.innerHTML = `Lembrete: <strong class="text-parish-gold">${tomorrowData.dayName}, ${tomorrowData.dateStr}</strong> teremos a <strong class="text-parish-gold">${upcomingEvent.title}</strong> às <strong class="text-parish-gold">${upcomingEvent.time}</strong> na: <strong class="text-parish-gold">${upcomingEvent.subtitle || upcomingEvent.church}</strong>. Participe!`;
+                let message = `<strong class="text-parish-gold">${tomorrowData.dayName}, ${tomorrowData.dateStr}</strong>: Atenção aos eventos externos:<ul class="list-disc ml-4 mt-1 space-y-1">`;
+                
+                upcomingEvents.forEach(event => {
+                    message += `<li><strong class="text-parish-gold">${event.title}</strong> às <strong class="text-parish-gold">${event.time}</strong> (${event.subtitle || event.church})</li>`;
+                });
+                message += `</ul>`;
+                
+                alertMessage.innerHTML = message;
                 alertContainer.classList.remove('hidden');
             } else {
                 alertContainer.classList.add('hidden');
             }
         }
 
+
         // Função principal para carregar a agenda diária
         function loadDailyAgenda(day) {
+            // ATUALIZA O DIA ATIVO GLOBAL
+            activeDay = day; 
+
             const data = dailyAgendaData[day];
             const listContainer = document.getElementById('daily-agenda-list');
             const dayTitle = document.getElementById('current-day-title');
@@ -889,17 +899,22 @@
                 button.classList.remove('text-white');
             });
             
-            // Reconstroi o carrossel quando a agenda é ativada para garantir o scroll correto
+            // CORREÇÃO CRUCIAL: Ao voltar para a agenda, carrega o último dia ATIVO (activeDay),
+            // e não um dia hardcoded.
             if (targetId === 'content-agenda') {
-                const currentDayNumber = 29; // Dia mockado para demonstração
                 buildDayCarousel();
-                loadDailyAgenda(currentDayNumber.toString());
+                loadDailyAgenda(activeDay); 
             }
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-            // MOCK: Dia atual para demonstração (29 de Novembro - Sábado)
-            const currentDayNumber = 29; 
+            // MOCK: Dia atual para demonstração (23 de Novembro - Domingo)
+            // Se a data atual for maior que 30, usamos '30', caso contrário, usamos a data real.
+            const todayDate = new Date().getDate();
+            const initialDayNumber = (todayDate > 30 || todayDate < 1) ? 23 : todayDate; // Garante que caia em 23/Nov/2025 (Domingo)
+
+            // Inicializa a variável de estado global
+            activeDay = initialDayNumber.toString();
             
             // 1. Lógica de Navegação por Abas (Clique)
             document.querySelectorAll('.tab-button').forEach(button => {
@@ -910,9 +925,9 @@
                 });
             });
 
-            // 2. Monta o carrossel e carrega a agenda do dia atual
+            // 2. Monta o carrossel e carrega a agenda do dia de hoje (23)
             buildDayCarousel();
-            loadDailyAgenda(currentDayNumber.toString());
+            loadDailyAgenda(activeDay);
             showSection('content-agenda'); 
         });
     </script>
