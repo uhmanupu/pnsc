@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paróquia Nossa Senhora da Conceição - Virgínia/MG</title>
     <!-- Carrega o Tailwind CSS CDN para estilização --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- Configuração personalizada do Tailwind para um visual mais devocional (azul profundo e dourado) --><script>
+    
+    <!-- Configuração e Definição de Variáveis CSS para Temas --><script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'parish-dark': '#0A1121', // Fundo principal (Fundo da paleta)
-                        'parish-card': '#182040', // Base escura para elementos internos
-                        'parish-gold': '#FFC759', // Dourado principal (2ª Cor da paleta)
-                        'parish-red': '#E85555', // Vermelho para avisos importantes (4ª Cor da paleta)
-                        'parish-soft-gray': '#BCC8D6', // Cinza Suave (3ª Cor da paleta)
-                        // A cor 'parish-blue' foi substituída para garantir a coerência total da paleta fornecida.
+                        // Paleta Dark Mode (Suas cores definidas)
+                        'parish-dark-base': '#0A1121', 
+                        'parish-card-base': '#182040', 
+                        'parish-gold': '#FFC759', 
+                        'parish-red': '#E85555', 
+                        'parish-soft-gray': '#BCC8D6', 
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -25,28 +26,82 @@
         }
     </script>
     <style>
-        /* Estilos customizados para a fonte Inter e fundo Dark Mode */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0A1121; /* Fundo principal escuro */
-            color: #BCC8D6; /* Cinza Suave como cor de texto padrão */
-        }
-        /* Estilo para a aba ativa na navegação principal */
-        .nav-active {
-            color: #FFC759 !important; /* Dourado suave */
-            border-color: #FFC759 !important; /* Dourado suave */
-        }
-        /* Estilo para o carrossel de dias */
-        .day-active {
-            background-color: #FFC759 !important; /* Dourado suave */
-            color: #0A1121 !important; /* Dark */
-            font-weight: 800;
-        }
-        /* CORREÇÃO DO TEXTO DO DIA DA SEMANA NO BOTÃO ATIVO */
-        .day-active .day-short-name {
-            color: #0A1121 !important; /* Força a cor escura (parish-dark) quando o botão está ativo */
+        /* Variáveis CSS para gerenciar a transição de tema */
+        :root {
+            /* DARK MODE (Padrão) */
+            --bg-primary: #0A1121;
+            --bg-card: rgba(255, 255, 255, 0.08); /* Liquid Glass Effect */
+            --color-primary: #BCC8D6; /* Cinza Suave (Texto principal) */
+            --color-secondary: #0A1121; /* Usado no botão ativo (Dark) */
+            --color-header: rgba(10, 17, 33, 0.9);
+            --border-color: rgba(255, 255, 255, 0.15);
+            --shadow-color: rgba(0, 0, 0, 0.25);
+            --hover-bg: rgba(255, 255, 255, 0.03);
+            --glass-blur: blur(12px);
         }
 
+        /* LIGHT MODE */
+        body.light-mode {
+            --bg-primary: #F0F4F8; /* Light Gray/Blue */
+            --bg-card: rgba(255, 255, 255, 0.8); /* Fundo branco mais sólido no light mode */
+            --color-primary: #333C48; /* Dark Charcoal (Texto principal) */
+            --color-secondary: #FFFFFF; /* Usado no botão ativo (White) */
+            --color-header: rgba(240, 244, 248, 0.95);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --hover-bg: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Estilos globais aplicados via variáveis */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary); 
+            color: var(--color-primary); 
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header-bar {
+            background-color: var(--color-header) !important;
+            backdrop-filter: var(--glass-blur); 
+            -webkit-backdrop-filter: var(--glass-blur); 
+        }
+
+        .liquid-glass-card {
+            background-color: var(--bg-card) !important;
+            backdrop-filter: var(--glass-blur) !important;
+            -webkit-backdrop-filter: var(--glass-blur) !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: 0 6px 16px var(--shadow-color) !important;
+        }
+
+        .day-button {
+            background-color: var(--hover-bg); 
+            border: 1px solid var(--border-color);
+        }
+        .day-button:hover {
+            background-color: var(--hover-bg) !important;
+        }
+        
+        /* Manter as cores de destaque (Dourado/Vermelho) fixas */
+        .nav-active {
+            color: #FFC759 !important; 
+            border-color: #FFC759 !important; 
+        }
+        .day-active {
+            background-color: #FFC759 !important; 
+            color: #0A1121 !important;
+            border-color: #FFC759 !important;
+        }
+        .day-active .day-short-name {
+            color: #0A1121 !important; 
+        }
+        .text-parish-soft-gray { color: var(--color-primary) !important; }
+        .text-parish-gold { color: #FFC759 !important; }
+        .text-parish-red { color: #E85555 !important; }
+
+        /* Estilos de transição e responsividade */
+        /* ... (mantidos do código anterior) */
+        
         .day-button {
             transition: all 0.2s;
             min-width: 70px;
@@ -89,12 +144,12 @@
             top: 100%;
             left: 0;
             right: 0;
-            background-color: rgba(10, 17, 33, 0.95); /* Fundo quase sólido para menu aberto */
+            background-color: var(--color-header) !important; 
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px); 
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--border-color);
             padding: 1rem 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px var(--shadow-color);
             border-radius: 0 0 1rem 1rem; /* Arredonda só em baixo */
         }
         .nav-link.tab-button {
@@ -102,12 +157,7 @@
             padding-left: 0.5rem;
             padding-right: 0.5rem;
         }
-        /* Estilo para a barra do cabeçalho fixo (Liquid Glass) */
-        .header-bar {
-            background-color: rgba(10, 17, 33, 0.9); /* Base mais escura para melhor contraste */
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px); 
-        }
+        
         /* Novo estilo para garantir o alinhamento no mobile */
         .header-top-bar {
             /* Usando grid para centralização mais limpa no mobile */
@@ -129,39 +179,6 @@
             text-align: right;
         }
 
-        /* Estilo para os CARDS de conteúdo: Liquid Glass Moderno */
-        .liquid-glass-card {
-            background-color: rgba(255, 255, 255, 0.08); /* Fundo mais claro e transparente para efeito frosted */
-            backdrop-filter: blur(12px); /* Efeito de desfoque mais intenso */
-            -webkit-backdrop-filter: blur(12px); /* Para Safari */
-            border: 1px solid rgba(255, 255, 255, 0.15); /* Borda mais visível e suave */
-            border-radius: 1.5rem; /* Mais arredondado */
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); /* Sombra mais suave */
-            padding: 2rem; /* Aumenta o padding interno para respiro */
-        }
-        /* Ajuste para o carrossel de dias (também com glass) */
-        #day-carousel-wrapper {
-            background-color: rgba(10, 17, 33, 0.9); /* Segue o header */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        /* Ajuste para botões de dia do carrossel no modo glass */
-        .day-button {
-            background-color: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: none;
-        }
-        .day-button:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-        }
-        .day-active { /* O botão ativo deve se destacar */
-            background-color: #FFC759 !important; 
-            color: #0A1121 !important;
-            border-color: #FFC759 !important;
-            box-shadow: 0 4px 15px rgba(255, 199, 89, 0.4);
-        }
         /* Alerta dinâmico no estilo glass */
         #dynamic-alert {
             background-color: rgba(232, 85, 85, 0.15); /* Fundo vermelho mais suave */
@@ -175,7 +192,7 @@
         /* Garante que o conteúdo da lista interna da agenda tenha z-index e cor correta */
         #daily-agenda-list > div {
             z-index: 20; 
-            color: #BCC8D6; 
+            color: var(--color-primary); 
         }
         /* Aumenta o espaçamento interno dos itens da agenda */
         .agenda-item-padding {
@@ -190,6 +207,47 @@
         }
         .fade-in {
             animation: fadeIn 0.4s ease-in-out;
+        }
+
+        /* ESTILO PARA O BOTÃO HOJE (FIXO) */
+        #today-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            background-color: #FFC759; /* Dourado */
+            color: #0A1121; /* Dark */
+            padding: 10px 15px;
+            border-radius: 9999px; /* Botão circular/pill */
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 199, 89, 0.6);
+            transition: transform 0.2s;
+        }
+        #today-button:hover {
+            transform: scale(1.05);
+        }
+        /* Toque Fino: Dia Litúrgico mais discreto */
+        #liturgical-day {
+            font-size: 1.125rem; /* text-lg */
+        }
+        
+        /* ESTILO PARA O BOTÃO TEMA (FIXO - Canto Inferior Esquerdo) */
+        #theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 50;
+            background-color: var(--bg-card); /* Fundo de vidro */
+            color: #FFC759; /* Ícone dourado */
+            padding: 12px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            transition: all 0.3s;
+        }
+        #theme-toggle:hover {
+            background-color: var(--hover-bg);
+            transform: scale(1.05);
         }
 
     </style>
@@ -287,7 +345,7 @@
             </div>
 
             <!-- Título do Dia Selecionado + Dia Litúrgico --><h3 id="current-day-title" class="text-3xl font-extrabold text-center text-parish-soft-gray mb-2"></h3>
-            <p id="liturgical-day" class="text-xl font-semibold text-center text-parish-soft-gray mb-8"></p> <!-- CORREÇÃO: Litúrgico agora usa Cinza Suave --><div id="daily-agenda-list" class="liquid-glass-card space-y-0">
+            <p id="liturgical-day" class="text-lg font-semibold text-center text-parish-soft-gray mb-8"></p> <!-- CORREÇÃO: Toque Fino, Litúrgico com texto menor --><div id="daily-agenda-list" class="liquid-glass-card space-y-0">
                 <!-- Conteúdo da agenda será injetado aqui pelo JavaScript --></div>
             
         </section>
@@ -498,10 +556,10 @@
                             <span class="text-parish-gold pr-2">Endereço:</span> Praça Cônego Monte Raso, nº 304, Virgínia/MG
                         </p>
                         <!-- NOVO TELEFONE FIXO COM RAMAL --><p class="font-medium">
-                            <span class="text-parish-gold pr-2">Telefone (Fixo):</span> (35) 3261-1217 ramal 8007
+                            <span class="text-parish-gold pr-2">Telefone (Fixo):</span> <a href="tel:+553532611217" class="text-parish-soft-gray hover:underline">(35) 3261-1217 ramal 8007</a>
                         </p>
-                        <!-- WHATSAPP ATUALIZADO --><p class="font-medium">
-                            <span class="text-parish-gold pr-2">WhatsApp:</span> (35) 3373-1397
+                        <!-- WHATSAPP ATUALIZADO E CLICÁVEL (SUGESTÃO IMPLEMENTADA) --><p class="font-medium">
+                            <span class="text-parish-gold pr-2">WhatsApp:</span> <a href="https://wa.me/553533731397" target="_blank" class="text-parish-soft-gray hover:underline">(35) 3373-1397</a>
                         </p>
                         <!-- E-MAIL COM QUEBRA DE PALAVRA FORÇADA (CORREÇÃO) --><p class="font-medium break-words">
                             <span class="text-parish-gold pr-2">E-mail:</span> <a href="mailto:paroquiavirginia@yahoo.com.br" class="text-parish-soft-gray hover:underline">paroquiavirginia@yahoo.com.br</a> <!-- O link usa Cinza Suave -->
@@ -528,6 +586,19 @@
         </section>
 
     </main>
+    
+    <!-- Botão Flutuante HOJE (SUGESTÃO IMPLEMENTADA) -->
+    <button id="today-button" onclick="loadDailyAgenda('24-Nov')" class="text-sm">
+        HOJE <span class="text-base font-extrabold">24/NOV</span>
+    </button>
+    
+    <!-- Botão Flutuante TEMA (SUGESTÃO ATUAL) -->
+    <button id="theme-toggle">
+        <!-- Ícone Sol (Modo Claro) / Lua (Modo Escuro) -->
+        <svg id="theme-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+    </button>
 
     <!-- Footer --><footer class="bg-gray-900 text-parish-soft-gray py-8">
         <div class="container mx-auto px-4 text-center">
@@ -537,12 +608,35 @@
     </footer>
 
     <!-- Script para o Menu Mobile, Navegação por Abas e Agenda Dinâmica --><script>
-        // Variável GLOBAL para rastrear o dia ativo. É crucial para que o menu de abas
-        // não resete a visualização para um dia fixo.
-        // O dia 23 de Novembro é o primeiro dia visível.
+        // Variável GLOBAL para rastrear o dia ativo.
         let activeDay = '23-Nov'; 
+        const todayKey = '24-Nov'; // Dia de HOJE para o botão de atalho
 
-        // O objeto dailyAgendaData agora usa keys de string no formato 'DD-MM' para garantir unicidade e ordenar os dias corretamente.
+        // Definição de Cores para o ícone do tema
+        const MoonIcon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>`;
+        const SunIcon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>`;
+        
+        // ===============================================
+        // FUNÇÃO DE TROCA DE TEMA (DARK/LIGHT MODE)
+        // ===============================================
+        function toggleTheme() {
+            const body = document.body;
+            const isLight = body.classList.toggle('light-mode');
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (isLight) {
+                localStorage.setItem('theme', 'light');
+                themeIcon.innerHTML = MoonIcon; // Quando está CLARO, mostra a Lua para VOLTAR ao escuro
+            } else {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.innerHTML = SunIcon; // Quando está ESCURO, mostra o Sol para IR ao claro
+            }
+        }
+        
+        // ===============================================
+        // LÓGICA DE AGENDA E DADOS (Mantida)
+        // ===============================================
+
         const dailyAgendaData = {
             // ===================================
             // NOVEMBRO (23 a 30)
@@ -554,10 +648,10 @@
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' }, 
-                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 3 Cinza Suave */
+                    { title: 'Santa Missa Setor 3', subtitle: 'Bairro Mendanha', time: '09:00', church: 'Comunidade', color: 'parish-soft-gray' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '10:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Primeira Eucaristia', subtitle: 'Igreja Matriz', time: '15:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Retirinho', time: '18:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 1 Cinza Suave */
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Retirinho', time: '18:00', church: 'Comunidade', color: 'parish-soft-gray' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -578,8 +672,8 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
-                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Pereiras', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 4 Cinza Suave */
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Rio Acima II', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 7 Cinza Suave */
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Pereiras', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' },
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Rio Acima II', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' },
                     { title: 'Reunião Setor 7', subtitle: '', time: '20:00', church: 'External', color: 'parish-red' }, 
                 ]
             },
@@ -589,8 +683,8 @@
                 dateStr: '26/Nov',
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Mendes', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 1 Cinza Suave */
-                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Água Limpa', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 4 Cinza Suave */
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Mendes', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' },
+                    { title: 'Santa Missa Setor 4', subtitle: 'Bairro Água Limpa', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' },
                 ]
             },
             '27-Nov': { 
@@ -604,7 +698,7 @@
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Muquém', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 1 Cinza Suave */
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Muquém', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' },
                 ]
             },
@@ -615,7 +709,7 @@
                 events: [
                     { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 7 Cinza Suave */
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', church: 'Comunidade', color: 'parish-soft-gray' },
                     { title: 'Primeiro dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
@@ -624,9 +718,9 @@
                 liturgical: '2º Dia da Novena | Nossa Senhora no Sábado (Memória Facultativa)', 
                 dateStr: '29/Nov',
                 events: [
-                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-soft-gray' }, /* CORREÇÃO: Casamento Cinza Suave */
+                    { title: 'Casamento', subtitle: 'Igreja Matriz', time: '11:00', church: 'Matriz', color: 'parish-soft-gray' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '16:00', church: 'Matriz', color: 'parish-gold' }, 
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '16:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 7 Cinza Suave */
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Roseirinha', time: '16:00', church: 'Comunidade', color: 'parish-soft-gray' },
                     { title: 'Segundo dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
@@ -637,9 +731,9 @@
                 events: [
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '07:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa', subtitle: 'Igreja Matriz', time: '09:00', church: 'Matriz', color: 'parish-gold' }, 
-                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Retiro dos Marins', time: '09:30', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 7 Cinza Suave */
-                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '11:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 1 Cinza Suave */
-                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '18:00', church: 'Comunidade', color: 'parish-soft-gray' }, /* CORREÇÃO: Setor 5 Cinza Suave */
+                    { title: 'Santa Missa Setor 7', subtitle: 'Bairro Retiro dos Marins', time: '09:30', church: 'Comunidade', color: 'parish-soft-gray' },
+                    { title: 'Santa Missa Setor 1', subtitle: 'Bairro Palmeiras', time: '11:00', church: 'Comunidade', color: 'parish-soft-gray' },
+                    { title: 'Santa Missa Setor 5', subtitle: 'Bairro Roseira', time: '18:00', church: 'Comunidade', color: 'parish-soft-gray' },
                     { title: 'Terceiro dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
             },
@@ -717,10 +811,6 @@
             }
         };
 
-        // ===============================================
-        // LÓGICA DE NAVEGAÇÃO
-        // ===============================================
-        
         // Arrays para nomes de dias e meses (em português)
         const dayNamesFull = ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO'];
         const dayNamesShort = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
@@ -799,8 +889,8 @@
         }
 
 
-        // Função principal para carregar a agenda diária
-        function loadDailyAgenda(dayKey) {
+        // FUNÇÃO RENOMEADA: Função principal para renderizar a agenda diária
+        function renderAgendaDay(dayKey) {
             // ATUALIZA O DIA ATIVO GLOBAL
             activeDay = dayKey; 
 
@@ -831,6 +921,7 @@
                 
                 // Adiciona o dia litúrgico
                 if (data.liturgical) {
+                    // Toque Fino: O Litúrgico usa a classe de tamanho menor (text-lg) definida no CSS
                     liturgicalDay.innerHTML = data.liturgical;
                 }
 
@@ -947,11 +1038,11 @@
             
             const dayCarouselWrapper = document.getElementById('day-carousel-wrapper');
             
-            // CORREÇÃO CRUCIAL: Mostrar/Esconder o Carrossel de Dias
+            // CORREÇÃO CRUCIAL: Mostrar/Esconder o Carrossel de Dias e chamar o renderizador
             if (targetId === 'content-agenda') {
                 dayCarouselWrapper.classList.remove('hidden'); // MOSTRA
                 buildDayCarousel();
-                loadDailyAgenda(activeDay); 
+                renderAgendaDay(activeDay); // CHAMA A FUNÇÃO RENOMEADA
             } else {
                 dayCarouselWrapper.classList.add('hidden'); // ESCONDE
             }
@@ -963,13 +1054,28 @@
                 document.getElementById('mobile-menu').classList.toggle('hidden');
             });
 
+            // Adicionar listener para o botão de tema
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+            // 1. Lógica de inicialização de tema (lê a preferência salva)
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('theme-icon');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                themeIcon.innerHTML = MoonIcon;
+            } else {
+                // Padrão é dark
+                document.body.classList.remove('light-mode');
+                themeIcon.innerHTML = SunIcon;
+            }
+            
             // O dia de hoje (23/Nov) é o novo ponto de partida.
             const initialDayKey = '23-Nov'; 
 
             // Inicializa a variável de estado global
             activeDay = initialDayKey;
             
-            // 1. Lógica de Navegação por Abas (Clique)
+            // 2. Lógica de Navegação por Abas (Clique)
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -978,22 +1084,30 @@
                 });
             });
 
-            // 2. Lógica de Navegação do Carrossel de Dias (DELEGAÇÃO DE EVENTOS)
-            // Este evento é o único responsável por carregar novas datas.
+            // 3. Lógica de Navegação do Carrossel de Dias (DELEGAÇÃO DE EVENTOS)
             document.getElementById('day-carousel-wrapper').addEventListener('click', (e) => {
                 const dayButton = e.target.closest('.day-button-date');
                 if (dayButton && dayButton.dataset.day) {
-                    // Chamar loadDailyAgenda diretamente corrige o bug de travamento de data.
-                    loadDailyAgenda(dayButton.dataset.day); 
+                    renderAgendaDay(dayButton.dataset.day); // CHAMA A FUNÇÃO RENOMEADA
                 }
             });
 
-
-            // 3. Monta o carrossel e carrega a agenda do dia de hoje (23)
+            // 4. Monta o carrossel e carrega a agenda do dia de hoje (23)
             buildDayCarousel();
-            loadDailyAgenda(activeDay);
+            // A chamada inicial é tratada por showSection, mas a lógica abaixo garante o estado
             showSection('content-agenda'); 
         });
+        
+        // Expor a função loadDailyAgenda para o botão "HOJE" (AGORA É UM WRAPPER SEGURO)
+        window.loadDailyAgenda = (dayKey) => {
+             // 1. Atualiza o dia global
+             activeDay = dayKey;
+             // 2. Redireciona para a aba Agenda (que internamente chama renderAgendaDay)
+             showSection('content-agenda');
+             // Não é necessário chamar renderAgendaDay(dayKey) aqui, pois showSection fará isso.
+        };
+        // Expor a função de renderização (caso seja necessária em outra função)
+        window.renderAgendaDay = renderAgendaDay;
     </script>
 </body>
 </html>
