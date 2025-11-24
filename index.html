@@ -47,20 +47,20 @@
             transition: all 0.2s;
             min-width: 70px; /* Aumentado para melhor toque/clique */
             margin-right: 8px; /* Espaçamento entre os botões */
-            height: 90px; /* Aumentado a altura para incluir a liturgia */
+            height: 70px; /* Reduzida a altura para caber só dia/semana */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding-top: 8px; /* Ajuste de padding */
+            padding-bottom: 8px;
         }
-        /* Estilo específico para o texto da liturgia dentro do botão */
-        .liturgical-text {
-            font-size: 0.6rem; /* Texto pequeno para não competir */
-            font-weight: 500;
-            margin-top: 4px;
-            line-height: 1;
-            display: block;
+        /* Estilo específico para o texto do dia da semana (secundário) */
+        .day-short-name {
+             font-size: 0.8rem;
+             margin-top: 2px;
         }
+
         /* Garante que o carrossel seja scrollable */
         #day-carousel {
             overflow-x: auto;
@@ -815,7 +815,6 @@
         // ===============================================
         // LÓGICA DE NAVEGAÇÃO
         // ===============================================
-        // Removed: Swipe logic (touchstart, touchend, checkDirection)
         
         // Arrays para nomes de dias e meses (em português)
         const dayNamesFull = ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO'];
@@ -920,20 +919,10 @@
             // 3. Atualiza o carrossel de dias (ativa o botão clicado e rola)
             document.querySelectorAll('.day-button-date').forEach(btn => {
                 btn.classList.remove('day-active');
-                const liturgicalTextElement = btn.querySelector('.liturgical-text');
-                if (liturgicalTextElement) {
-                    liturgicalTextElement.classList.remove('text-parish-dark');
-                    liturgicalTextElement.classList.add('text-gray-400');
-                }
             });
             const activeDayButton = document.getElementById(`day-${day}`);
             if(activeDayButton) {
                 activeDayButton.classList.add('day-active');
-                const liturgicalTextElement = activeDayButton.querySelector('.liturgical-text');
-                if (liturgicalTextElement) {
-                    liturgicalTextElement.classList.remove('text-gray-400');
-                    liturgicalTextElement.classList.add('text-parish-dark');
-                }
                 
                 // Rola o carrossel para centralizar o dia ativo
                 const carouselContainer = document.getElementById('day-carousel');
@@ -961,9 +950,7 @@
                 mockDate.setDate(i);
                 const day = i.toString();
                 const dayNames = getDayNames(mockDate);
-                const data = dailyAgendaData[day];
-                // Limita o texto litúrgico para caber no botão
-                const liturgicalText = data && data.liturgical ? data.liturgical.split(' ').slice(0, 3).join(' ').replace('SOLENIDADE', 'SOL.') : 'Feria';
+                // NOTA: A liturgia diária (liturgicalText) foi removida do botão para simplificar, conforme solicitado.
 
 
                 const button = document.createElement('button');
@@ -973,8 +960,7 @@
                 
                 button.innerHTML = `
                     <span class="block text-xl">${i}</span>
-                    <span class="block text-xs">${dayNames.short}</span>
-                    <span class="liturgical-text text-gray-400 transition-colors">${liturgicalText}</span>
+                    <span class="day-short-name block text-gray-400 transition-colors">${dayNames.short}</span>
                 `;
                 
                 carouselContainer.appendChild(button);
@@ -1044,11 +1030,12 @@
             });
 
             // 2. Lógica de Navegação do Carrossel de Dias (DELEGAÇÃO DE EVENTOS)
-            // Agora, o evento só será disparado quando o botão do dia for clicado, sem interferência do swipe.
+            // Este evento é o único responsável por carregar novas datas.
             document.getElementById('day-carousel-wrapper').addEventListener('click', (e) => {
                 const dayButton = e.target.closest('.day-button-date');
                 if (dayButton && dayButton.dataset.day) {
-                    loadDailyAgenda(dayButton.dataset.day); // Carrega o dia clicado e atualiza activeDay
+                    // Chamar loadDailyAgenda diretamente corrige o bug de travamento de data.
+                    loadDailyAgenda(dayButton.dataset.day); 
                 }
             });
 
