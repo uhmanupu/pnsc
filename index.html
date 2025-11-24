@@ -10,11 +10,12 @@
             theme: {
                 extend: {
                     colors: {
-                        'parish-dark': '#0a1024', // Fundo principal, azul muito escuro
+                        'parish-dark': '#0A1121', // Fundo principal (Subtle refinement)
                         'parish-card': '#182040', // Base escura para elementos internos
-                        'parish-blue': '#4a90e2', // Azul moderno para destaque secundário
-                        'parish-gold': '#FBBF24', // Dourado forte para contraste (eventos principais)
-                        'parish-red': '#dc2626', // Vermelho para avisos importantes
+                        'parish-blue': '#70A7FF', // Azul moderno (mais claro e suave)
+                        'parish-gold': '#FFC759', // Dourado principal (mais quente e suave)
+                        'parish-red': '#E85555', // Vermelho para avisos importantes (melhor contraste)
+                        'parish-soft-gray': '#BCC8D6', // Novo cinza para subtítulos/texto secundário
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -27,30 +28,35 @@
         /* Estilos customizados para a fonte Inter e fundo Dark Mode */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a1024; /* Fundo principal escuro */
+            background-color: #0A1121; /* Fundo principal escuro */
             color: #f1f1f1; /* Texto padrão claro */
         }
         /* Estilo para a aba ativa na navegação principal */
         .nav-active {
-            color: #FBBF24 !important; /* Dourado */
-            border-color: #FBBF24 !important; /* Dourado */
+            color: #FFC759 !important; /* Dourado suave */
+            border-color: #FFC759 !important; /* Dourado suave */
         }
         /* Estilo para o carrossel de dias */
         .day-active {
-            background-color: #FBBF24 !important; /* Dourado */
-            color: #0a1024 !important; /* Dark */
+            background-color: #FFC759 !important; /* Dourado suave */
+            color: #0A1121 !important; /* Dark */
             font-weight: 800;
         }
+        /* CORREÇÃO DO TEXTO DO DIA DA SEMANA NO BOTÃO ATIVO */
+        .day-active .day-short-name {
+            color: #0A1121 !important; /* Força a cor escura (parish-dark) quando o botão está ativo */
+        }
+
         .day-button {
             transition: all 0.2s;
-            min-width: 70px; /* Aumentado para melhor toque/clique */
-            margin-right: 8px; /* Espaçamento entre os botões */
-            height: 70px; /* Reduzida a altura para caber só dia/semana */
+            min-width: 70px;
+            margin-right: 8px;
+            height: 70px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-top: 8px; /* Ajuste de padding */
+            padding-top: 8px;
             padding-bottom: 8px;
             border-radius: 1.5rem; /* Mais arredondado */
         }
@@ -60,19 +66,19 @@
              margin-top: 2px;
         }
 
-        /* Garante que o carrossel seja scrollable */
-        #day-carousel {
+        /* Garante que o carrossel E o Desktop Nav sejam scrollable */
+        #day-carousel, #desktop-nav {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch; /* Melhora o scroll em iOS */
+            /* CORREÇÃO VISUAL DA BARRA BRANCA */
+            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
         }
         /* Esconde a barra de scroll horizontal */
-        #day-carousel::-webkit-scrollbar {
+        #day-carousel::-webkit-scrollbar, #desktop-nav::-webkit-scrollbar {
             display: none;
         }
-        #day-carousel {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
+        
         /* Container das abas */
         #desktop-nav {
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -83,7 +89,7 @@
             top: 100%;
             left: 0;
             right: 0;
-            background-color: rgba(10, 16, 36, 0.95); /* Fundo quase sólido para menu aberto */
+            background-color: rgba(10, 17, 33, 0.95); /* Fundo quase sólido para menu aberto */
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px); 
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -98,7 +104,7 @@
         }
         /* Estilo para a barra do cabeçalho fixo (Liquid Glass) */
         .header-bar {
-            background-color: rgba(10, 16, 36, 0.9); /* Base mais escura para melhor contraste */
+            background-color: rgba(10, 17, 33, 0.9); /* Base mais escura para melhor contraste */
             backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px); 
         }
@@ -135,7 +141,7 @@
         }
         /* Ajuste para o carrossel de dias (também com glass) */
         #day-carousel-wrapper {
-            background-color: rgba(10, 16, 36, 0.9); /* Segue o header */
+            background-color: rgba(10, 17, 33, 0.9); /* Segue o header */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -151,17 +157,17 @@
             background-color: rgba(255, 255, 255, 0.08);
         }
         .day-active { /* O botão ativo deve se destacar */
-            background-color: #FBBF24 !important; 
-            color: #0a1024 !important;
-            border-color: #FBBF24 !important;
-            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+            background-color: #FFC759 !important; 
+            color: #0A1121 !important;
+            border-color: #FFC759 !important;
+            box-shadow: 0 4px 15px rgba(255, 199, 89, 0.4);
         }
         /* Alerta dinâmico no estilo glass */
         #dynamic-alert {
-            background-color: rgba(220, 38, 38, 0.15); /* Fundo vermelho mais suave */
+            background-color: rgba(232, 85, 85, 0.15); /* Fundo vermelho mais suave */
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(220, 38, 38, 0.5); /* Borda vermelha */
+            border: 1px solid rgba(232, 85, 85, 0.5); /* Borda vermelha */
             border-radius: 1rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             padding: 1.5rem; /* Aumenta padding */
@@ -198,9 +204,9 @@
                     </button>
                 </div>
                 
-                <!-- 3. Jubilee Info (RIGHT) - visível em todas as telas --><div id="jubilee-info-block" class="z-20">
+                <!-- 3. Jubilee Info (RIGHT) - COR RIGIDA PARA DOURADO --><div id="jubilee-info-block" class="z-20">
                     <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
-                    <p class="text-base font-bold text-parish-blue leading-none">1866 – 2026</p>
+                    <p class="text-base font-bold text-parish-gold leading-none">1866 – 2026</p>
                 </div>
             </div>
 
@@ -208,21 +214,17 @@
                 <div class="flex flex-col space-y-2 text-base font-semibold">
                     <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-agenda">AGENDA</a>
                     <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-noticias">NOTÍCIAS</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-jubileu">JUBILEU</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-oracao">ORAÇÃO</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-hino">HINO</a>
+                    <!-- ORAÇÃO e HINO MERGEADOS em JUBILEU --><a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-jubileu">JUBILEU</a>
                     <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-informacoes">INFORMAÇÕES</a>
                     <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-contato">CONTATOS</a>
                 </div>
             </nav>
 
-            <!-- Desktop Tab Navigation (Aparece apenas em Desktop/Tablet) --><nav class="overflow-x-auto whitespace-nowrap hidden sm:block" id="desktop-nav">
+            <!-- Desktop Tab Navigation (Aparece apenas em Desktop/Tablet) - Scrollbar hidden --><nav class="overflow-x-auto whitespace-nowrap hidden sm:block" id="desktop-nav">
                 <div class="inline-flex space-x-6 text-base font-semibold">
                     <!-- Abas replicadas para o Desktop --><a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">AGENDA</a>
                     <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-noticias">NOTÍCIAS</a>
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">JUBILEU</a>
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-oracao">ORAÇÃO</a>
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-hino">HINO</a>
+                    <!-- ORAÇÃO e HINO MERGEADOS em JUBILEU --><a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">JUBILEU</a>
                     <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-informacoes">INFORMAÇÕES</a>
                     <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-contato">CONTATOS</a>
                 </div>
@@ -244,7 +246,7 @@
                 <p class="font-bold text-parish-red flex items-center">
                     AVISO:
                 </p>
-                <!-- A mensagem será inserida aqui com o novo formato clean --><p id="alert-message" class="text-sm mt-1 text-gray-200"></p>
+                <!-- A mensagem será inserida aqui com o novo formato clean --><p id="alert-message" class="text-sm mt-1 text-parish-soft-gray"></p>
             </div>
 
             <!-- Título do Dia Selecionado + Dia Litúrgico --><h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-2"></h3>
@@ -266,10 +268,10 @@
 
                 <!-- NOVENA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-2xl shadow-lg border-b-4 border-parish-gold">
                     <h3 class="text-2xl font-bold text-parish-gold mb-3">Solene Novena da Padroeira</h3>
-                    <p class="text-lg text-gray-300 font-semibold">
+                    <p class="text-lg text-parish-soft-gray font-semibold">
                         28 de Novembro a 7 de Dezembro
                     </p>
-                    <p class="text-sm text-gray-400 mt-2">
+                    <p class="text-sm text-parish-soft-gray mt-2">
                         Venha participar de nove dias de intensa preparação espiritual em honra à Imaculada Conceição.
                     </p>
                     <p class="text-2xl font-extrabold text-white mt-4">
@@ -282,7 +284,7 @@
 
                 <!-- FESTA - Com fundo mais escuro para destaque no glass --><div class="bg-parish-dark p-6 rounded-2xl shadow-lg border-b-4 border-parish-blue">
                     <h3 class="text-2xl font-bold text-parish-gold mb-3">Dia Solene da Festa</h3>
-                    <p class="text-xl text-gray-300 font-semibold">
+                    <p class="text-xl text-parish-soft-gray font-semibold">
                         08 de Dezembro (Segunda-feira)
                     </p>
                     <div class="mt-4 space-y-3">
@@ -298,128 +300,130 @@
                     </p>
                 </div>
 
-                <img src="https://placehold.co/400x150/1a2039/fbbd24?text=Festa+da+Padroeira" alt="Placeholder para Festa da Padroeira" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/fbbd24?text=Festa+da+Padroeira';" />
+                <img src="https://placehold.co/400x150/1a2039/FFC759?text=Festa+da+Padroeira" alt="Placeholder para Festa da Padroeira" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/FFC759?text=Festa+da+Padroeira';" />
             </div>
         </section>
 
-        <!-- ========================================================= --><!-- SEÇÃO 3: JUBILEU (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-jubileu" class="content-section mb-20 hidden liquid-glass-card relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 3: JUBILEU (AGORA INCLUI ORAÇÃO E HINO) --><!-- ========================================================= --><section id="content-jubileu" class="content-section mb-20 hidden liquid-glass-card relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Ano Jubilar 160 Anos (1866 – 2026)</h2>
-            <div class="text-center text-gray-400 py-10">
-                <p class="text-xl font-bold text-parish-blue">O Caminho Jubilar Continua!</p>
-                <p class="mt-4">Prepare-se para as celebrações especiais dos 160 anos de fé da nossa Paróquia.</p>
-                <p class="mt-2 text-sm">Abertura oficial: 15 de Novembro (verifique na agenda).</p>
-                <img src="https://placehold.co/400x150/1a2039/fbbd24?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/fbbd24?text=Jubileu+160+Anos';" />
-            </div>
-        </section>
 
-        <!-- ========================================================= --><!-- SEÇÃO 3B: ORAÇÃO DO JUBILEU (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-oracao" class="content-section mb-20 hidden liquid-glass-card relative z-10">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Oração do Jubileu de 160 Anos</h2>
-            <div class="text-center max-w-xl mx-auto space-y-4">
-                <p class="text-lg text-gray-300">
-                    <strong class="text-parish-blue block mb-2">ANOS JUBILAR: 1866 – 2026</strong>
-                </p>
-                <p class="text-lg leading-relaxed">
-                    Deus Todo-poderoso, Senhor do Tempo e da História, a Ti elevamos nossa voz neste Ano de Graça.
-                </p>
-                <p class="text-lg leading-relaxed">
-                    Somos herdeiros de 160 anos de fé que não se dobrou, e Te bendizemos por cada vida iluminada, por cada Sacramento que fez este Templo pulsar com a força do Teu Reino.
-                </p>
-                <p class="text-lg leading-relaxed font-semibold text-parish-gold">
-                    Senhor Jesus Cristo, Fonte Eterna de Misericórdia, concede-nos viver este Jubileu com coração renovado.
-                </p>
-                <p class="text-lg leading-relaxed">
-                    Purifica-nos. Reconcilia-nos. Reergue-nos na luz da Tua Ressurreição, para que sejamos um só povo, firme e ardente na fé.
-                </p>
-                <p class="text-lg leading-relaxed">
-                    Que a memória dos que vieram antes de nós seja chama que não se apaga e nos impulsione a levar o Evangelho com coragem, esperança e verdade.
-                </p>
-                <p class="text-lg leading-relaxed font-semibold text-parish-gold">
-                    Nossa Senhora da Conceição, Mãe e Padroeira, estrela que guia os passos desta Paróquia, intercede por nós.
-                </p>
-                <p class="text-lg leading-relaxed">
-                    Guarda-nos no Teu manto, inspira-nos com o Teu "Sim" e conduz-nos a uma nova primavera espiritual.
-                </p>
-                <p class="text-lg leading-relaxed">
-                    Pai santo, recebe este Jubileu como oferta viva, para Tua glória e para a salvação das almas.
-                </p>
-                <p class="text-lg leading-relaxed">
-                    Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e contigo vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.
-                </p>
-                <p class="text-2xl font-extrabold text-parish-blue mt-6">Amém.</p>
-            </div>
-        </section>
+            <div class="space-y-12">
+                <!-- 3.1: MENSAGEM PRINCIPAL -->
+                <div class="text-center text-parish-soft-gray">
+                    <p class="text-xl font-bold text-parish-blue">O Caminho Jubilar Continua!</p>
+                    <p class="mt-4">Prepare-se para as celebrações especiais dos 160 anos de fé da nossa Paróquia.</p>
+                    <p class="mt-2 text-sm">Abertura oficial: 15 de Novembro (verifique na agenda).</p>
+                    <img src="https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos" alt="Placeholder para Jubileu" class="mx-auto mt-6 rounded-2xl shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/400x150/1a2039/FFC759?text=Jubileu+160+Anos';" />
+                </div>
 
-        <!-- ========================================================= --><!-- SEÇÃO 3C: HINO DO JUBILEU (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-hino" class="content-section mb-20 hidden liquid-glass-card relative z-10">
-            <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Hino do Jubileu de 160 Anos</h2>
-            <div class="text-center max-w-xl mx-auto space-y-6">
-                <p class="text-lg text-gray-300">
-                    <strong class="text-parish-blue block mb-2">Paróquia Nossa Senhora da Conceição - Virgínia-MG</strong>
-                    <span class="block text-sm text-gray-400">ANO JUBILAR: 1866 – 2026</span>
-                </p>
-                
-                <div class="text-lg leading-relaxed space-y-4 text-white/90">
-                    <p>
-                        Aqui nesta terra, ornada de serra,<br>
-                        Coberta pelo céu azul anil,<br>
-                        Nasceu nossa fé, que o tempo não encerra,<br>
-                        Abençoando este chão do Brasil.<br>
-                        Nesta alvorada bendita e festiva,<br>
-                        A semente de Cristo cresceu,<
-                        E é a vossa presença, ó Mãe compassiva,<br>
-                        Nossa Paróquia edificou.
+                <!-- 3.2: ORAÇÃO DO JUBILEU (Conteúdo da antiga aba ORAÇÃO) -->
+                <div class="max-w-xl mx-auto border-t border-b border-white/10 pt-8 pb-8 space-y-4">
+                    <h3 class="text-3xl font-extrabold text-center text-parish-gold mb-6">Oração do Jubileu</h3>
+                    <p class="text-lg text-parish-soft-gray">
+                        <strong class="text-parish-blue block mb-2">ANOS JUBILAR: 1866 – 2026</strong>
                     </p>
-                    <p class="font-extrabold text-parish-gold">
-                        Soberana da pátria celeste,<br>
-                        Velai por Virgínia querida;<br>
-                        Nossa Paróquia em festa celebra<br>
-                        O jubileu de cento e sessenta anos de história!
+                    <p class="text-lg leading-relaxed">
+                        Deus Todo-poderoso, Senhor do Tempo e da História, a Ti elevamos nossa voz neste Ano de Graça.
                     </p>
-                    <p>
-                        Gerações que aqui receberam<br>
-                        o santo batismo e a união,<br>
-                        Em cada jornada da vida souberam<br>
-                        Buscar em Vós consolação.<br>
-                        As preces dos filhos que aqui cresceram<br>
-                        Sustentam a força da missão,<br>
-                        E o amor que em Cristo sempre viveram<br>
-                        Guia firme todo o coração.
+                    <p class="text-lg leading-relaxed">
+                        Somos herdeiros de 160 anos de fé que não se dobrou, e Te bendizemos por cada vida iluminada, por cada Sacramento que fez este Templo pulsar com a força do Teu Reino.
                     </p>
-                    <p class="font-extrabold text-parish-gold">
-                        Soberana da pátria celeste,<br>
-                        Velai por Virgínia querida;<br>
-                        Nossa Paróquia em festa celebra<br>
-                        O jubileu de cento e sessenta anos de história!
+                    <p class="text-lg leading-relaxed font-semibold text-parish-gold">
+                        Senhor Jesus Cristo, Fonte Eterna de Misericórdia, concede-nos viver este Jubileu com coração renovado.
                     </p>
-                    <p>
-                        Que a fé que herdamos acesa<br>
-                        Nos guarde em Vós, fortaleza.<br>
-                        Que a nossa Paróquia seja<br>
-                        Sinal de esperança e fé.<br>
-                        E que o Evangelho, nossa luz,<br>
-                        Nos leve sempre ao Cristo Jesus.
+                    <p class="text-lg leading-relaxed">
+                        Purifica-nos. Reconcilia-nos. Reergue-nos na luz da Tua Ressurreição, para que sejamos um só povo, firme e ardente na fé.
                     </p>
-                    <p class="font-extrabold text-parish-gold">
-                        Soberana da pátria celeste,<br>
-                        Velai por Virgínia querida;<br>
-                        Nossa Paróquia em festa celebra<br>
-                        O jubileu de cento e sessenta anos de história!
+                    <p class="text-lg leading-relaxed">
+                        Que a memória dos que vieram antes de nós seja chama que não se apaga e nos impulsione a levar o Evangelho com coragem, esperança e verdade.
                     </p>
+                    <p class="text-lg leading-relaxed font-semibold text-parish-gold">
+                        Nossa Senhora da Conceição, Mãe e Padroeira, estrela que guia os passos desta Paróquia, intercede por nós.
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        Guarda-nos no Teu manto, inspira-nos com o Teu "Sim" e conduz-nos a uma nova primavera espiritual.
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        Pai santo, recebe este Jubileu como oferta viva, para Tua glória e para a salvação das almas.
+                    </p>
+                    <p class="text-lg leading-relaxed">
+                        Por nosso Senhor Jesus Cristo, vosso Filho, que é Deus, e contigo vive e reina, na unidade do Espírito Santo, por todos os séculos dos séculos.
+                    </p>
+                    <p class="text-2xl font-extrabold text-parish-blue mt-6">Amém.</p>
+                </div>
+
+                <!-- 3.3: HINO DO JUBILEU (Conteúdo da antiga aba HINO) -->
+                <div class="max-w-xl mx-auto pt-4 space-y-6">
+                    <h3 class="text-3xl font-extrabold text-center text-parish-gold mb-6">Hino do Jubileu</h3>
+                    <p class="text-lg text-parish-soft-gray">
+                        <strong class="text-parish-blue block mb-2">Paróquia Nossa Senhora da Conceição - Virgínia-MG</strong>
+                        <span class="block text-sm text-parish-soft-gray">ANO JUBILAR: 1866 – 2026</span>
+                    </p>
+                    
+                    <div class="text-lg leading-relaxed space-y-4 text-white/90">
+                        <p>
+                            Aqui nesta terra, ornada de serra,<br>
+                            Coberta pelo céu azul anil,<br>
+                            Nasceu nossa fé, que o tempo não encerra,<br>
+                            Abençoando este chão do Brasil.<br>
+                            Nesta alvorada bendita e festiva,<br>
+                            A semente de Cristo cresceu,<
+                            E é a vossa presença, ó Mãe compassiva,<br>
+                            Nossa Paróquia edificou.
+                        </p>
+                        <p class="font-extrabold text-parish-gold">
+                            Soberana da pátria celeste,<br>
+                            Velai por Virgínia querida;<br>
+                            Nossa Paróquia em festa celebra<br>
+                            O jubileu de cento e sessenta anos de história!
+                        </p>
+                        <p>
+                            Gerações que aqui receberam<br>
+                            o santo batismo e a união,<br>
+                            Em cada jornada da vida souberam<br>
+                            Buscar em Vós consolação.<br>
+                            As preces dos filhos que aqui cresceram<br>
+                            Sustentam a força da missão,<br>
+                            E o amor que em Cristo sempre viveram<br>
+                            Guia firme todo o coração.
+                        </p>
+                        <p class="font-extrabold text-parish-gold">
+                            Soberana da pátria celeste,<br>
+                            Velai por Virgínia querida;<br>
+                            Nossa Paróquia em festa celebra<br>
+                            O jubileu de cento e sessenta anos de história!
+                        </p>
+                        <p>
+                            Que a fé que herdamos acesa<br>
+                            Nos guarde em Vós, fortaleza.<br>
+                            Que a nossa Paróquia seja<br>
+                            Sinal de esperança e fé.<br>
+                            E que o Evangelho, nossa luz,<br>
+                            Nos leve sempre ao Cristo Jesus.
+                        </p>
+                        <p class="font-extrabold text-parish-gold">
+                            Soberana da pátria celeste,<br>
+                            Velai por Virgínia querida;<br>
+                            Nossa Paróquia em festa celebra<br>
+                            O jubileu de cento e sessenta anos de história!
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
         
-        <!-- ========================================================= --><!-- SEÇÃO 4: INFORMAÇÕES (Antiga História) (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-informacoes" class="content-section mb-20 hidden liquid-glass-card relative z-10">
+        <!-- ========================================================= --><!-- SEÇÃO 4: INFORMAÇÕES (OCULTA POR PADRÃO) --><!-- ========================================================= --><section id="content-informacoes" class="content-section mb-20 hidden liquid-glass-card relative z-10">
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Informações e História de Fé</h2>
             
             <div class="md:flex md:space-x-8 items-center">
                 <div class="md:w-1/2">
-                    <p class="mb-4 text-lg leading-relaxed text-gray-300">
+                    <p class="mb-4 text-lg leading-relaxed text-parish-soft-gray">
                         A história da Paróquia Nossa Senhora da Conceição, em Virgínia/MG, remonta à segunda metade do século XIX, sendo oficialmente <strong class="text-parish-blue">criada em 15 de novembro de 1866</strong>.
                     </p>
-                    <p class="mb-4 text-lg leading-relaxed text-gray-300">
+                    <p class="mb-4 text-lg leading-relaxed text-parish-soft-gray">
                         O marco inicial foi a passagem do <strong class="text-parish-blue">Padre Custódio de Oliveira Monte-Raso</strong>, que, sensibilizado pela distância que os moradores tinham que percorrer até a freguesia de Pouso Alto, sugeriu a construção de uma capela.
                     </p>
-                    <p class="mb-4 text-lg leading-relaxed text-gray-300">
+                    <p class="mb-4 text-lg leading-relaxed text-parish-soft-gray">
                         Em um ato de profunda devoção, os fazendeiros Diogo José Labat Uchôas e Francisco Ribeiro Pires doaram terras para a edificação do templo. A capela foi dedicada à <strong class="text-parish-gold">Nossa Senhora da Conceição</strong>, e a nova povoação recebeu o nome de **"Virgínea"** (que mais tarde se tornou Virgínia), uma homenagem à Virgem Santíssima e em alusão à mata virgem que cobria o local.
                     </p>
                     <p class="text-lg font-semibold text-parish-blue mt-4">
@@ -440,14 +444,14 @@
             <h2 class="section-title text-4xl font-bold text-center text-parish-gold mb-10">Contatos, Secretaria e Liderança</h2>
 
             <div class="space-y-8">
-                <!-- Card 1: Liderança Clerical (Padres) - Título removido conforme solicitado --><div class="liquid-glass-card">
+                <!-- Card 1: Liderança Clerical (Padres) --><div class="liquid-glass-card">
                     <!-- Conteúdo do card é a Liderança Clerical --><div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                         <div>
-                            <p class="text-lg font-medium text-gray-300">Administrador Paroquial:</p>
+                            <p class="text-lg font-medium text-parish-soft-gray">Administrador Paroquial:</p>
                             <p class="text-xl font-extrabold text-parish-blue mt-1">Pe. Érick de Oliveira e Silva</p>
                         </div>
                         <div>
-                            <p class="text-lg font-medium text-gray-300">Vigário Paroquial:</p>
+                            <p class="text-lg font-medium text-parish-soft-gray">Vigário Paroquial:</p>
                             <p class="text-xl font-extrabold text-parish-blue mt-1">Pe. Edimilson Luiz Ribeiro, SF</p>
                         </div>
                     </div>
@@ -455,7 +459,7 @@
 
                 <!-- Card 2: Informações da Secretaria - Telefones Corrigidos --><div class="liquid-glass-card">
                     <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 pb-2">Secretaria Paroquial</h3>
-                    <div class="space-y-3 text-lg text-gray-300">
+                    <div class="space-y-3 text-lg text-parish-soft-gray">
                         <p class="font-medium">
                             <span class="text-parish-blue pr-2">Endereço:</span> Praça Cônego Monte Raso, nº 304, Virgínia/MG
                         </p>
@@ -475,7 +479,7 @@
                     <h3 class="text-2xl font-bold mb-4 text-parish-gold border-b border-gray-700 p-6 pb-2">Onde nos Encontrar (Igreja Matriz)</h3>
                     <div class="rounded-xl overflow-hidden shadow-xl mt-4">
                         <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14820.751688647575!2d-45.05068225!3d-22.3804812!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c9794d216d7a4b%3A0x8670c53d6199f1a0!2sVirg%C3%ADnia%2C%20MG%2C%2037465-000!5e0!3m2!1spt-BR!2sbr!4v1700684200000!5m2!1spt-BR!2sbr" 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14820.751688647575!2d-45.05068225!3d-22.3804812!2m3!1f0!2f0!0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c9794d216d7a4b%3A0x8670c53d6199f1a0!2sVirg%C3%ADnia%2C%20MG%2C%2037465-000!5e0!3m2!1spt-BR!2sbr!4v1700684200000!5m2!1spt-BR!2sbr" 
                             width="100%" 
                             height="300" 
                             style="border:0;" 
@@ -491,7 +495,7 @@
 
     </main>
 
-    <!-- Footer --><footer class="bg-gray-900 text-gray-400 py-8">
+    <!-- Footer --><footer class="bg-gray-900 text-parish-soft-gray py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-2">&copy; 2025 Paróquia Nossa Senhora da Conceição, Virgínia/MG. Todos os direitos reservados.</p>
             <p class="text-sm">Desenvolvido por: Emanuel Uchôas</p>
@@ -528,7 +532,7 @@
                 liturgical: 'Segunda-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '24/Nov',
                 events: [
-                    { title: 'Visita às obras', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
+                    { title: 'Visita às obras', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Santa Missa', subtitle: 'Sagrado Coração', time: '18:00', church: 'External', color: 'parish-red' }, 
                     { title: 'Formação MESC', subtitle: '', time: '19:00', church: 'External', color: 'parish-red' }, 
                 ]
@@ -538,8 +542,8 @@
                 liturgical: 'Terça-feira da 34ª Semana do Tempo Comum', 
                 dateStr: '25/Nov',
                 events: [
-                    { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
-                    { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' }, 
+                    { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
+                    { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Santa Missa Setor 4', subtitle: 'Bairro Pereiras', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Rio Acima II', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Reunião Setor 7', subtitle: '', time: '20:00', church: 'External', color: 'parish-red' }, 
@@ -550,7 +554,7 @@
                 liturgical: 'Memória de São Nicolau Tavelić e Companheiros, Mártires', 
                 dateStr: '26/Nov',
                 events: [
-                    { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
+                    { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Santa Missa Setor 1', subtitle: 'Bairro Mendes', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Santa Missa Setor 4', subtitle: 'Bairro Água Limpa', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                 ]
@@ -563,7 +567,7 @@
                     { title: 'Procissão', subtitle: 'Saindo da Igreja Matriz (até Pedra Santa)', time: '04:30', church: 'External', color: 'parish-red' }, 
                     { title: 'Santa Missa', subtitle: 'Pedra Santa (logo após a Procissão)', time: '05:00', church: 'External', color: 'parish-red' }, 
                     { title: 'Santa Missa', subtitle: 'Abrigo São Camilo', time: '09:00', church: 'External', color: 'parish-red' }, 
-                    { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' }, 
+                    { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Confissão', subtitle: 'Igreja Matriz', time: '17:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Adoração', subtitle: 'Igreja Matriz', time: '18:00', church: 'Matriz', color: 'parish-gold' },
                     { title: 'Santa Missa Setor 1', subtitle: 'Bairro Muquém', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
@@ -575,8 +579,8 @@
                 liturgical: '1º Dia da Novena | Memória de São Tiago da Marca, Presbítero', 
                 dateStr: '28/Nov',
                 events: [
-                    { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'text-gray-300' }, 
-                    { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'text-gray-300' }, 
+                    { title: 'Atendimento', subtitle: '', time: '09:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
+                    { title: 'Atendimento', subtitle: '', time: '14:00', church: 'Atendimento', color: 'parish-soft-gray' }, 
                     { title: 'Santa Missa Setor 7', subtitle: 'Bairro Vargem Alegre', time: '19:00', church: 'Comunidade', color: 'parish-blue' },
                     { title: 'Primeiro dia da Novena', subtitle: 'Igreja Matriz', time: '19:00', church: 'Matriz', color: 'parish-gold' }, 
                 ]
@@ -780,7 +784,7 @@
 
             if (!data || data.events.length === 0) {
                 dayTitle.innerHTML = `<span class="text-parish-gold">Dia ${dayKey.split('-')[0]}</span>, Sem Eventos Agendados`;
-                listContainer.innerHTML = `<p class="text-center text-gray-400 py-8">Não há programação pública para este dia.</p>`;
+                listContainer.innerHTML = `<p class="text-center text-parish-soft-gray py-8">Não há programação pública para este dia.</p>`;
                 
             } else {
                 dayTitle.innerHTML = `<span class="text-parish-gold">${data.dayName}</span>, ${data.dateStr}`;
@@ -796,6 +800,7 @@
                     // Determina as cores com base no campo 'color'
                     const timeColorClass = event.color.startsWith('text-') ? event.color : `text-${event.color}`;
                     // Garante que o título do evento interno não desapareça (usa text-white/parish-gold para os títulos)
+                    // Atendimento, Visita as Obras, Formação tem cor 'parish-soft-gray' no JSON, então o título será branco/soft-gray.
                     const titleColorClass = event.color === 'parish-gold' ? 'text-parish-gold' : 'text-white';
                     
                     // Cria o elemento do item da agenda
@@ -807,7 +812,7 @@
                     itemDiv.innerHTML = `
                         <div class="flex-grow pr-4">
                             <p class="text-xl font-bold ${titleColorClass}">${event.title}</p>
-                            ${event.subtitle ? `<p class="text-sm text-gray-400 italic">${event.subtitle}</p>` : ''}
+                            ${event.subtitle ? `<p class="text-sm text-parish-soft-gray italic">${event.subtitle}</p>` : ''}
                         </div>
                         <span class="text-3xl font-extrabold ${timeColorClass}">${event.time}</span>
                     `;
@@ -850,13 +855,14 @@
                 
                 const button = document.createElement('button');
                 button.id = `day-${key}`;
-                button.className = 'day-button day-button-date text-center p-3 sm:p-4 rounded-xl bg-parish-card text-gray-400 font-semibold hover:bg-white/10 transition duration-200';
+                button.className = 'day-button day-button-date text-center p-3 sm:p-4 rounded-xl bg-parish-card text-parish-soft-gray font-semibold hover:bg-white/10 transition duration-200';
                 button.dataset.day = key; 
                 
                 // Usa o dia e a abreviação da semana
+                // Nota: O texto do dia da semana (span class="day-short-name") herda a cor do botão, que é parish-soft-gray
                 button.innerHTML = `
                     <span class="block text-xl">${info.day}</span>
-                    <span class="day-short-name block text-gray-400 transition-colors">${info.short}</span>
+                    <span class="day-short-name block transition-colors">${info.short}</span>
                 `;
                 
                 carouselContainer.appendChild(button);
