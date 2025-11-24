@@ -29,7 +29,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0A1121; /* Fundo principal escuro */
-            color: #f1f1f1; /* Texto padrão claro */
+            color: #BCC8D6; /* Cinza Suave como cor de texto padrão */
         }
         /* Estilo para a aba ativa na navegação principal */
         .nav-active {
@@ -175,19 +175,26 @@
         /* Garante que o conteúdo da lista interna da agenda tenha z-index e cor correta */
         #daily-agenda-list > div {
             z-index: 20; 
-            color: #f1f1f1; 
+            color: #BCC8D6; 
         }
         /* Aumenta o espaçamento interno dos itens da agenda */
         .agenda-item-padding {
             padding-top: 1.25rem; /* py-5 */
             padding-bottom: 1.25rem; /* py-5 */
         }
+        
+        /* Efeito de Transição Suave (Fade-In) */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
 
     </style>
 </head>
-<body class="text-gray-100">
-
-    <!-- Navbar e Cabeçalho (Fixo e com Z-INDEX Máximo) --><header class="header-bar shadow-xl sticky top-0 z-[9999]"> 
+<body class="text-parish-soft-gray"> <!-- CORREÇÃO: Cor de texto padrão no body --><header class="header-bar shadow-xl sticky top-0 z-[9999]"> 
         <div class="container mx-auto px-4 py-4 relative"> 
             <!-- Top Bar: Left (Name), Center (Menu), Right (Jubilee) --><div class="header-top-bar pb-4">
                 
@@ -212,21 +219,51 @@
 
             <!-- Mobile Menu Content (Aparece ao clicar no Hambúrguer) --><nav id="mobile-menu" class="hidden sm:hidden z-[9990]">
                 <div class="flex flex-col space-y-2 text-base font-semibold">
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-agenda">AGENDA</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-noticias">NOTÍCIAS</a>
-                    <!-- ORAÇÃO e HINO MERGEADOS em JUBILEU --><a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-jubileu">JUBILEU</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-informacoes">INFORMAÇÕES</a>
-                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-white" data-target="content-contato">CONTATOS</a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-parish-soft-gray" data-target="content-agenda">
+                        <!-- ÍCONE: Agenda --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        AGENDA
+                    </a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-parish-soft-gray" data-target="content-noticias">
+                         <!-- ÍCONE: Notícias --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        NOTÍCIAS
+                    </a>
+                    <!-- ORAÇÃO e HINO MERGEADOS em JUBILEU --><a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-parish-soft-gray" data-target="content-jubileu">
+                        <!-- ÍCONE: Jubileu --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.447a1 1 0 011.902 0l1.545 4.04a1 1 0 00.957.697l4.314.385a1 1 0 01.558 1.706l-3.29 2.946a1 1 0 00-.285.928l.995 4.106a1 1 0 01-1.503 1.051l-3.793-2.31a1 1 0 00-1.042 0l-3.793 2.31a1 1 0 01-1.503-1.051l.995-4.106a1 1 0 00-.285-.928l-3.29-2.946a1 1 0 01.558-1.706l4.314-.385a1 1 0 00.957-.697l1.545-4.04z"></path></svg>
+                        JUBILEU
+                    </a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-parish-soft-gray" data-target="content-informacoes">
+                        <!-- ÍCONE: Informações --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        INFORMAÇÕES
+                    </a>
+                    <a href="#" class="nav-link tab-button py-2 px-4 hover:bg-white/10 rounded-lg text-parish-soft-gray" data-target="content-contato">
+                        <!-- ÍCONE: Contatos --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.14c-.9.45-1.97.94-2.227 1.144-.199.157-.367.31-.51.455.578.892 1.54 1.76 2.7 2.76.994.845 2.126 1.626 3.468 2.274.145.074.288.136.425.198.176.079.356.147.54.204.032.01.066.019.098.028a.5.5 0 00.082.029.5.5 0 00.082.029h.001a1 1 0 01.948-.684l1.498-4.493a1 1 0 011.21-.502l1.14-2.257c.45-.9-.94-1.97-1.144-2.227c-.157-.199-.31-.367-.455-.51l-.892.578c-.845.994-1.626 2.126-2.274 3.468-.074.145-.136.288-.198.425-.079.176-.147.356-.204.54a1 1 0 01-1.21.502L5 8.28V5z"></path></svg>
+                        CONTATOS
+                    </a>
                 </div>
             </nav>
 
             <!-- Desktop Tab Navigation (Aparece apenas em Desktop/Tablet) - Scrollbar hidden --><nav class="overflow-x-auto whitespace-nowrap hidden sm:block" id="desktop-nav">
                 <div class="inline-flex space-x-6 text-base font-semibold">
-                    <!-- Abas replicadas para o Desktop --><a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">AGENDA</a>
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-noticias">NOTÍCIAS</a>
-                    <!-- ORAÇÃO e HINO MERGEADOS em JUBILEU --><a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">JUBILEU</a>
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-informacoes">INFORMAÇÕES</a>
-                    <a href="#" class="nav-link tab-button text-white hover:text-parish-gold transition duration-300 flex items-center" data-target="content-contato">CONTATOS</a>
+                    <!-- Abas replicadas para o Desktop --><a href="#" class="nav-link tab-button nav-active text-parish-gold border-b-2 border-parish-gold transition duration-300 flex items-center" data-target="content-agenda">
+                        <!-- ÍCONE: Agenda --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        AGENDA
+                    </a>
+                    <a href="#" class="nav-link tab-button text-parish-soft-gray hover:text-parish-gold transition duration-300 flex items-center" data-target="content-noticias">
+                         <!-- ÍCONE: Notícias --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        NOTÍCIAS
+                    </a>
+                    <!-- ORAÇÃO e HINO MERGEADOS em JUBILEU --><a href="#" class="nav-link tab-button text-parish-soft-gray hover:text-parish-gold transition duration-300 flex items-center" data-target="content-jubileu">
+                        <!-- ÍCONE: Jubileu --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.447a1 1 0 011.902 0l1.545 4.04a1 1 0 00.957.697l4.314.385a1 1 0 01.558 1.706l-3.29 2.946a1 1 0 00-.285.928l.995 4.106a1 1 0 01-1.503 1.051l-3.793-2.31a1 1 0 00-1.042 0l-3.793 2.31a1 1 0 01-1.503-1.051l.995-4.106a1 1 0 00-.285-.928l-3.29-2.946a1 1 0 01.558-1.706l4.314-.385a1 1 0 00.957-.697l1.545-4.04z"></path></svg>
+                        JUBILEU
+                    </a>
+                    <a href="#" class="nav-link tab-button text-parish-soft-gray hover:text-parish-gold transition duration-300 flex items-center" data-target="content-informacoes">
+                        <!-- ÍCONE: Informações --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        INFORMAÇÕES
+                    </a>
+                    <a href="#" class="nav-link tab-button text-parish-soft-gray hover:text-parish-gold transition duration-300 flex items-center" data-target="content-contato">
+                        <!-- ÍCONE: Contatos --><svg class="w-5 h-5 inline mr-2 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.14c-.9.45-1.97.94-2.227 1.144-.199.157-.367.31-.51.455.578.892 1.54 1.76 2.7 2.76.994.845 2.126 1.626 3.468 2.274.145.074.288.136.425.198.176.079.356.147.54.204.032.01.066.019.098.028a.5.5 0 00.082.029.5.5 0 00.082.029h.001a1 1 0 01.948-.684l1.498-4.493a1 1 0 011.21-.502l1.14-2.257c.45-.9-.94-1.97-1.144-2.227c-.157-.199-.31-.367-.455-.51l-.892.578c-.845.994-1.626 2.126-2.274 3.468-.074.145-.136.288-.198.425-.079.176-.147.356-.204.54a1 1 0 01-1.21.502L5 8.28V5z"></path></svg>
+                        CONTATOS
+                    </a>
                 </div>
             </nav>
         </div>
@@ -249,7 +286,7 @@
                 <!-- A mensagem será inserida aqui com o novo formato clean --><p id="alert-message" class="text-sm mt-1 text-parish-soft-gray"></p>
             </div>
 
-            <!-- Título do Dia Selecionado + Dia Litúrgico --><h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-2"></h3>
+            <!-- Título do Dia Selecionado + Dia Litúrgico --><h3 id="current-day-title" class="text-3xl font-extrabold text-center text-parish-soft-gray mb-2"></h3>
             <p id="liturgical-day" class="text-xl font-semibold text-center text-parish-blue mb-8"></p>
 
             <!-- Lista de Eventos do Dia (Container Dinâmico) --><div id="daily-agenda-list" class="liquid-glass-card space-y-0">
@@ -274,7 +311,7 @@
                     <p class="text-sm text-parish-soft-gray mt-2">
                         Venha participar de nove dias de intensa preparação espiritual em honra à Imaculada Conceição.
                     </p>
-                    <p class="text-2xl font-extrabold text-white mt-4">
+                    <p class="text-2xl font-extrabold text-parish-soft-gray mt-4">
                         TODOS OS DIAS: Santa Missa e Novena às 19:00h
                     </p>
                     <p class="text-sm text-parish-blue italic mt-1">
@@ -288,10 +325,10 @@
                         08 de Dezembro (Segunda-feira)
                     </p>
                     <div class="mt-4 space-y-3">
-                        <p class="text-lg font-bold text-white">
+                        <p class="text-lg font-bold text-parish-soft-gray">
                             Santa Missa Solene: <span class="text-parish-gold">10:00h</span>
                         </p>
-                        <p class="text-lg font-bold text-white">
+                        <p class="text-lg font-bold text-parish-soft-gray">
                             Procissão Solene e Santa Missa: <span class="text-parish-gold">19:00h</span>
                         </p>
                     </div>
@@ -360,7 +397,7 @@
                         <span class="block text-sm text-parish-soft-gray">ANO JUBILAR: 1866 – 2026</span>
                     </p>
                     
-                    <div class="text-lg leading-relaxed space-y-4 text-white/90">
+                    <div class="text-lg leading-relaxed space-y-4 text-parish-soft-gray">
                         <p>
                             Aqui nesta terra, ornada de serra,<br>
                             Coberta pelo céu azul anil,<br>
@@ -744,7 +781,7 @@
                 // === LÓGICA EXTREMAMENTE DIRETA DO SENHOR SUPREMO ===
                 if (tomorrowKey === '24-Nov') {
                      // Regra Específica para 24/Nov (amanhã, quando em 23/Nov)
-                     message = `<span class="text-white">24/Nov: 18:00 Santa Missa na Igreja do Sagrado Coração</span>`;
+                     message = `<span class="text-parish-soft-gray">24/Nov: 18:00 Santa Missa na Igreja do Sagrado Coração</span>`;
                 } else {
                      // Lógica genérica clean (para outros dias com eventos externos)
                      upcomingEvents.forEach(event => {
@@ -752,7 +789,7 @@
                         const dateStr = tomorrowData.dateStr;
                         const location = event.subtitle.includes('Saindo da Igreja Matriz') ? 'Saindo da Matriz' : (event.subtitle || event.church);
                         
-                        message += `<span class="text-white">${dateStr}: ${event.time} ${event.title} (${location})</span><br>`;
+                        message += `<span class="text-parish-soft-gray">${dateStr}: ${event.time} ${event.title} (${location})</span><br>`;
                      });
                      message = message.slice(0, -4); // Remove a última tag <br>
                 }
@@ -778,7 +815,13 @@
             // 1. Checa e mostra o alerta para o dia seguinte
             checkAndShowAlert(dayKey);
 
-            // 2. Limpa e atualiza o conteúdo da agenda
+            // 2. Transição Suave (Fade-In)
+            // Remove a classe para resetar a animação (garante que ela rode a cada clique)
+            listContainer.classList.remove('fade-in'); 
+            // Força um reflow síncrono para garantir que a classe foi removida antes de readicionar
+            void listContainer.offsetWidth; 
+            
+            // 3. Limpa e atualiza o conteúdo da agenda
             listContainer.innerHTML = '';
             liturgicalDay.innerHTML = '';
 
@@ -799,9 +842,8 @@
                 data.events.forEach((event, index) => {
                     // Determina as cores com base no campo 'color'
                     const timeColorClass = event.color.startsWith('text-') ? event.color : `text-${event.color}`;
-                    // Garante que o título do evento interno não desapareça (usa text-white/parish-gold para os títulos)
-                    // Atendimento, Visita as Obras, Formação tem cor 'parish-soft-gray' no JSON, então o título será branco/soft-gray.
-                    const titleColorClass = event.color === 'parish-gold' ? 'text-parish-gold' : 'text-white';
+                    // Garante que o título do evento interno não desapareça (usa text-parish-soft-gray/parish-gold para os títulos)
+                    const titleColorClass = event.color === 'parish-gold' ? 'text-parish-gold' : 'text-parish-soft-gray';
                     
                     // Cria o elemento do item da agenda
                     const itemDiv = document.createElement('div');
@@ -820,8 +862,11 @@
                     listContainer.appendChild(itemDiv);
                 });
             }
+
+            // 4. Aplica o Fade-In após a injeção do conteúdo
+            listContainer.classList.add('fade-in'); 
             
-            // 3. Atualiza o carrossel de dias (ativa o botão clicado e rola)
+            // 5. Atualiza o carrossel de dias (ativa o botão clicado e rola)
             document.querySelectorAll('.day-button-date').forEach(btn => {
                 btn.classList.remove('day-active');
             });
@@ -872,28 +917,35 @@
 
         // Função para mostrar a seção de conteúdo desejada
         function showSection(targetId) {
+            
+            // Esconde todas as seções (prepara para a transição)
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.add('hidden');
+                section.classList.remove('fade-in'); // Remove a classe de animação
             });
             
             // Fecha o menu mobile quando uma opção é selecionada
             document.getElementById('mobile-menu').classList.add('hidden');
 
+            // Atualiza a navegação ativa
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('nav-active', 'border-b-2', 'border-parish-gold', 'text-parish-gold');
-                button.classList.add('text-white');
+                button.classList.add('text-parish-soft-gray'); // Usa cinza suave para inativos
             });
 
+            // Mostra a seção desejada e aplica o fade-in
             const targetSection = document.getElementById(targetId);
             if (targetSection) {
                 targetSection.classList.remove('hidden');
+                // Aplica o fade-in logo após remover o 'hidden'
+                targetSection.classList.add('fade-in'); 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
             // Ativa o link da aba clicada
             document.querySelectorAll(`[data-target="${targetId}"]`).forEach(button => {
                 button.classList.add('nav-active', 'text-parish-gold', 'border-b-2', 'border-parish-gold');
-                button.classList.remove('text-white');
+                button.classList.remove('text-parish-soft-gray'); // Remove o cinza suave ao ativar
             });
             
             const dayCarouselWrapper = document.getElementById('day-carousel-wrapper');
