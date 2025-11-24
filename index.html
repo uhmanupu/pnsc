@@ -104,30 +104,29 @@
 
     <!-- Navbar e Cabeçalho (Fixo e com Z-INDEX Máximo) -->
     <header class="header-bar shadow-xl sticky top-0 z-[9999] bg-parish-card"> 
-        <div class="container mx-auto px-4 py-4">
-            <!-- Top Bar: Logo/Name + Hamburguer/Jubilee -->
+        <!-- Adicionado relative para permitir posicionamento absoluto dentro dele -->
+        <div class="container mx-auto px-4 py-4 relative"> 
+            <!-- Top Bar: Left (Name), Center (Menu), Right (Jubilee) -->
             <div class="flex justify-between items-center pb-4">
                 
-                <!-- Name Block -->
-                <div class="flex flex-col">
+                <!-- 1. Name Block (LEFT) -->
+                <div class="flex flex-col z-20">
                     <a href="#" class="text-xl font-extrabold text-parish-gold tracking-wider leading-none">PARÓQUIA</a>
                     <p class="text-xs text-white/80 leading-none">Nossa Senhora da Conceição - Virgínia-MG</p>
                 </div>
                 
-                <!-- Mobile Menu Button (Hamburger) e Jubilee Info -->
-                <div class="flex items-center space-x-4">
-                    <!-- Jubilee Info (Apenas em telas maiores ou centralizado no topo em mobile) -->
-                    <div class="text-right hidden sm:block">
-                        <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
-                        <p class="text-base font-bold text-parish-blue leading-none">1866 – 2026</p>
-                    </div>
-
-                    <!-- Hamburger Icon (Somente em Mobile) -->
-                    <button id="menu-toggle" class="sm:hidden text-white hover:text-parish-gold focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
+                <!-- 2. Hamburger Icon (CENTER - only for mobile) -->
+                <!-- Posicionamento ABSOLUTO para centralizar o botão -->
+                <button id="menu-toggle" class="sm:hidden text-white hover:text-parish-gold focus:outline-none absolute left-1/2 transform -translate-x-1/2 z-20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                
+                <!-- 3. Jubilee Info (RIGHT) - visível em todas as telas -->
+                <div class="text-right z-20">
+                    <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
+                    <p class="text-base font-bold text-parish-blue leading-none">1866 – 2026</p>
                 </div>
             </div>
 
@@ -183,8 +182,6 @@
                 </p>
                 <p id="alert-message" class="text-sm mt-1 text-gray-200"></p>
             </div>
-
-            <!-- O CARROSSEL DE DIAS FOI MOVIDO PARA DENTRO DO <HEADER> -->
 
             <!-- Título do Dia Selecionado + Dia Litúrgico -->
             <h3 id="current-day-title" class="text-3xl font-extrabold text-center text-white mb-2"></h3>
@@ -958,14 +955,20 @@
             // 3. Atualiza o carrossel de dias (ativa o botão clicado e rola)
             document.querySelectorAll('.day-button-date').forEach(btn => {
                 btn.classList.remove('day-active');
-                btn.querySelector('.liturgical-text').classList.remove('text-parish-dark');
-                btn.querySelector('.liturgical-text').classList.add('text-gray-400');
+                const liturgicalTextElement = btn.querySelector('.liturgical-text');
+                if (liturgicalTextElement) {
+                    liturgicalTextElement.classList.remove('text-parish-dark');
+                    liturgicalTextElement.classList.add('text-gray-400');
+                }
             });
             const activeDayButton = document.getElementById(`day-${day}`);
             if(activeDayButton) {
                 activeDayButton.classList.add('day-active');
-                activeDayButton.querySelector('.liturgical-text').classList.remove('text-gray-400');
-                activeDayButton.querySelector('.liturgical-text').classList.add('text-parish-dark');
+                const liturgicalTextElement = activeDayButton.querySelector('.liturgical-text');
+                if (liturgicalTextElement) {
+                    liturgicalTextElement.classList.remove('text-gray-400');
+                    liturgicalTextElement.classList.add('text-parish-dark');
+                }
                 
                 // Rola o carrossel para centralizar o dia ativo
                 const carouselContainer = document.getElementById('day-carousel');
@@ -999,7 +1002,7 @@
                 const button = document.createElement('button');
                 button.id = `day-${day}`;
                 button.className = 'day-button day-button-date text-center p-3 sm:p-4 rounded-xl bg-parish-card text-gray-400 font-semibold hover:bg-parish-card/70 transition duration-200';
-                button.setAttribute('onclick', `loadDailyAgenda('${day}')`);
+                button.dataset.day = day; // Usando data attribute para o clique
                 
                 button.innerHTML = `
                     <span class="block text-xl">${i}</span>
@@ -1032,6 +1035,7 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
+            // Ativa o link da aba clicada
             document.querySelectorAll(`[data-target="${targetId}"]`).forEach(button => {
                 button.classList.add('nav-active', 'text-parish-gold', 'border-b-2', 'border-parish-gold');
                 button.classList.remove('text-white');
@@ -1072,7 +1076,16 @@
                 });
             });
 
-            // 2. Monta o carrossel e carrega a agenda do dia de hoje (23)
+            // 2. Lógica de Navegação do Carrossel de Dias (DELEGAÇÃO DE EVENTOS)
+            document.getElementById('day-carousel-wrapper').addEventListener('click', (e) => {
+                const dayButton = e.target.closest('.day-button-date');
+                if (dayButton && dayButton.dataset.day) {
+                    loadDailyAgenda(dayButton.dataset.day); // Carrega o dia clicado e atualiza activeDay
+                }
+            });
+
+
+            // 3. Monta o carrossel e carrega a agenda do dia de hoje (23)
             buildDayCarousel();
             loadDailyAgenda(activeDay);
             showSection('content-agenda'); 
