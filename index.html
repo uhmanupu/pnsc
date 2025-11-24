@@ -98,33 +98,53 @@
         .header-bar {
             background-color: #1a2039; /* Cor de card para a barra superior */
         }
+        /* Novo estilo para garantir o alinhamento no mobile */
+        .header-top-bar {
+            /* Usando grid para centralização mais limpa no mobile */
+            display: grid;
+            grid-template-columns: 1fr auto 1fr; 
+            align-items: center;
+        }
+        /* Centraliza o hambúrguer no mobile */
+        #menu-toggle-wrapper {
+            justify-self: center;
+        }
+        /* Alinha o nome da Paróquia à esquerda */
+        #parish-name-block {
+            justify-self: start;
+        }
+        /* Alinha o Ano Jubilar à direita */
+        #jubilee-info-block {
+            justify-self: end;
+            text-align: right;
+        }
     </style>
 </head>
 <body class="text-gray-100">
 
     <!-- Navbar e Cabeçalho (Fixo e com Z-INDEX Máximo) -->
     <header class="header-bar shadow-xl sticky top-0 z-[9999] bg-parish-card"> 
-        <!-- Adicionado relative para permitir posicionamento absoluto dentro dele -->
         <div class="container mx-auto px-4 py-4 relative"> 
             <!-- Top Bar: Left (Name), Center (Menu), Right (Jubilee) -->
-            <div class="flex justify-between items-center pb-4">
+            <div class="header-top-bar pb-4">
                 
                 <!-- 1. Name Block (LEFT) -->
-                <div class="flex flex-col z-20">
+                <div id="parish-name-block" class="flex flex-col z-20">
                     <a href="#" class="text-xl font-extrabold text-parish-gold tracking-wider leading-none">PARÓQUIA</a>
                     <p class="text-xs text-white/80 leading-none">Nossa Senhora da Conceição - Virgínia-MG</p>
                 </div>
                 
                 <!-- 2. Hamburger Icon (CENTER - only for mobile) -->
-                <!-- Posicionamento ABSOLUTO para centralizar o botão -->
-                <button id="menu-toggle" class="sm:hidden text-white hover:text-parish-gold focus:outline-none absolute left-1/2 transform -translate-x-1/2 z-20">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+                <div id="menu-toggle-wrapper" class="sm:hidden z-20">
+                    <button id="menu-toggle" class="text-white hover:text-parish-gold focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
                 
                 <!-- 3. Jubilee Info (RIGHT) - visível em todas as telas -->
-                <div class="text-right z-20">
+                <div id="jubilee-info-block" class="z-20">
                     <p class="text-xs text-white/70 leading-none">Ano Jubilar</p>
                     <p class="text-base font-bold text-parish-blue leading-none">1866 – 2026</p>
                 </div>
@@ -793,64 +813,9 @@
         };
 
         // ===============================================
-        // LÓGICA DE NAVEGAÇÃO E GESTOS (SWIPE / PULL-TO-REFRESH)
+        // LÓGICA DE NAVEGAÇÃO
         // ===============================================
-        let touchstartX = 0;
-        let touchendX = 0;
-        let touchstartY = 0;
-        let touchendY = 0;
-        const swipeThreshold = 50; // Pixels para detectar swipe horizontal
-        const pullThreshold = 80;  // Pixels para detectar swipe vertical (pull-to-refresh)
-        const topOfPageThreshold = 20; // Limite de scroll para pull-to-refresh
-        const allDays = Object.keys(dailyAgendaData);
-
-        function checkDirection() {
-            const currentDayElement = document.querySelector('.day-active');
-            if (!currentDayElement) return;
-
-            const currentDay = currentDayElement.id.replace('day-', '');
-            const currentIndex = allDays.indexOf(currentDay);
-            
-            // 1. SWIPE HORIZONTAL (Troca de Dia na Agenda)
-            // Verifica se o swipe horizontal foi mais significativo que o vertical
-            if (Math.abs(touchendX - touchstartX) > swipeThreshold && Math.abs(touchendX - touchstartX) > Math.abs(touchendY - touchstartY)) {
-                if (touchendX < touchstartX) { // Deslizar para a Esquerda (Próximo Dia)
-                    const nextIndex = currentIndex + 1;
-                    if (nextIndex < allDays.length) {
-                        loadDailyAgenda(allDays[nextIndex]);
-                    }
-                } else if (touchendX > touchstartX) { // Deslizar para a Direita (Dia Anterior)
-                    const prevIndex = currentIndex - 1;
-                    if (prevIndex >= 0) {
-                        loadDailyAgenda(allDays[prevIndex]);
-                    }
-                }
-            }
-
-            // 2. SWIPE VERTICAL (Pull-to-Refresh)
-            // Verifica se está perto do topo da página E se foi um swipe forte para baixo
-            if (window.scrollY < topOfPageThreshold && (touchendY > touchstartY) && (touchendY - touchstartY) > pullThreshold) {
-                if (!document.body.classList.contains('is-reloading')) {
-                    document.body.classList.add('is-reloading');
-                    // Adiciona um pequeno delay para a UX antes de recarregar
-                    setTimeout(() => {
-                        location.reload(); 
-                    }, 400); 
-                }
-            }
-        }
-
-        // Adiciona listeners para capturar o início e fim do toque na tela (para gestos)
-        document.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-            startY = e.changedTouches[0].screenY;
-        }, false);
-
-        document.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            touchendY = e.changedTouches[0].screenY;
-            checkDirection();
-        }, false);
+        // Removed: Swipe logic (touchstart, touchend, checkDirection)
         
         // Arrays para nomes de dias e meses (em português)
         const dayNamesFull = ['DOMINGO', 'SEGUNDA-FEIRA', 'TERÇA-FEIRA', 'QUARTA-FEIRA', 'QUINTA-FEIRA', 'SEXTA-FEIRA', 'SÁBADO'];
@@ -972,13 +937,15 @@
                 
                 // Rola o carrossel para centralizar o dia ativo
                 const carouselContainer = document.getElementById('day-carousel');
-                setTimeout(() => {
-                    const offset = activeDayButton.offsetLeft - (carouselContainer.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
-                    carouselContainer.scroll({
-                        left: offset,
-                        behavior: 'smooth'
-                    });
-                }, 50); // Pequeno delay para garantir que o layout esteja pronto
+                if (carouselContainer) { // Adicionado check de segurança
+                    setTimeout(() => {
+                        const offset = activeDayButton.offsetLeft - (carouselContainer.offsetWidth / 2) + (activeDayButton.offsetWidth / 2);
+                        carouselContainer.scroll({
+                            left: offset,
+                            behavior: 'smooth'
+                        });
+                    }, 50); // Pequeno delay para garantir que o layout esteja pronto
+                }
             }
         }
 
@@ -1077,6 +1044,7 @@
             });
 
             // 2. Lógica de Navegação do Carrossel de Dias (DELEGAÇÃO DE EVENTOS)
+            // Agora, o evento só será disparado quando o botão do dia for clicado, sem interferência do swipe.
             document.getElementById('day-carousel-wrapper').addEventListener('click', (e) => {
                 const dayButton = e.target.closest('.day-button-date');
                 if (dayButton && dayButton.dataset.day) {
